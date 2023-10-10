@@ -19,7 +19,11 @@ mono_crash.*
 # Build results
 [Dd]ebug/
 [Dd]ebugPublic/
+[Dd]ebug_x64/
+[Dd]ebug_x86/
 [Rr]elease/
+[Rr]elease_x64/
+[Rr]elease_x86/
 [Rr]eleases/
 x64/
 x86/
@@ -32,6 +36,7 @@ bld/
 [Oo]ut/
 [Ll]og/
 [Ll]ogs/
+[Gg]raphics.*.tlog/
 
 # Visual Studio 2015/2017 cache/options directory
 .vs/
@@ -43,6 +48,7 @@ Generated\ Files/
 
 # MSTest test Results
 [Tt]est[Rr]esult*/
+*tlog/
 [Bb]uild[Ll]og.*
 
 # NUnit
@@ -77,6 +83,7 @@ StyleCopReport.xml
 *.meta
 *.obj
 *.iobj
+*.idb
 *.pch
 *.pdb
 *.ipdb
@@ -87,6 +94,7 @@ StyleCopReport.xml
 *.tlb
 *.tli
 *.tlh
+*.tlog
 *.tmp
 *.tmp_proj
 *_wpftmp.csproj
