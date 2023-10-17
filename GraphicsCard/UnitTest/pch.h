@@ -7,6 +7,11 @@
 #ifndef PCH_H
 #define PCH_H
 
+#include "hippomocks.h"
+#include <memory>
+#include <nvapi.h>
+#include <string>
+#include <unordered_map>
 // add headers that you want to pre-compile here
 
 #endif //PCH_H
