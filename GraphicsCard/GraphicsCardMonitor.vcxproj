@@ -142,16 +142,17 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="Export.h" />
-    <ClInclude Include="IGraphicsCard.h" />
-    <ClInclude Include="IGraphicsCardFinder.h" />
+    <ClInclude Include="NvApiAdapter.h" />
+    <ClInclude Include="NvApiError.h" />
     <ClInclude Include="NVAPI\R535-Developer\nvapi.h" />
     <ClInclude Include="NvidiaGraphicsCard.h" />
-    <ClInclude Include="NvidiaGraphicsCardFinder.h" />
-    <ClInclude Include="NvidiaStatusInterpreter.h" />
+    <ClInclude Include="NvApiStatusInterpreter.h" />
     <ClInclude Include="pch.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="NvidiaStatusInterpreter.cpp" />
+    <ClCompile Include="NvApiAdapter.cpp" />
+    <ClCompile Include="NvidiaGraphicsCard.cpp" />
+    <ClCompile Include="NvApiStatusInterpreter.cpp" />
     <ClCompile Include="pch.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

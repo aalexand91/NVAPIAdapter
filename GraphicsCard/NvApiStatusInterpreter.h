@@ -6,12 +6,12 @@
 
 namespace GraphicsCards
 {
-	namespace NvidiaStatusInterpreter 
+	namespace NvApiStatusInterpreter
 	{
 		/// <returns>
-		/// A more detailed message about the status of the Nvidia GPU API.
+		/// A more detailed message about the current status of the NVAPI library.
 		/// Returns a general message if the status is unhandled by this function.
 		/// </returns>
-		GRAPHICS_CARD_API std::string GetStatusMessage(NvAPI_Status status);
+		GRAPHICS_CARD_API const char* GetStatusMessage(NvAPI_Status status);
 	}
 }

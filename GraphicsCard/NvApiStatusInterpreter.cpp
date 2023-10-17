@@ -1,12 +1,12 @@
 #include <pch.h>
 
-#include <NvidiaStatusInterpreter.h>
+#include "NvApiStatusInterpreter.h"
 
 namespace GraphicsCards 
 {
 	// TODO: Add more detailed message as more of project is implemented.
 
-	std::string NvidiaStatusInterpreter::GetStatusMessage(const NvAPI_Status status) 
+	const char* NvApiStatusInterpreter::GetStatusMessage(const NvAPI_Status status) 
 	{
 		switch (status) 
 		{
