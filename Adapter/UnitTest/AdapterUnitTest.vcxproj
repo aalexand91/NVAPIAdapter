@@ -22,7 +22,7 @@
     <VCProjectVersion>17.0</VCProjectVersion>
     <ProjectGuid>{30F6F0A9-0CF4-45E8-A4EE-7A0812CD1F86}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
-    <RootNamespace>GraphicsCardUnitTest</RootNamespace>
+    <RootNamespace>AdapterUnitTest</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
     <ProjectSubType>NativeUnitTestProject</ProjectSubType>
   </PropertyGroup>
@@ -159,8 +159,8 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="NvidiaGraphicsCardTester.cpp" />
-    <ClCompile Include="NvApiStatusInterpreterTester.cpp" />
+    <ClCompile Include="NVAPIAdapterTester.cpp" />
+    <ClCompile Include="NVAPIStatusInterpreterTester.cpp" />
     <ClCompile Include="pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
@@ -173,7 +173,7 @@
     <ClInclude Include="pch.h" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\GraphicsCardMonitor.vcxproj">
+    <ProjectReference Include="..\Adapter.vcxproj">
       <Project>{d28f7edd-d042-4ab6-a1e3-deac8847b6c5}</Project>
     </ProjectReference>
   </ItemGroup>

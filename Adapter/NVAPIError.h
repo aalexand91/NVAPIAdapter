@@ -3,17 +3,17 @@
 #include <nvapi.h>
 #include <string>
 
-namespace GraphicsCards
+namespace Adapter
 {
 	/// <summary>
 	/// Represents a general error that has occurred with the NVAPI library but can be caught as an exception.
 	/// </summary>
-	struct NvApiError
+	struct NVAPIError
 	{
 		const std::string m_message{ nullptr };
 
-		NvApiError() = delete;
-		NvApiError(const char* message) : m_message(std::string(message)) { }
-		NvApiError(std::string message) : m_message(message) { }
+		NVAPIError() = delete;
+		NVAPIError(const char* message) : m_message(std::string(message)) { }
+		NVAPIError(std::string message) : m_message(message) { }
 	};
 }

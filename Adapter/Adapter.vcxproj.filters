@@ -18,22 +18,22 @@
     <ClInclude Include="NVAPI\R535-Developer\nvapi.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="NvidiaGraphicsCard.h">
+    <ClInclude Include="NVAPIAdapter.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="pch.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="NvApiStatusInterpreter.h">
+    <ClInclude Include="NVAPIStatusInterpreter.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Export.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="NvApiAdapter.h">
+    <ClInclude Include="NVAPITunnel.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="NvApiError.h">
+    <ClInclude Include="NVAPIError.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -41,13 +41,13 @@
     <ClCompile Include="pch.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="NvApiStatusInterpreter.cpp">
+    <ClCompile Include="NVAPIStatusInterpreter.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="NvidiaGraphicsCard.cpp">
+    <ClCompile Include="NVAPIAdapter.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="NvApiAdapter.cpp">
+    <ClCompile Include="NVAPITunnel.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

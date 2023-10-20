@@ -22,9 +22,9 @@
     <VCProjectVersion>17.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>
     <ProjectGuid>{d28f7edd-d042-4ab6-a1e3-deac8847b6c5}</ProjectGuid>
-    <RootNamespace>GraphicsCardMonitorv2</RootNamespace>
+    <RootNamespace>NVAPIAdapter</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
-    <ProjectName>GraphicsCard</ProjectName>
+    <ProjectName>Adapter</ProjectName>
     <WindowsTargetPlatformMinVersion>7.0</WindowsTargetPlatformMinVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
@@ -74,9 +74,9 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <IncludePath>$(SolutionDir)GraphicsCard;$(SolutionDir)GraphicsCard\NVAPI\R535-Developer;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)Adapter;$(SolutionDir)Adapter\NVAPI\R535-Developer;$(IncludePath)</IncludePath>
     <OutDir>$(SolutionDir)Output\bin\$(Configuration)_$(Platform)\</OutDir>
-    <IntDir>$(SolutionDir)GraphicsCard\$(Configuration)_$(Platform)\</IntDir>
+    <IntDir>$(SolutionDir)Adapter\$(Configuration)_$(Platform)\</IntDir>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -110,7 +110,7 @@
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>_DEBUG;_CONSOLE;EXPORT_GRAPHICS_CARD_API;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_DEBUG;_CONSOLE;EXPORT_API;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <PrecompiledHeader>Create</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
@@ -142,17 +142,17 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="Export.h" />
-    <ClInclude Include="NvApiAdapter.h" />
-    <ClInclude Include="NvApiError.h" />
+    <ClInclude Include="NVAPITunnel.h" />
+    <ClInclude Include="NVAPIError.h" />
     <ClInclude Include="NVAPI\R535-Developer\nvapi.h" />
-    <ClInclude Include="NvidiaGraphicsCard.h" />
-    <ClInclude Include="NvApiStatusInterpreter.h" />
+    <ClInclude Include="NVAPIAdapter.h" />
+    <ClInclude Include="NVAPIStatusInterpreter.h" />
     <ClInclude Include="pch.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="NvApiAdapter.cpp" />
-    <ClCompile Include="NvidiaGraphicsCard.cpp" />
-    <ClCompile Include="NvApiStatusInterpreter.cpp" />
+    <ClCompile Include="NVAPITunnel.cpp" />
+    <ClCompile Include="NVAPIAdapter.cpp" />
+    <ClCompile Include="NVAPIStatusInterpreter.cpp" />
     <ClCompile Include="pch.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

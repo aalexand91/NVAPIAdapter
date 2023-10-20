@@ -1,12 +1,12 @@
 #include <pch.h>
 
-#include "NvApiStatusInterpreter.h"
+#include "NVAPIStatusInterpreter.h"
 
-namespace GraphicsCards 
+namespace Adapter
 {
 	// TODO: Add more detailed message as more of project is implemented.
 
-	const char* NvApiStatusInterpreter::GetStatusMessage(const NvAPI_Status status) 
+	const char* NVAPIStatusInterpreter::GetStatusMessage(const NvAPI_Status status) 
 	{
 		switch (status) 
 		{
