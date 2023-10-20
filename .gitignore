@@ -37,6 +37,8 @@ bld/
 [Ll]og/
 [Ll]ogs/
 [Gg]raphics.*.tlog/
+UnitTest/[Dd]ebug_x64/
+UnitTest/[Rr]elease_x64/
 
 # Visual Studio 2015/2017 cache/options directory
 .vs/
@@ -105,6 +107,7 @@ StyleCopReport.xml
 *.pidb
 *.svclog
 *.scc
+*.recipe
 
 # Chutzpah Test files
 _Chutzpah*
