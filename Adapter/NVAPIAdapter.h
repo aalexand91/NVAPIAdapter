@@ -2,6 +2,7 @@
 
 #include "Export.h"
 #include <nvapi.h>
+#include "PciIdentifier.h"
 
 namespace AdapterUnitTest 
 {
@@ -35,6 +36,8 @@ namespace Adapter
 
 		/// <returns>The type of GPU installed (integrated, discrete, or unknown).</returns>
 		ADAPTER_API std::string GetGpuType();
+
+		ADAPTER_API PciIdentifier GetPciIdentifiers();
 
 	private:
 		/// <summary>

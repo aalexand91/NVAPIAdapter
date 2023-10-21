@@ -148,6 +148,7 @@
     <ClInclude Include="NVAPIAdapter.h" />
     <ClInclude Include="NVAPIStatusInterpreter.h" />
     <ClInclude Include="pch.h" />
+    <ClInclude Include="PciIdentifier.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="NVAPITunnel.cpp" />

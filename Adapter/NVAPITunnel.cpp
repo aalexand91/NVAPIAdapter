@@ -27,4 +27,9 @@ namespace Adapter
 	{
 		return NvAPI_GPU_GetGPUType(physicalHandler, gpuType);
 	}
+
+	NvAPI_Status NVAPITunnel::GetPciIdentifiers(const NvPhysicalGpuHandle physicalHandler, PciIdentifier& pciIdentifier)
+	{
+		return NvAPI_GPU_GetPCIIdentifiers(physicalHandler, &pciIdentifier.m_internalId, &pciIdentifier.m_subsystemId, &pciIdentifier.m_revisionId, &pciIdentifier.m_externalId);
+	}
 }
