@@ -67,5 +67,18 @@ namespace Adapter
 		}
 		return gpuType == NV_GPU_TYPE::NV_SYSTEM_TYPE_DGPU ? "Discrete" : "Integrated";
 	}
+
+	PciIdentifier NVAPIAdapter::GetPciIdentifiers()
+	{
+		// TODO: Assert API initialized.
+		PciIdentifier identifier;
+		NvAPI_Status status = NVAPITunnel::GetPciIdentifiers(m_physicalHandler, identifier);
+		if (status == NvAPI_Status::NVAPI_OK) 
+		{
+			return identifier;
+		}
+		const std::string message = "Failed to get PCI identifiers. " + NVAPIStatusInterpreter::GetStatusMessage(status);
+		throw NVAPIError(message);
+	}
 }
 
