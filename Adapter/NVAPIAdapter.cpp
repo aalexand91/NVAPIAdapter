@@ -70,7 +70,7 @@ namespace Adapter
 
 	PciIdentifier NVAPIAdapter::GetPciIdentifiers()
 	{
-		// TODO: Assert API initialized.
+		AssertApiInitialized();
 		PciIdentifier identifier;
 		NvAPI_Status status = NVAPITunnel::GetPciIdentifiers(m_physicalHandler, identifier);
 		if (status == NvAPI_Status::NVAPI_OK) 

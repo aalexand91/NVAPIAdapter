@@ -310,6 +310,28 @@ namespace AdapterUnitTest
 			FailTestForNotThrowing();
 		}
 
+		TEST_METHOD(GetPciIdentifiers_WhenApiNotInitialized_Throws)
+		{
+			// Arrange
+			const std::string expectedMessage = "Fake API not initialized error.";
+			MockRepository mocks;
+			mocks.OnCallFunc(NVAPIStatusInterpreter::GetStatusMessage).Return(expectedMessage);
+			auto adapter = std::make_unique<NVAPIAdapter>(m_fakePhysicalHandler);
+
+			try
+			{
+				// Act
+				adapter->GetPciIdentifiers();
+			}
+			catch (const NVAPIError& error)
+			{
+				// Assert
+				Assert::AreEqual(expectedMessage, error.m_message);
+				return;
+			}
+			FailTestForNotThrowing();
+		}
+
 	private:
 		NvPhysicalGpuHandle m_fakePhysicalHandler{ 0 };
 
