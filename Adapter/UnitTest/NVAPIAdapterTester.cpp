@@ -71,6 +71,74 @@ namespace AdapterUnitTest
 			Assert::AreEqual(expectedNumberOfInitializes, actualNumberOfInitializes);
 		}
 
+		TEST_METHOD(Unload_WhenApiInitialized_UnloadsApi)
+		{
+			// Arrange
+			MockRepository mocks;
+			mocks.OnCallFunc(NVAPITunnel::Initialize).Return(NVAPI_OK);
+			mocks.ExpectCallFunc(NVAPITunnel::Unload).Return(NVAPI_OK);
+			auto graphicsCard = std::make_unique<NVAPIAdapter>(m_fakePhysicalHandler);
+			graphicsCard->Initialize();
+
+			// Act & Assert
+			graphicsCard->Unload();
+		}
+
+		TEST_METHOD(Unload_WhenApiNotInitialized_DoesNothing)
+		{
+			// Arrange
+			bool apiUnloaded = false;
+			MockRepository mocks;
+			mocks.OnCallFunc(NVAPITunnel::Unload).Do([&]() -> NvAPI_Status
+				{
+					apiUnloaded = true;
+					return NvAPI_Status::NVAPI_OK;
+				});
+			auto graphicsCard = std::make_unique<NVAPIAdapter>(m_fakePhysicalHandler);
+
+			// Act
+			graphicsCard->Unload();
+
+			// Assert
+			Assert::IsFalse(apiUnloaded, L"Expected API to not unload but did.");
+		}
+
+		TEST_METHOD(Unload_WhenCalledAfterApiUnloads_DoesNothing)
+		{
+			// Arrange
+			const int expectedNumberOfUnloads = 2;
+			int actualNumberOfUnloads = 0;
+			MockRepository mocks;
+			mocks.OnCallFunc(NVAPITunnel::Initialize).Return(NvAPI_Status::NVAPI_OK);
+
+			auto& firstUnload = mocks.ExpectCallFunc(NVAPITunnel::Unload).Do([&]() -> NvAPI_Status
+				{
+					actualNumberOfUnloads++;
+					return NvAPI_Status::NVAPI_API_IN_USE;
+				});
+			auto& secondUnload = mocks.ExpectCallFunc(NVAPITunnel::Unload).Do([&]() -> NvAPI_Status
+				{
+					actualNumberOfUnloads++;
+					return NvAPI_Status::NVAPI_OK;
+				}).After(firstUnload);
+			mocks.OnCallFunc(NVAPITunnel::Unload).Do([&]() -> NvAPI_Status
+				{
+					actualNumberOfUnloads++;
+					return NvAPI_Status::NVAPI_OK;
+				}).After(secondUnload);
+
+			auto graphicsCard = std::make_unique<NVAPIAdapter>(m_fakePhysicalHandler);
+			graphicsCard->Initialize();
+			graphicsCard->Unload();
+			graphicsCard->Unload();
+
+			// Act
+			graphicsCard->Unload();
+
+			// Assert
+			Assert::AreEqual(expectedNumberOfUnloads, actualNumberOfUnloads);
+		}
+
 		TEST_METHOD(GetName_OnSuccess_ReturnsIt)
 		{
 			// Arrange

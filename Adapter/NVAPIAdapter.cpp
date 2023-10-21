@@ -1,4 +1,5 @@
 #include <pch.h>
+
 #include "NVAPIAdapter.h"
 #include "NVAPIError.h"
 #include "NvApiStatusInterpreter.h"
@@ -20,6 +21,16 @@ namespace Adapter
 		}
 		std::string message = "Failed to initialize Nvidia API. " + std::string(NVAPIStatusInterpreter::GetStatusMessage(status));
 		throw NVAPIError(message);
+	}
+
+	void NVAPIAdapter::Unload() 
+	{
+		if (m_apiInitialized) 
+		{
+			// Rather than throw an error, just set the initialization flag to the result of the Unload method.
+			// This will help determine if future calls should still try to unload the API.
+			m_apiInitialized = NVAPITunnel::Unload() != NVAPI_OK;
+		}
 	}
 
 	std::string NVAPIAdapter::GetName()

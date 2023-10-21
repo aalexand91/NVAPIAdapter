@@ -23,8 +23,11 @@ namespace Adapter
 		NVAPIAdapter& operator = (const NVAPIAdapter&) = delete;
 		NVAPIAdapter& operator = (NVAPIAdapter&&) = delete;
 
-		/// <summary>Initializes the Nvidia graphics card API library.</summary>
+		/// <summary>Initializes the NVAPI library.</summary>
 		ADAPTER_API void Initialize();
+
+		/// <summary>Unloads the NVAPI library. Typically called when the API is no longer being used.</summary>
+		ADAPTER_API void Unload();
 
 		/// <returns>The full name of the graphics card.</returns>
 		/// <example>Quadro FX 1400.</example>
@@ -34,7 +37,6 @@ namespace Adapter
 		ADAPTER_API std::string GetGpuType();
 
 	private:
-
 		/// <summary>
 		/// The distinct GPU handler from the NVAPI library that handles interfacing with the specific graphics card.
 		/// </summary>

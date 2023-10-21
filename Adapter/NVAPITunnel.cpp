@@ -13,6 +13,11 @@ namespace Adapter
 		return NvAPI_Unload();
 	}
 
+	NvAPI_Status NVAPITunnel::GetStatusErrorMessage(const NvAPI_Status status, char* message)
+	{
+		return NvAPI_GetErrorMessage(status, message);
+	}
+
 	NvAPI_Status NVAPITunnel::GetFullName(const NvPhysicalGpuHandle physicalHandler, char* name)
 	{
 		return NvAPI_GPU_GetFullName(physicalHandler, name);
