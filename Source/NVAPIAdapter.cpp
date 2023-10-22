@@ -1,9 +1,9 @@
 #include <pch.h>
 
-#include "NVAPIAdapter.h"
-#include "NVAPIError.h"
-#include "NvApiStatusInterpreter.h"
-#include "NVAPITunnel.h"
+#include <NVAPIAdapter.h>
+#include <NVAPIError.h>
+#include <NvApiStatusInterpreter.h>
+#include <NVAPITunnel.h>
 
 namespace Adapter
 {

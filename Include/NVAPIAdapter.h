@@ -1,8 +1,8 @@
 #pragma once
 
-#include "Export.h"
+#include <Export.h>
 #include <nvapi.h>
-#include "PciIdentifier.h"
+#include <PciIdentifier.h>
 
 namespace AdapterUnitTest 
 {
