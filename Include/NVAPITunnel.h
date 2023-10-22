@@ -1,13 +1,13 @@
 #pragma once
 
-#include "Export.h"
-#include "PciIdentifier.h"
+#include <Export.h>
 #include <nvapi.h>
+#include <PciIdentifier.h>
 
 namespace Adapter
 {
 	/// <summary>
-	/// Wrapper to invoke the NVAPI library while also providing static functions that can be mocked by unit tests.
+	/// Provides static hooks to the NVAPI library that can be mocked by unit tests.
 	/// </summary>
 	namespace NVAPITunnel
 	{

@@ -1,0 +1,51 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Include">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Include\Export.h">
+      <Filter>Include</Filter>
+    </ClInclude>
+    <ClInclude Include="Include\NVAPIAdapter.h">
+      <Filter>Include</Filter>
+    </ClInclude>
+    <ClInclude Include="Include\NVAPIError.h">
+      <Filter>Include</Filter>
+    </ClInclude>
+    <ClInclude Include="Include\NVAPIStatusInterpreter.h">
+      <Filter>Include</Filter>
+    </ClInclude>
+    <ClInclude Include="Include\NVAPITunnel.h">
+      <Filter>Include</Filter>
+    </ClInclude>
+    <ClInclude Include="Include\pch.h">
+      <Filter>Include</Filter>
+    </ClInclude>
+    <ClInclude Include="Include\PciIdentifier.h">
+      <Filter>Include</Filter>
+    </ClInclude>
+    <ClInclude Include="NVAPI\R535-Developer\nvapi.h">
+      <Filter>Include</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Source\NVAPIAdapter.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\NVAPIStatusInterpreter.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\NVAPITunnel.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\pch.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>

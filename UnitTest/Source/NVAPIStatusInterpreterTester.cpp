@@ -1,7 +1,7 @@
-#include "pch.h"
+#include <pch_UnitTest.h>
 
-#include "CppUnitTest.h"
-#include "hippomocks.h"
+#include <CppUnitTest.h>
+#include <hippomocks.h>
 #include <NVAPIStatusInterpreter.h>
 #include <NVAPITunnel.h>
 

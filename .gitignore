@@ -21,9 +21,11 @@ mono_crash.*
 [Dd]ebugPublic/
 [Dd]ebug_x64/
 [Dd]ebug_x86/
+[Dd]ebug_Win32/
 [Rr]elease/
 [Rr]elease_x64/
 [Rr]elease_x86/
+[Rr]elease_Win32/
 [Rr]eleases/
 x64/
 x86/
@@ -38,7 +40,9 @@ bld/
 [Ll]ogs/
 [Gg]raphics.*.tlog/
 UnitTest/[Dd]ebug_x64/
+UnitTest/[Dd]ebug_Win32/
 UnitTest/[Rr]elease_x64/
+UnitTest/[Rr]elease_Win32/
 
 # Visual Studio 2015/2017 cache/options directory
 .vs/
