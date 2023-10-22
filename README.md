@@ -1,2 +1,2 @@
 # NVAPI Adapter
-A .NET library to provide a simple and easy to use interface to interact with Nvidia graphics cards for Windows.
+Provides a simple and easy to use API to interact with Nvidia graphics cards on Windows via Nvidia's NVAPI library.
