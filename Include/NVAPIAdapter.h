@@ -37,7 +37,11 @@ namespace Adapter
 		/// <returns>The type of GPU installed (integrated, discrete, or unknown).</returns>
 		ADAPTER_API std::string GetGpuType();
 
+		/// <returns>The PCI identifiers of the GPU.</returns>
 		ADAPTER_API PciIdentifier GetPciIdentifiers();
+
+		/// <returns>The GPU bus type.</returns>
+		ADAPTER_API std::string GetBusType();
 
 	private:
 		/// <summary>
@@ -48,5 +52,8 @@ namespace Adapter
 		bool m_apiInitialized{ false };
 
 		void AssertApiInitialized();
+
+		/// <returns>The string equivalent of the reported GPU bus type.</returns>
+		std::string GetGpuBusType(NV_GPU_BUS_TYPE busType);
 	};
 }

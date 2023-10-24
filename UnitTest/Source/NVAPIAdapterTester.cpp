@@ -351,6 +351,104 @@ namespace AdapterUnitTest
 			FailTestForNotThrowing();
 		}
 
+		TEST_METHOD(GetBusType_OnSuccess_ReturnsBusType)
+		{
+			// Arrange
+			RigForApiInitialized();
+			auto adapter = std::make_unique<NVAPIAdapter>(m_fakePhysicalHandler);
+			adapter->Initialize();
+			const std::unordered_map<NV_GPU_BUS_TYPE, std::string> busTypeMap
+			{
+				{NV_GPU_BUS_TYPE::NVAPI_GPU_BUS_TYPE_AGP, "Accelerated Graphics Port"},
+				{NV_GPU_BUS_TYPE::NVAPI_GPU_BUS_TYPE_AXI, "Advanced eXtensible Interface"},
+				{NV_GPU_BUS_TYPE::NVAPI_GPU_BUS_TYPE_PCI, "Peripheral Component Interconnect"},
+				{NV_GPU_BUS_TYPE::NVAPI_GPU_BUS_TYPE_PCI_EXPRESS, "Peripheral Component Interconnect Express"},
+			};
+			for (const auto& busTypePair : busTypeMap)
+			{
+				const std::string expected = busTypePair.second;
+				m_mocks.OnCallFunc(NVAPITunnel::GetBusType).With(m_fakePhysicalHandler, _)
+					.Do([&](NvPhysicalGpuHandle, NV_GPU_BUS_TYPE* busType) -> NvAPI_Status
+						{
+							*busType = busTypePair.first;
+							return NvAPI_Status::NVAPI_OK;
+						});
+
+				// Act
+				const std::string actual = adapter->GetBusType();
+
+				// Assert
+				Assert::AreEqual(expected, actual);
+			}
+		}
+
+		TEST_METHOD(GetBusType_WhenBusTypeIsUnidentified_ReturnsUnknown)
+		{
+			// Arrange
+			RigForApiInitialized();
+			m_mocks.OnCallFunc(NVAPITunnel::GetBusType)
+				.Do([&](NvPhysicalGpuHandle, NV_GPU_BUS_TYPE* busType) -> NvAPI_Status
+					{
+						*busType = NV_GPU_BUS_TYPE::NVAPI_GPU_BUS_TYPE_UNDEFINED;
+						return NvAPI_Status::NVAPI_OK;
+					});
+			auto adapter = std::make_unique<NVAPIAdapter>(m_fakePhysicalHandler);
+			adapter->Initialize();
+			const std::string expected = "Unknown";
+
+			// Act
+			const std::string actual = adapter->GetBusType();
+
+			// Assert
+			Assert::AreEqual(expected, actual);
+		}
+
+		TEST_METHOD(GetBusType_OnFailure_Throws)
+		{
+			// Arrange
+			RigForApiInitialized();
+			const std::string fakeStatusMessage = "Fake error to get bus type.";
+			RigForStatusMessage(fakeStatusMessage);
+			m_mocks.OnCallFunc(NVAPITunnel::GetBusType).Return(NvAPI_Status::NVAPI_ERROR);
+			const std::string expectedMessage = "Failed to get GPU bus type. " + fakeStatusMessage;
+			auto adapter = std::make_unique<NVAPIAdapter>(m_fakePhysicalHandler);
+			adapter->Initialize();
+
+			try
+			{
+				// Act
+				adapter->GetBusType();
+			}
+			catch (const NVAPIError& error)
+			{
+				// Assert
+				Assert::AreEqual(expectedMessage, error.m_message);
+				return;
+			}
+			FailTestForNotThrowing();
+		}
+
+		TEST_METHOD(GetBusType_WhenApiNotInitialized_Throws)
+		{
+			// Arrange
+			const std::string expectedMessage = "Fake API not initialized error.";
+			RigForStatusMessage(expectedMessage);
+			auto adapter = std::make_unique<NVAPIAdapter>(m_fakePhysicalHandler);
+
+			try
+			{
+				// Act
+				adapter->GetBusType();
+			}
+			catch (const NVAPIError& error)
+			{
+				// Assert
+				Assert::AreEqual(expectedMessage, error.m_message);
+				return;
+			}
+			FailTestForNotThrowing();
+		}
+
 	private:
 		MockRepository m_mocks;
 		NvPhysicalGpuHandle m_fakePhysicalHandler{ 0 };

@@ -80,5 +80,32 @@ namespace Adapter
 		const std::string message = "Failed to get PCI identifiers. " + NVAPIStatusInterpreter::GetStatusMessage(status);
 		throw NVAPIError(message);
 	}
+
+	std::string NVAPIAdapter::GetBusType()
+	{
+		AssertApiInitialized();
+		NV_GPU_BUS_TYPE busType = NV_GPU_BUS_TYPE::NVAPI_GPU_BUS_TYPE_UNDEFINED;
+		NvAPI_Status status = NVAPITunnel::GetBusType(m_physicalHandler, &busType);
+		if (status == NvAPI_Status::NVAPI_OK)
+		{
+			return GetGpuBusType(busType);
+		}
+		const std::string message = "Failed to get GPU bus type. " + NVAPIStatusInterpreter::GetStatusMessage(status);
+		throw NVAPIError(message);
+	}
+
+	std::string NVAPIAdapter::GetGpuBusType(const NV_GPU_BUS_TYPE busType)
+	{
+		static const std::unordered_map<NV_GPU_BUS_TYPE, std::string> map
+		{
+			{NV_GPU_BUS_TYPE::NVAPI_GPU_BUS_TYPE_AGP, "Accelerated Graphics Port"},
+			{NV_GPU_BUS_TYPE::NVAPI_GPU_BUS_TYPE_AXI, "Advanced eXtensible Interface"},
+			{NV_GPU_BUS_TYPE::NVAPI_GPU_BUS_TYPE_PCI, "Peripheral Component Interconnect"},
+			{NV_GPU_BUS_TYPE::NVAPI_GPU_BUS_TYPE_PCI_EXPRESS, "Peripheral Component Interconnect Express"},
+		};
+
+		const auto iterator = map.find(busType);
+		return iterator == map.end() ? "Unknown" : iterator->second;
+	}
 }
 

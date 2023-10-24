@@ -37,10 +37,16 @@ namespace Adapter
 		/// <returns>The status of the NVAPI library upon attempting to get the GPU type.</returns>
 		ADAPTER_API NvAPI_Status GetGpuType(const NvPhysicalGpuHandle physicalHandler, NV_GPU_TYPE* gpuType);
 
-		/// <summary>Determins the PCI identifiers associated with the graphics card.</summary>
+		/// <summary>Determines the PCI identifiers associated with the graphics card.</summary>
 		/// <param name="physicalHandler">NVAPI handler interfacing with the specific graphics card.</param>
 		/// <param name="pciIdentifier">Stores the PCI identifiers.</param>
 		/// <returns>The status of the NVAPI library upon attemptiong to get the PCI indentifiers.</returns>
 		ADAPTER_API NvAPI_Status GetPciIdentifiers(const NvPhysicalGpuHandle physicalHandler, PciIdentifier& pciIdentifier);
+
+		/// <summary>Determines the GPU bus type of the graphics card.</summary>
+		/// <param name="physicalHandler">NVAPI handler interfacing with the specific graphics card.</param>
+		/// <param name="busType">Stores the bus type.</param>
+		/// <returns>The status of the NVAPI library upon attempting to get the bus type.</returns>
+		ADAPTER_API NvAPI_Status GetBusType(const NvPhysicalGpuHandle physicalHandler, NV_GPU_BUS_TYPE* busType);
 	}
 }
