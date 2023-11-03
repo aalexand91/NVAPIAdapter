@@ -1,0 +1,62 @@
+# This workflow sets up and runs MSBuild and VSTest as part of the CI/CD pipeline for this respository.
+
+name: Pre-deliver
+
+on: [pull_request]
+    
+jobs:
+  build-and-test:
+    runs-on: windows-latest
+  
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+      id: checkout_code
+
+    - name: Setup MSBuild and add to PATH
+      uses: microsoft/setup-msbuild@v1.0.0
+      id: setup_msbuild
+
+    - name: Build Debug_x64
+      id: run_msbuild_debug_x64
+      working-directory: $
+      run: msbuild .\NVAPIAdapter.sln /property:Configuration=Debug /property:Platform:x64
+
+    - name: Build Debug_x86
+      id: run_msbuild_debug_x86
+      working-directory: $
+      run: msbuild .\NVAPIAdapter.sln /property:Configuration=Debug /property:Platform:x86
+
+    - name: Build Release_x64
+      id: run_msbuild_release_x64
+      working-directory: $
+      run: msbuild .\NVAPIAdapter.sln /property:Configuration=Release /property:Platform:x64
+
+    - name: Build Release_x86
+      id: run_msbuild_release_x86
+      working-directory: $
+      run: msbuild .\NVAPIAdapter.sln /property:Configuration=Release /property:Platform:x86
+
+    - name: Setup VSTest and add to PATH
+      uses: darenm/Setup-VSTest@v1
+      id: setup_vstest
+
+    - name: Run VSTest with Debug_x64 build
+      id: run_vstest_debug_x64
+      working-directory: $
+      run: vstest.console.exe /Platform:x64 .\Output\bin\Debug_x64\AdapterUnitTest.dll
+
+    - name: Run VSTest with Debug_x86 build
+      id: run_vstest_debug_x86
+      working-directory: $
+      run: vstest.console.exe /Platform:x86 .\Output\bin\Debug_Win32\AdapterUnitTest.dll
+
+    - name: Run VSTest with Release_x64 build
+      id: run_vstest_release_x64
+      working-directory: $
+      run: vstest.console.exe /Platform:x64 .\Output\bin\Release_x64\AdapterUnitTest.dll
+
+    - name: Run VSTest with Release_x86 build
+      id: run_vstest_release_x86
+      working-directory: $
+      run: vstest.console.exe /Platform:x86 .\Output\bin\Release_Win32\AdapterUnitTest.dll
