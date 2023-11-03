@@ -3,15 +3,12 @@
 name: Pre-deliver
 
 on: [pull_request]
-  branches:
-    - main
     
 jobs:
-  run-pre-delivery:
-  runs-on: windows-latest
-  name: Run MSBuild and VSTest to ensure changes do not break repository
+  build-and-test:
+    runs-on: windows-latest
   
-  steps:
+    steps:
     - name: Checkout code
       uses: actions/checkout@v2
       id: checkout_code
@@ -45,21 +42,21 @@ jobs:
       id: setup_vstest
 
     - name: Run VSTest with Debug_x64 build
-      id: run_vstest
+      id: run_vstest_debug_x64
       working-directory: $
       run: vstest.console.exe /Platform:x64 .\Output\bin\Debug_x64\AdapterUnitTest.dll
 
     - name: Run VSTest with Debug_x86 build
-      id: run_vstest
+      id: run_vstest_debug_x86
       working-directory: $
       run: vstest.console.exe /Platform:x86 .\Output\bin\Debug_Win32\AdapterUnitTest.dll
 
     - name: Run VSTest with Release_x64 build
-      id: run_vstest
+      id: run_vstest_release_x64
       working-directory: $
       run: vstest.console.exe /Platform:x64 .\Output\bin\Release_x64\AdapterUnitTest.dll
 
     - name: Run VSTest with Release_x86 build
-      id: run_vstest
+      id: run_vstest_release_x86
       working-directory: $
       run: vstest.console.exe /Platform:x86 .\Output\bin\Release_Win32\AdapterUnitTest.dll
