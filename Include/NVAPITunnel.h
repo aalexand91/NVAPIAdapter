@@ -37,10 +37,31 @@ namespace Adapter
 		/// <returns>The status of the NVAPI library upon attempting to get the GPU type.</returns>
 		ADAPTER_API NvAPI_Status GetGpuType(const NvPhysicalGpuHandle physicalHandler, NV_GPU_TYPE* gpuType);
 
-		/// <summary>Determins the PCI identifiers associated with the graphics card.</summary>
+		/// <summary>Determines the PCI identifiers associated with the graphics card.</summary>
 		/// <param name="physicalHandler">NVAPI handler interfacing with the specific graphics card.</param>
 		/// <param name="pciIdentifier">Stores the PCI identifiers.</param>
 		/// <returns>The status of the NVAPI library upon attemptiong to get the PCI indentifiers.</returns>
 		ADAPTER_API NvAPI_Status GetPciIdentifiers(const NvPhysicalGpuHandle physicalHandler, PciIdentifier& pciIdentifier);
+
+		/// <summary>Determines the GPU bus type of the graphics card.</summary>
+		/// <param name="physicalHandler">NVAPI handler interfacing with the specific graphics card.</param>
+		/// <param name="busType">Stores the bus type.</param>
+		/// <returns>The status of the NVAPI library upon attempting to get the bus type.</returns>
+		ADAPTER_API NvAPI_Status GetBusType(const NvPhysicalGpuHandle physicalHandler, NV_GPU_BUS_TYPE* busType);
+
+		/// <summary>Determines the ID of the bus associated with the GPU.</summary>
+		/// <param name="physicalHandler">NVAPI handler interfacing with the specific graphics card.</param>
+		/// <param name="id">Stores the bus ID.</param>
+		/// <returns>The status of the NVAPI library upon attempting to get the bus ID.</returns>
+		ADAPTER_API NvAPI_Status GetBusId(const NvPhysicalGpuHandle physicalHandler, unsigned long* id);
+
+		/// <summary>
+		/// Determines the VBIOS version of the graphics card in the form of xx.xx.xx.xx.yy 
+		/// where xx numbers represent the BIOS revision and yy is the original manufacturer's revision.
+		/// </summary>
+		/// <param name="physicalHandler">NVAPI handler interfacing with the specific graphics card.</param>
+		/// <param name="biosVersion">Stores the VBIOS version.</param>
+		/// <returns>The status of the NVAPI library upon attempting to get the VBIOS version.</returns>
+		ADAPTER_API NvAPI_Status GetVBiosVersion(const NvPhysicalGpuHandle physicalHandler, char* biosVersion);
 	}
 }

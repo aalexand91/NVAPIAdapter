@@ -33,4 +33,19 @@ namespace Adapter
 	{
 		return NvAPI_GPU_GetPCIIdentifiers(physicalHandler, &pciIdentifier.m_internalId, &pciIdentifier.m_subsystemId, &pciIdentifier.m_revisionId, &pciIdentifier.m_externalId);
 	}
+
+	NvAPI_Status NVAPITunnel::GetBusType(const NvPhysicalGpuHandle physicalHandler, NV_GPU_BUS_TYPE* busType) 
+	{
+		return NvAPI_GPU_GetBusType(physicalHandler, busType);
+	}
+
+	NvAPI_Status NVAPITunnel::GetBusId(const NvPhysicalGpuHandle physicalHandler, unsigned long* id)
+	{
+		return NvAPI_GPU_GetBusId(physicalHandler, id);
+	}
+
+	NvAPI_Status NVAPITunnel::GetVBiosVersion(const NvPhysicalGpuHandle physicalHandler, char* biosVersion)
+	{
+		return NvAPI_GPU_GetVbiosVersionString(physicalHandler, biosVersion);
+	}
 }

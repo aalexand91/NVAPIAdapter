@@ -37,7 +37,20 @@ namespace Adapter
 		/// <returns>The type of GPU installed (integrated, discrete, or unknown).</returns>
 		ADAPTER_API std::string GetGpuType();
 
+		/// <returns>The PCI identifiers of the GPU.</returns>
 		ADAPTER_API PciIdentifier GetPciIdentifiers();
+
+		/// <returns>The GPU bus type.</returns>
+		ADAPTER_API std::string GetBusType();
+
+		/// <returns>The GPU bus ID.</returns>
+		ADAPTER_API unsigned long GetBusId();
+
+		/// <returns>
+		/// The VBIOS version of the graphics card in the form of xx.xx.xx.xx.yy 
+		/// where xx numbers represent the BIOS revision and yy is the original manufacturer's revision.
+		/// </returns>
+		ADAPTER_API std::string GetVbiosVersion();
 
 	private:
 		/// <summary>
@@ -47,6 +60,12 @@ namespace Adapter
 
 		bool m_apiInitialized{ false };
 
+		/// <summary>Maximum number of characters in an ASCII string.</summary>
+		static const unsigned ms_asciiBufferSize{ 256u };
+
 		void AssertApiInitialized();
+
+		/// <returns>The string equivalent of the reported GPU bus type.</returns>
+		std::string GetGpuBusType(NV_GPU_BUS_TYPE busType);
 	};
 }
