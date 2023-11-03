@@ -191,8 +191,7 @@ namespace AdapterUnitTest
 		TEST_METHOD(GetName_WhenApiNotInitialized_Throws) 
 		{
 			// Arrange
-			const std::string expectedMessage = "Fake API not intialized message.";
-			RigForStatusMessage(expectedMessage);
+			RigForStatusMessage(m_fakeApiNotInitializedMessage);
 			auto adapter = std::make_unique<NVAPIAdapter>(m_fakePhysicalHandler);
 
 			try
@@ -203,7 +202,7 @@ namespace AdapterUnitTest
 			catch (const NVAPIError& error)
 			{
 				// Assert
-				Assert::AreEqual(expectedMessage, error.m_message);
+				Assert::AreEqual(m_fakeApiNotInitializedMessage, error.m_message);
 				return;
 			}
 			FailTestForNotThrowing();
@@ -257,8 +256,7 @@ namespace AdapterUnitTest
 		TEST_METHOD(GetGpuType_WhenApiNotInitialized_Throws)
 		{
 			// Arrange
-			const std::string expectedMessage = "Fake API not initialized message.";
-			RigForStatusMessage(expectedMessage);
+			RigForStatusMessage(m_fakeApiNotInitializedMessage);
 			auto adapter = std::make_unique<NVAPIAdapter>(m_fakePhysicalHandler);
 
 			try
@@ -269,7 +267,7 @@ namespace AdapterUnitTest
 			catch (const NVAPIError& error)
 			{
 				// Assert
-				Assert::AreEqual(expectedMessage, error.m_message);
+				Assert::AreEqual(m_fakeApiNotInitializedMessage, error.m_message);
 				return;
 			}
 			FailTestForNotThrowing();
@@ -333,8 +331,7 @@ namespace AdapterUnitTest
 		TEST_METHOD(GetPciIdentifiers_WhenApiNotInitialized_Throws)
 		{
 			// Arrange
-			const std::string expectedMessage = "Fake API not initialized error.";
-			m_mocks.OnCallFunc(NVAPIStatusInterpreter::GetStatusMessage).Return(expectedMessage);
+			m_mocks.OnCallFunc(NVAPIStatusInterpreter::GetStatusMessage).Return(m_fakeApiNotInitializedMessage);
 			auto adapter = std::make_unique<NVAPIAdapter>(m_fakePhysicalHandler);
 
 			try
@@ -345,7 +342,7 @@ namespace AdapterUnitTest
 			catch (const NVAPIError& error)
 			{
 				// Assert
-				Assert::AreEqual(expectedMessage, error.m_message);
+				Assert::AreEqual(m_fakeApiNotInitializedMessage, error.m_message);
 				return;
 			}
 			FailTestForNotThrowing();
@@ -431,8 +428,7 @@ namespace AdapterUnitTest
 		TEST_METHOD(GetBusType_WhenApiNotInitialized_Throws)
 		{
 			// Arrange
-			const std::string expectedMessage = "Fake API not initialized error.";
-			RigForStatusMessage(expectedMessage);
+			RigForStatusMessage(m_fakeApiNotInitializedMessage);
 			auto adapter = std::make_unique<NVAPIAdapter>(m_fakePhysicalHandler);
 
 			try
@@ -443,7 +439,74 @@ namespace AdapterUnitTest
 			catch (const NVAPIError& error)
 			{
 				// Assert
+				Assert::AreEqual(m_fakeApiNotInitializedMessage, error.m_message);
+				return;
+			}
+			FailTestForNotThrowing();
+		}
+
+		TEST_METHOD(GetBusId_OnSuccess_ReturnsIt)
+		{
+			// Arrange
+			RigForApiInitialized();
+			const unsigned long expected = 6199112ul;
+			m_mocks.OnCallFunc(NVAPITunnel::GetBusId)
+				.With(m_fakePhysicalHandler, _)
+				.Do([&](NvPhysicalGpuHandle, unsigned long* id) -> NvAPI_Status
+					{
+						*id = expected;
+						return NvAPI_Status::NVAPI_OK;
+					});
+			auto adapter = std::make_unique<NVAPIAdapter>(m_fakePhysicalHandler);
+			adapter->Initialize();
+
+			// Act
+			const auto actual = adapter->GetBusId();
+
+			// Assert
+			Assert::AreEqual(expected, actual);
+		}
+
+		TEST_METHOD(GetBusId_OnFailure_Throws)
+		{
+			// Arrange
+			RigForApiInitialized();
+			m_mocks.OnCallFunc(NVAPITunnel::GetBusId).Return(NvAPI_Status::NVAPI_ERROR);
+			const std::string fakeStatusMessage = "Fake get bus ID error.";
+			RigForStatusMessage(fakeStatusMessage);
+			const std::string expectedMessage = "Failed to get GPU bus ID. " + fakeStatusMessage;
+			auto adapter = std::make_unique<NVAPIAdapter>(m_fakePhysicalHandler);
+			adapter->Initialize();
+
+			try
+			{
+				// Act
+				adapter->GetBusId();
+			}
+			catch (const NVAPIError& error)
+			{
+				// Assert
 				Assert::AreEqual(expectedMessage, error.m_message);
+				return;
+			}
+			FailTestForNotThrowing();
+		}
+
+		TEST_METHOD(GetBusId_WhenApiNotInitialized_Throws)
+		{
+			// Arrange
+			RigForStatusMessage(m_fakeApiNotInitializedMessage);
+			auto adapter = std::make_unique<NVAPIAdapter>(m_fakePhysicalHandler);
+
+			try
+			{
+				// Act
+				adapter->GetBusId();
+			}
+			catch (const NVAPIError& error)
+			{
+				// Assert
+				Assert::AreEqual(m_fakeApiNotInitializedMessage, error.m_message);
 				return;
 			}
 			FailTestForNotThrowing();
@@ -452,6 +515,7 @@ namespace AdapterUnitTest
 	private:
 		MockRepository m_mocks;
 		NvPhysicalGpuHandle m_fakePhysicalHandler{ 0 };
+		const std::string m_fakeApiNotInitializedMessage{ "Fake API not initialized error." };
 
 		static void FailTestForNotThrowing()
 		{

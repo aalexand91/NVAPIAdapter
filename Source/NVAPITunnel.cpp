@@ -38,4 +38,9 @@ namespace Adapter
 	{
 		return NvAPI_GPU_GetBusType(physicalHandler, busType);
 	}
+
+	NvAPI_Status NVAPITunnel::GetBusId(const NvPhysicalGpuHandle physicalHandler, unsigned long* id)
+	{
+		return NvAPI_GPU_GetBusId(physicalHandler, id);
+	}
 }

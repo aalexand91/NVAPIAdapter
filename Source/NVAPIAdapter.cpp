@@ -107,5 +107,18 @@ namespace Adapter
 		const auto iterator = map.find(busType);
 		return iterator == map.end() ? "Unknown" : iterator->second;
 	}
+
+	unsigned long NVAPIAdapter::GetBusId() 
+	{
+		AssertApiInitialized();
+		unsigned long id = 0ul;
+		auto status = NVAPITunnel::GetBusId(m_physicalHandler, &id);
+		if (status == NvAPI_Status::NVAPI_OK)
+		{
+			return id;
+		}
+		const std::string message = "Failed to get GPU bus ID. " + NVAPIStatusInterpreter::GetStatusMessage(status);
+		throw NVAPIError(message);
+	}
 }
 

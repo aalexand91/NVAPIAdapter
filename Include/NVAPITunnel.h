@@ -48,5 +48,11 @@ namespace Adapter
 		/// <param name="busType">Stores the bus type.</param>
 		/// <returns>The status of the NVAPI library upon attempting to get the bus type.</returns>
 		ADAPTER_API NvAPI_Status GetBusType(const NvPhysicalGpuHandle physicalHandler, NV_GPU_BUS_TYPE* busType);
+
+		/// <summary>Determines the ID of the bus associated with the GPU.</summary>
+		/// <param name="physicalHandler">NVAPI handler interfacing with the specific graphics card.</param>
+		/// <param name="id">Stores the bus ID.</param>
+		/// <returns>The status of the NVAPI library upon attempting to get the bus ID.</returns>
+		ADAPTER_API NvAPI_Status GetBusId(const NvPhysicalGpuHandle physicalHandler, unsigned long* id);
 	}
 }

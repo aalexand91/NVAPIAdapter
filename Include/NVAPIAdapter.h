@@ -43,6 +43,9 @@ namespace Adapter
 		/// <returns>The GPU bus type.</returns>
 		ADAPTER_API std::string GetBusType();
 
+		/// <returns>The GPU bus ID.</returns>
+		ADAPTER_API unsigned long GetBusId();
+
 	private:
 		/// <summary>
 		/// The distinct GPU handler from the NVAPI library that handles interfacing with the specific graphics card.
