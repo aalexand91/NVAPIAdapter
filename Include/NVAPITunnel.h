@@ -54,5 +54,14 @@ namespace Adapter
 		/// <param name="id">Stores the bus ID.</param>
 		/// <returns>The status of the NVAPI library upon attempting to get the bus ID.</returns>
 		ADAPTER_API NvAPI_Status GetBusId(const NvPhysicalGpuHandle physicalHandler, unsigned long* id);
+
+		/// <summary>
+		/// Determines the VBIOS version of the graphics card in the form of xx.xx.xx.xx.yy 
+		/// where xx numbers represent the BIOS revision and yy is the original manufacturer's revision.
+		/// </summary>
+		/// <param name="physicalHandler">NVAPI handler interfacing with the specific graphics card.</param>
+		/// <param name="biosVersion">Stores the VBIOS version.</param>
+		/// <returns>The status of the NVAPI library upon attempting to get the VBIOS version.</returns>
+		ADAPTER_API NvAPI_Status GetVBiosVersion(const NvPhysicalGpuHandle physicalHandler, char* biosVersion);
 	}
 }

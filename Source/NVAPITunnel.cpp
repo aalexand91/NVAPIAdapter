@@ -43,4 +43,9 @@ namespace Adapter
 	{
 		return NvAPI_GPU_GetBusId(physicalHandler, id);
 	}
+
+	NvAPI_Status NVAPITunnel::GetVBiosVersion(const NvPhysicalGpuHandle physicalHandler, char* biosVersion)
+	{
+		return NvAPI_GPU_GetVbiosVersionString(physicalHandler, biosVersion);
+	}
 }

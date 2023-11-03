@@ -512,6 +512,73 @@ namespace AdapterUnitTest
 			FailTestForNotThrowing();
 		}
 
+		TEST_METHOD(GetVbiosVersion_OnSuccess_ReturnsIt)
+		{
+			// Arrange
+			RigForApiInitialized();
+			const std::string expected = "12.34.56.78.90";
+			m_mocks.OnCallFunc(NVAPITunnel::GetVBiosVersion)
+				.With(m_fakePhysicalHandler, _)
+				.Do([&](NvPhysicalGpuHandle, char* biosVersion) -> NvAPI_Status
+					{
+						strcpy_s(biosVersion, 256, expected.c_str());
+						return NvAPI_Status::NVAPI_OK;
+					});
+			auto adapter = std::make_unique<NVAPIAdapter>(m_fakePhysicalHandler);
+			adapter->Initialize();
+
+			// Act
+			const std::string actual = adapter->GetVbiosVersion();
+
+			// Assert
+			Assert::AreEqual(expected, actual);
+		}
+
+		TEST_METHOD(GetVbiosVersion_OnFailure_Throws)
+		{
+			// Arrange
+			RigForApiInitialized();
+			const std::string fakeStatusMessage = "Fake get VBIOS version error.";
+			RigForStatusMessage(fakeStatusMessage);
+			m_mocks.OnCallFunc(NVAPITunnel::GetVBiosVersion).Return(NvAPI_Status::NVAPI_ERROR);
+			const std::string expectedMessage = "Failed to get VBIOS version. " + fakeStatusMessage;
+			auto adapter = std::make_unique<NVAPIAdapter>(m_fakePhysicalHandler);
+			adapter->Initialize();
+
+			try
+			{
+				// Act
+				adapter->GetVbiosVersion();
+			}
+			catch (const NVAPIError& error)
+			{
+				// Assert
+				Assert::AreEqual(expectedMessage, error.m_message);
+				return;
+			}
+			FailTestForNotThrowing();
+		}
+
+		TEST_METHOD(GetVbiosVersion_WhenApiNotInitialized_Throws)
+		{
+			// Arrange
+			RigForStatusMessage(m_fakeApiNotInitializedMessage);
+			auto adapter = std::make_unique<NVAPIAdapter>(m_fakePhysicalHandler);
+
+			try
+			{
+				// Act
+				adapter->GetVbiosVersion();
+			}
+			catch (const NVAPIError& error)
+			{
+				// Assert
+				Assert::AreEqual(m_fakeApiNotInitializedMessage, error.m_message);
+				return;
+			}
+			FailTestForNotThrowing();
+		}
+
 	private:
 		MockRepository m_mocks;
 		NvPhysicalGpuHandle m_fakePhysicalHandler{ 0 };

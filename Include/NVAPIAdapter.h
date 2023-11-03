@@ -46,6 +46,12 @@ namespace Adapter
 		/// <returns>The GPU bus ID.</returns>
 		ADAPTER_API unsigned long GetBusId();
 
+		/// <returns>
+		/// The VBIOS version of the graphics card in the form of xx.xx.xx.xx.yy 
+		/// where xx numbers represent the BIOS revision and yy is the original manufacturer's revision.
+		/// </returns>
+		ADAPTER_API std::string GetVbiosVersion();
+
 	private:
 		/// <summary>
 		/// The distinct GPU handler from the NVAPI library that handles interfacing with the specific graphics card.
@@ -53,6 +59,9 @@ namespace Adapter
 		NvPhysicalGpuHandle m_physicalHandler;
 
 		bool m_apiInitialized{ false };
+
+		/// <summary>Maximum number of characters in an ASCII string.</summary>
+		static const unsigned ms_asciiBufferSize{ 256u };
 
 		void AssertApiInitialized();
 

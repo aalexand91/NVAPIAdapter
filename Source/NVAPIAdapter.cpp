@@ -13,7 +13,7 @@ namespace Adapter
 		{
 			return;
 		}
-		NvAPI_Status status = NVAPITunnel::Initialize();
+		const auto status = NVAPITunnel::Initialize();
 		if (status == NvAPI_Status::NVAPI_OK)
 		{
 			m_apiInitialized = true;
@@ -36,11 +36,11 @@ namespace Adapter
 	std::string NVAPIAdapter::GetName()
 	{
 		AssertApiInitialized();
-		char name[256];	// Size of buffer set to the maximum number of characters in an ASCII string.
-		NvAPI_Status status = NVAPITunnel::GetFullName(m_physicalHandler, name);
+		char name[ms_asciiBufferSize] = "\0";
+		const auto status = NVAPITunnel::GetFullName(m_physicalHandler, name);
 		if (status == NvAPI_Status::NVAPI_OK)
 		{
-			return std::string(name);
+			return name;
 		}
 		std::string message = "Failed to get graphics card name. " + std::string(NVAPIStatusInterpreter::GetStatusMessage(status));
 		throw NVAPIError(message);
@@ -59,7 +59,7 @@ namespace Adapter
 	{
 		AssertApiInitialized();
 		NV_GPU_TYPE gpuType = NV_GPU_TYPE::NV_SYSTEM_TYPE_GPU_UNKNOWN;
-		NvAPI_Status status = NVAPITunnel::GetGpuType(m_physicalHandler, &gpuType);
+		const auto status = NVAPITunnel::GetGpuType(m_physicalHandler, &gpuType);
 		if (status != NvAPI_Status::NVAPI_OK) 
 		{
 			// Rather than throwing an exception, just return the unknown type since the API could not determine what the GPU type was.
@@ -72,7 +72,7 @@ namespace Adapter
 	{
 		AssertApiInitialized();
 		PciIdentifier identifier;
-		NvAPI_Status status = NVAPITunnel::GetPciIdentifiers(m_physicalHandler, identifier);
+		const auto status = NVAPITunnel::GetPciIdentifiers(m_physicalHandler, identifier);
 		if (status == NvAPI_Status::NVAPI_OK) 
 		{
 			return identifier;
@@ -85,7 +85,7 @@ namespace Adapter
 	{
 		AssertApiInitialized();
 		NV_GPU_BUS_TYPE busType = NV_GPU_BUS_TYPE::NVAPI_GPU_BUS_TYPE_UNDEFINED;
-		NvAPI_Status status = NVAPITunnel::GetBusType(m_physicalHandler, &busType);
+		const auto status = NVAPITunnel::GetBusType(m_physicalHandler, &busType);
 		if (status == NvAPI_Status::NVAPI_OK)
 		{
 			return GetGpuBusType(busType);
@@ -112,12 +112,25 @@ namespace Adapter
 	{
 		AssertApiInitialized();
 		unsigned long id = 0ul;
-		auto status = NVAPITunnel::GetBusId(m_physicalHandler, &id);
+		const auto status = NVAPITunnel::GetBusId(m_physicalHandler, &id);
 		if (status == NvAPI_Status::NVAPI_OK)
 		{
 			return id;
 		}
 		const std::string message = "Failed to get GPU bus ID. " + NVAPIStatusInterpreter::GetStatusMessage(status);
+		throw NVAPIError(message);
+	}
+
+	std::string NVAPIAdapter::GetVbiosVersion()
+	{
+		AssertApiInitialized();
+		char biosVersion[ms_asciiBufferSize] = "\0";
+		const auto status = NVAPITunnel::GetVBiosVersion(m_physicalHandler, biosVersion);
+		if (status == NvAPI_Status::NVAPI_OK)
+		{
+			return biosVersion;
+		}
+		const std::string message = "Failed to get VBIOS version. " + NVAPIStatusInterpreter::GetStatusMessage(status);
 		throw NVAPIError(message);
 	}
 }
