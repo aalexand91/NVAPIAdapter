@@ -53,4 +53,9 @@ namespace Adapter
 	{
 		return NvAPI_GPU_GetPhysicalFrameBufferSize(physicalHandler, bufferSize);
 	}
+
+	NvAPI_Status NVAPITunnel::GetVirtualFrameBufferSize(const NvPhysicalGpuHandle physicalHandler, unsigned long* bufferSize)
+	{
+		return NvAPI_GPU_GetVirtualFrameBufferSize(physicalHandler, bufferSize);
+	}
 }

@@ -136,15 +136,30 @@ namespace Adapter
 
 	unsigned long NVAPIAdapter::GetPhysicalFrameBufferSizeInKb()
 	{
+		const bool includeVirtualSize = false;
+		return GetFrameBufferSize(includeVirtualSize);
+	}
+
+	unsigned long NVAPIAdapter::GetFrameBufferSize(const bool includeVirtualSize)
+	{
 		AssertApiInitialized();
 		unsigned long bufferSize = 0ul;
-		const auto status = NVAPITunnel::GetPhysicalFrameBufferSize(m_physicalHandler, &bufferSize);
+		const auto status = includeVirtualSize
+			? NVAPITunnel::GetVirtualFrameBufferSize(m_physicalHandler, &bufferSize)
+			: NVAPITunnel::GetPhysicalFrameBufferSize(m_physicalHandler, &bufferSize);
 		if (status == NvAPI_Status::NVAPI_OK)
 		{
 			return bufferSize;
 		}
-		const std::string message = "Failed to get physical frame buffer size. " + NVAPIStatusInterpreter::GetStatusMessage(status);
+		const std::string context = includeVirtualSize ? "virtual" : "physical";
+		const std::string message = "Failed to get " + context + " frame buffer size. " + NVAPIStatusInterpreter::GetStatusMessage(status);
 		throw NVAPIError(message);
+	}
+
+	unsigned long NVAPIAdapter::GetVirtualFrameBufferSizeInKb()
+	{
+		const bool includeVirtualSize = true;
+		return GetFrameBufferSize(includeVirtualSize);
 	}
 }
 

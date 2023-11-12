@@ -55,6 +55,9 @@ namespace Adapter
 		/// <returns>The GPU physical frame buffer size (excluding any allocated to RAM) in KB.</returns>
 		ADAPTER_API unsigned long GetPhysicalFrameBufferSizeInKb();
 
+		/// <returns>The total frame buffer size of both the physical and virtual memory allocated in KB.</returns>
+		ADAPTER_API unsigned long GetVirtualFrameBufferSizeInKb();
+
 	private:
 		/// <summary>
 		/// The distinct GPU handler from the NVAPI library that handles interfacing with the specific graphics card.
@@ -70,5 +73,11 @@ namespace Adapter
 
 		/// <returns>The string equivalent of the reported GPU bus type.</returns>
 		std::string GetGpuBusType(NV_GPU_BUS_TYPE busType);
+
+		/// <returns>
+		/// Both the physical and virtual frame buffer size in KB if includeVirtualSize is true. 
+		/// Returns only the physical frame buffer size if includeVirtualSize is false.
+		/// </returns>
+		unsigned long GetFrameBufferSize(const bool includeVirtualSize);
 	};
 }

@@ -646,6 +646,72 @@ namespace AdapterUnitTest
 			FailTestForNotThrowing();
 		}
 
+		TEST_METHOD(GetVirtualFrameBufferSizeInKb_OnSuccess_ReturnsIt)
+		{
+			// Arrange
+			RigForApiInitialized();
+			const unsigned long expected = 987654321ul;
+			m_mocks.OnCallFunc(NVAPITunnel::GetVirtualFrameBufferSize)
+				.With(m_fakePhysicalHandler, _)
+				.Do([&](const NvPhysicalGpuHandle, unsigned long* bufferSize) -> NvAPI_Status 
+					{
+						*bufferSize = expected;
+						return NvAPI_Status::NVAPI_OK;
+					});
+			auto adapter = std::make_unique<NVAPIAdapter>(m_fakePhysicalHandler);
+			adapter->Initialize();
+
+			// Act
+			const auto actual = adapter->GetVirtualFrameBufferSizeInKb();
+
+			// Assert
+			Assert::AreEqual(expected, actual);
+		}
+
+		TEST_METHOD(GetVirtualFrameBufferSizeInKb_OnFailure_Throws)
+		{
+			// Arrange
+			RigForApiInitialized();
+			const std::string statusMessage = "Fake failed to get virtual frame buffer size message.";
+			RigForStatusMessage(statusMessage);
+			const std::string expectedMessage = "Failed to get virtual frame buffer size. " + statusMessage;
+			auto adapter = std::make_unique<NVAPIAdapter>(m_fakePhysicalHandler);
+			adapter->Initialize();
+
+			try
+			{
+				// Act
+				adapter->GetVirtualFrameBufferSizeInKb();
+			}
+			catch (const NVAPIError& error)
+			{
+				// Assert
+				Assert::AreEqual(expectedMessage, error.m_message);
+				return;
+			}
+			FailTestForNotThrowing();
+		}
+
+		TEST_METHOD(GetVirtualFrameBuferSizeInKb_WhenApiNotInitialized_Throws)
+		{
+			// Arrange
+			RigForStatusMessage(m_fakeApiNotInitializedMessage);
+			auto adapter = std::make_unique<NVAPIAdapter>(m_fakePhysicalHandler);
+
+			try
+			{
+				// Act
+				adapter->GetVirtualFrameBufferSizeInKb();
+			}
+			catch (const NVAPIError& error)
+			{
+				// Assert
+				Assert::AreEqual(m_fakeApiNotInitializedMessage, error.m_message);
+				return;
+			}
+			FailTestForNotThrowing();
+		}
+
 	private:
 		MockRepository m_mocks;
 		NvPhysicalGpuHandle m_fakePhysicalHandler{ 0 };

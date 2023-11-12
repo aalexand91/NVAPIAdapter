@@ -69,7 +69,15 @@ namespace Adapter
 		/// </summary>
 		/// <param name="physicalHandler">NVAPI handler interfacing with the specific graphics card.</param>
 		/// <param name="bufferSize">Stores the physical frame buffer size value.</param>
-		/// <returns>The status of the NVAPI library upon attempting to get the physical frame rate.</returns>
+		/// <returns>The status of the NVAPI library upon attempting to get the physical frame buffer size.</returns>
 		ADAPTER_API NvAPI_Status GetPhysicalFrameBufferSize(const NvPhysicalGpuHandle physicalHandler, unsigned long* bufferSize);
+
+		/// <summary>
+		/// Determines the physical and virtual buffer size of the GPU in KB.
+		/// </summary>
+		/// <param name="physicalHandler">NVAPI handler interfacing with the specific graphics card.</param>
+		/// <param name="bufferSize">Stores the total buffer size of both the physical and virtual memory.</param>
+		/// <returns>The status of the NVAPI library upon attempting to get the virtual frame buffer size.</returns>
+		ADAPTER_API NvAPI_Status GetVirtualFrameBufferSize(const NvPhysicalGpuHandle physicalHandler, unsigned long* bufferSize);
 	}
 }
