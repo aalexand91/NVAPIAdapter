@@ -48,4 +48,9 @@ namespace Adapter
 	{
 		return NvAPI_GPU_GetVbiosVersionString(physicalHandler, biosVersion);
 	}
+
+	NvAPI_Status NVAPITunnel::GetPhysicalFrameBufferSize(const NvPhysicalGpuHandle physicalHandler, unsigned long* bufferSize)
+	{
+		return NvAPI_GPU_GetPhysicalFrameBufferSize(physicalHandler, bufferSize);
+	}
 }

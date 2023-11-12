@@ -63,5 +63,13 @@ namespace Adapter
 		/// <param name="biosVersion">Stores the VBIOS version.</param>
 		/// <returns>The status of the NVAPI library upon attempting to get the VBIOS version.</returns>
 		ADAPTER_API NvAPI_Status GetVBiosVersion(const NvPhysicalGpuHandle physicalHandler, char* biosVersion);
+
+		/// <summary>
+		/// Determines the physical frame buffer size (excluding any allocated system RAM) of the GPU in KB.
+		/// </summary>
+		/// <param name="physicalHandler">NVAPI handler interfacing with the specific graphics card.</param>
+		/// <param name="bufferSize">Stores the physical frame buffer size value.</param>
+		/// <returns>The status of the NVAPI library upon attempting to get the physical frame rate.</returns>
+		ADAPTER_API NvAPI_Status GetPhysicalFrameBufferSize(const NvPhysicalGpuHandle physicalHandler, unsigned long* bufferSize);
 	}
 }

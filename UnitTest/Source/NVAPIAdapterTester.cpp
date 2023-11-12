@@ -579,6 +579,73 @@ namespace AdapterUnitTest
 			FailTestForNotThrowing();
 		}
 
+		TEST_METHOD(GetPhysicalFrameBufferSizeInKb_OnSuccess_ReturnsIt)
+		{
+			// Arrange
+			RigForApiInitialized();
+			const unsigned long expected = 123456789ul;
+			m_mocks.OnCallFunc(NVAPITunnel::GetPhysicalFrameBufferSize)
+				.With(m_fakePhysicalHandler, _)
+				.Do([&](const NvPhysicalGpuHandle, unsigned long* bufferSize) -> NvAPI_Status 
+					{
+						*bufferSize = expected;
+						return NvAPI_Status::NVAPI_OK;
+					});
+			auto adapter = std::make_unique<NVAPIAdapter>(m_fakePhysicalHandler);
+			adapter->Initialize();
+
+			// Act
+			const auto actual = adapter->GetPhysicalFrameBufferSizeInKb();
+			
+			// Assert
+			Assert::AreEqual(expected, actual);
+		}
+
+		TEST_METHOD(GetPhysicalFrameBufferSizeInKb_OnFailure_Throws)
+		{
+			// Arrange
+			RigForApiInitialized();
+			m_mocks.OnCallFunc(NVAPITunnel::GetPhysicalFrameBufferSize).Return(NvAPI_Status::NVAPI_ERROR);
+			const std::string statusMessage = "Fake failed to get frame buffer size error.";
+			RigForStatusMessage(statusMessage);
+			const std::string expectedMessage = "Failed to get physical frame buffer size. " + statusMessage;
+			auto adapter = std::make_unique<NVAPIAdapter>(m_fakePhysicalHandler);
+			adapter->Initialize();
+
+			try
+			{
+				// Act
+				adapter->GetPhysicalFrameBufferSizeInKb();
+			}
+			catch (const NVAPIError& error)
+			{
+				// Assert
+				Assert::AreEqual(expectedMessage, error.m_message);
+				return;
+			}
+			FailTestForNotThrowing();
+		}
+
+		TEST_METHOD(GetPhysicalFrameBufferSizeInKb_WhenApiNotInitialized_Throws)
+		{
+			// Arrange
+			RigForStatusMessage(m_fakeApiNotInitializedMessage);
+			auto adapter = std::make_unique<NVAPIAdapter>(m_fakePhysicalHandler);
+
+			try
+			{
+				// Act
+				adapter->GetPhysicalFrameBufferSizeInKb();
+			}
+			catch (const NVAPIError& error)
+			{
+				// Assert
+				Assert::AreEqual(m_fakeApiNotInitializedMessage, error.m_message);
+				return;
+			}
+			FailTestForNotThrowing();
+		}
+
 	private:
 		MockRepository m_mocks;
 		NvPhysicalGpuHandle m_fakePhysicalHandler{ 0 };

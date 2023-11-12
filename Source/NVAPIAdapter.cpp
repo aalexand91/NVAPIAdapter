@@ -133,5 +133,18 @@ namespace Adapter
 		const std::string message = "Failed to get VBIOS version. " + NVAPIStatusInterpreter::GetStatusMessage(status);
 		throw NVAPIError(message);
 	}
+
+	unsigned long NVAPIAdapter::GetPhysicalFrameBufferSizeInKb()
+	{
+		AssertApiInitialized();
+		unsigned long bufferSize = 0ul;
+		const auto status = NVAPITunnel::GetPhysicalFrameBufferSize(m_physicalHandler, &bufferSize);
+		if (status == NvAPI_Status::NVAPI_OK)
+		{
+			return bufferSize;
+		}
+		const std::string message = "Failed to get physical frame buffer size. " + NVAPIStatusInterpreter::GetStatusMessage(status);
+		throw NVAPIError(message);
+	}
 }
 

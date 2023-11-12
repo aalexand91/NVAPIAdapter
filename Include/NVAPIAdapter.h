@@ -52,6 +52,9 @@ namespace Adapter
 		/// </returns>
 		ADAPTER_API std::string GetVbiosVersion();
 
+		/// <returns>The GPU physical frame buffer size (excluding any allocated to RAM) in KB.</returns>
+		ADAPTER_API unsigned long GetPhysicalFrameBufferSizeInKb();
+
 	private:
 		/// <summary>
 		/// The distinct GPU handler from the NVAPI library that handles interfacing with the specific graphics card.
