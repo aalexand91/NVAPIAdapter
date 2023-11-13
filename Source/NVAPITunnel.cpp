@@ -58,4 +58,15 @@ namespace Adapter
 	{
 		return NvAPI_GPU_GetVirtualFrameBufferSize(physicalHandler, bufferSize);
 	}
+
+	NvAPI_Status NVAPITunnel::GetGpuCoreCount(const NvPhysicalGpuHandle physicalHandler, unsigned long* coreCount)
+	{
+		return NvAPI_GPU_GetGpuCoreCount(physicalHandler, coreCount);
+	}
+
+	NvAPI_Status NVAPITunnel::GetThermalSettings(const NvPhysicalGpuHandle physicalHandler, const NV_THERMAL_TARGET targetSensor, NV_GPU_THERMAL_SETTINGS* thermalSettings)
+	{
+		const auto sensorIndex = static_cast<unsigned long>(targetSensor);
+		return NvAPI_GPU_GetThermalSettings(physicalHandler, sensorIndex, thermalSettings);
+	}
 }

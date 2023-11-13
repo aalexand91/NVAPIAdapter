@@ -58,6 +58,15 @@ namespace Adapter
 		/// <returns>The total frame buffer size of both the physical and virtual memory allocated in KB.</returns>
 		ADAPTER_API unsigned long GetVirtualFrameBufferSizeInKb();
 
+		/// <returns>
+		/// The total number of cores defined for the GPU. 
+		/// Returns zero for GPU architectures that don't define a core count.
+		/// </returns>
+		ADAPTER_API unsigned int GetGpuCoreCount();
+
+		/// <returns>The temperature of the GPU core in celsius.</returns>
+		ADAPTER_API int GetGpuCoreTemp();
+
 	private:
 		/// <summary>
 		/// The distinct GPU handler from the NVAPI library that handles interfacing with the specific graphics card.

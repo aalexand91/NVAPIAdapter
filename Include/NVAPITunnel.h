@@ -79,5 +79,22 @@ namespace Adapter
 		/// <param name="bufferSize">Stores the total buffer size of both the physical and virtual memory.</param>
 		/// <returns>The status of the NVAPI library upon attempting to get the virtual frame buffer size.</returns>
 		ADAPTER_API NvAPI_Status GetVirtualFrameBufferSize(const NvPhysicalGpuHandle physicalHandler, unsigned long* bufferSize);
+
+		/// <summary>
+		/// Determines the total number of defined for the GPU.
+		/// </summary>
+		/// <param name="physicalHandler">NVAPI handler interfacing with the specific graphics card.</param>
+		/// <param name="coreCount">Stores the total number of GPU cores.</param>
+		/// <returns>The status of the NVAPI library upon attempting to get the GPU core count.</returns>
+		ADAPTER_API NvAPI_Status GetGpuCoreCount(const NvPhysicalGpuHandle physicalHandler, unsigned long* coreCount);
+
+		/// <summary>
+		/// Determines the thermal settings of a particular GPU sensor device.
+		/// </summary>
+		/// <param name="physicalHandler">NVAPI handler interfacing with the specific graphics card.</param>
+		/// <param name="targetSensor">GPU sensor type to obtain the thermal settings of.</param>
+		/// <param name="thermalSettings">Stores thermal settings of the GPU sensor device.</param>
+		/// <returns>The status of the NVAPI library upon attempting to get the thermal settings of the GPU sensor.</returns>
+		ADAPTER_API NvAPI_Status GetThermalSettings(const NvPhysicalGpuHandle physicalHandler, const NV_THERMAL_TARGET targetSensor, NV_GPU_THERMAL_SETTINGS* thermalSettings);
 	}
 }

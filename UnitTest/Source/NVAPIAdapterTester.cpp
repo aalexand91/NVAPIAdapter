@@ -712,6 +712,140 @@ namespace AdapterUnitTest
 			FailTestForNotThrowing();
 		}
 
+		TEST_METHOD(GetGpuCoreCount_OnSuccess_ReturnsIt)
+		{
+			// Arrange
+			RigForApiInitialized();
+			const unsigned int expected = 12u;
+			m_mocks.OnCallFunc(NVAPITunnel::GetGpuCoreCount)
+				.With(m_fakePhysicalHandler, _)
+				.Do([&](const NvPhysicalGpuHandle, unsigned long* coreCount) -> NvAPI_Status
+					{
+						*coreCount = static_cast<unsigned long>(expected);
+						return NvAPI_Status::NVAPI_OK;
+					});
+			auto adapter = std::make_unique<NVAPIAdapter>(m_fakePhysicalHandler);
+			adapter->Initialize();
+
+			// Act
+			const auto actual = adapter->GetGpuCoreCount();
+
+			// Assert
+			Assert::AreEqual(expected, actual);
+		}
+
+		TEST_METHOD(GetGpuCoreCount_OnFailure_Throws)
+		{
+			// Arrange
+			RigForApiInitialized();
+			const std::string statusMessage = "Fake get GPU core count failure message.";
+			RigForStatusMessage(statusMessage);
+			m_mocks.OnCallFunc(NVAPITunnel::GetGpuCoreCount).Return(NvAPI_Status::NVAPI_ERROR);
+			const std::string expectedMessage = "Failed to get GPU core count. " + statusMessage;
+			auto adapter = std::make_unique<NVAPIAdapter>(m_fakePhysicalHandler);
+			adapter->Initialize();
+
+			try
+			{
+				// Act
+				adapter->GetGpuCoreCount();
+			}
+			catch (const NVAPIError& error)
+			{
+				// Assert
+				Assert::AreEqual(expectedMessage, error.m_message);
+				return;
+			}
+			FailTestForNotThrowing();
+		}
+
+		TEST_METHOD(GetGpuCoreCount_WhenApiNotInitialized_Throws)
+		{
+			// Arrange
+			RigForStatusMessage(m_fakeApiNotInitializedMessage);
+			auto adapter = std::make_unique<NVAPIAdapter>(m_fakePhysicalHandler);
+
+			try
+			{
+				// Act
+				adapter->GetGpuCoreCount();
+			}
+			catch (const NVAPIError& error)
+			{
+				// Assert
+				Assert::AreEqual(m_fakeApiNotInitializedMessage, error.m_message);
+				return;
+			}
+			FailTestForNotThrowing();
+		}
+
+		TEST_METHOD(GetGpuCoreTemp_OnSuccess_ReturnsIt)
+		{
+			// Arrange
+			RigForApiInitialized();
+			const int expected = 50;
+			m_mocks.OnCallFunc(NVAPITunnel::GetThermalSettings)
+				.With(m_fakePhysicalHandler, NV_THERMAL_TARGET::NVAPI_THERMAL_TARGET_GPU, _)
+				.Do([&](const NvPhysicalGpuHandle, const NV_THERMAL_TARGET, NV_GPU_THERMAL_SETTINGS* thermalSettings) -> NvAPI_Status
+					{
+						thermalSettings->sensor[0].currentTemp = expected;
+						return NvAPI_Status::NVAPI_OK;
+					});
+			auto adapter = std::make_unique<NVAPIAdapter>(m_fakePhysicalHandler);
+			adapter->Initialize();
+
+			// Act
+			const auto actual = adapter->GetGpuCoreTemp();
+
+			// Assert
+			Assert::AreEqual(expected, actual);
+		}
+
+		TEST_METHOD(GetGpuCoreTemp_OnFailure_Throws)
+		{
+			// Arrange
+			RigForApiInitialized();
+			const std::string statusMessage = "Fake failed to get GPU core temp message.";
+			RigForStatusMessage(statusMessage);
+			m_mocks.OnCallFunc(NVAPITunnel::GetThermalSettings).Return(NvAPI_Status::NVAPI_ERROR);
+			const std::string expectedMessage = "Failed to get GPU core temperature. " + statusMessage;
+			auto adapter = std::make_unique<NVAPIAdapter>(m_fakePhysicalHandler);
+			adapter->Initialize();
+
+			try
+			{
+				// Act
+				adapter->GetGpuCoreTemp();
+			}
+			catch (const NVAPIError& error)
+			{
+				// Assert
+				Assert::AreEqual(expectedMessage, error.m_message);
+				return;
+			}
+			FailTestForNotThrowing();
+		}
+
+		TEST_METHOD(GetGpuCoreTemp_WhenApiNotInitialized_Throws)
+		{
+			// Arrange
+			RigForStatusMessage(m_fakeApiNotInitializedMessage);
+			auto adapter = std::make_unique<NVAPIAdapter>(m_fakePhysicalHandler);
+
+			try
+			{
+				// Act
+				adapter->GetGpuCoreTemp();
+			}
+			catch (const NVAPIError& error)
+			{
+				// Assert
+				Assert::AreEqual(m_fakeApiNotInitializedMessage, error.m_message);
+				return;
+			}
+			FailTestForNotThrowing();
+		}
+
 	private:
 		MockRepository m_mocks;
 		NvPhysicalGpuHandle m_fakePhysicalHandler{ 0 };

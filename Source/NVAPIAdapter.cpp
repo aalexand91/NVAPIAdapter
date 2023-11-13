@@ -161,5 +161,31 @@ namespace Adapter
 		const bool includeVirtualSize = true;
 		return GetFrameBufferSize(includeVirtualSize);
 	}
+
+	unsigned int NVAPIAdapter::GetGpuCoreCount()
+	{
+		AssertApiInitialized();
+		unsigned long coreCount = 0ul;
+		const auto status = NVAPITunnel::GetGpuCoreCount(m_physicalHandler, &coreCount);
+		if (status == NvAPI_Status::NVAPI_OK)
+		{
+			return static_cast<unsigned int>(coreCount);
+		}
+		const std::string message = "Failed to get GPU core count. " + NVAPIStatusInterpreter::GetStatusMessage(status);
+		throw NVAPIError(message);
+	}
+
+	int NVAPIAdapter::GetGpuCoreTemp()
+	{
+		AssertApiInitialized();
+		NV_GPU_THERMAL_SETTINGS thermalSettings;
+		const auto status = NVAPITunnel::GetThermalSettings(m_physicalHandler, NV_THERMAL_TARGET::NVAPI_THERMAL_TARGET_GPU, &thermalSettings);
+		if (status == NvAPI_Status::NVAPI_OK)
+		{
+			return thermalSettings.sensor[0].currentTemp;
+		}
+		const std::string message = "Failed to get GPU core temperature. " + NVAPIStatusInterpreter::GetStatusMessage(status);
+		throw NVAPIError(message);
+	}
 }
 
