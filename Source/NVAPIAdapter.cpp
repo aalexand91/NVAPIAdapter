@@ -187,5 +187,18 @@ namespace Adapter
 		const std::string message = "Failed to get GPU core temperature. " + NVAPIStatusInterpreter::GetStatusMessage(status);
 		throw NVAPIError(message);
 	}
+
+	int NVAPIAdapter::GetGpuMemoryTemp()
+	{
+		AssertApiInitialized();
+		NV_GPU_THERMAL_SETTINGS thermalSettings;
+		const auto status = NVAPITunnel::GetThermalSettings(m_physicalHandler, NV_THERMAL_TARGET::NVAPI_THERMAL_TARGET_MEMORY, &thermalSettings);
+		if (status == NvAPI_Status::NVAPI_OK)
+		{
+			return thermalSettings.sensor[0].currentTemp;
+		}
+		const std::string message = "Failed to get GPU memory temperature. " + NVAPIStatusInterpreter::GetStatusMessage(status);
+		throw NVAPIError(message);
+	}
 }
 

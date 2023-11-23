@@ -24,9 +24,11 @@ namespace Adapter
 		NVAPIAdapter& operator = (const NVAPIAdapter&) = delete;
 		NVAPIAdapter& operator = (NVAPIAdapter&&) = delete;
 
+		// TODO: Move this to the handler that provides all GPUs in the system.
 		/// <summary>Initializes the NVAPI library.</summary>
 		ADAPTER_API void Initialize();
 
+		// TODO: Move this to the handler that provides all GPUs in the system.
 		/// <summary>Unloads the NVAPI library. Typically called when the API is no longer being used.</summary>
 		ADAPTER_API void Unload();
 
@@ -66,6 +68,9 @@ namespace Adapter
 
 		/// <returns>The temperature of the GPU core in celsius.</returns>
 		ADAPTER_API int GetGpuCoreTemp();
+		
+		/// <returns>The temperature of the GPU memory (VRAM) in celsius.</returns>
+		ADAPTER_API int GetGpuMemoryTemp();
 
 	private:
 		/// <summary>

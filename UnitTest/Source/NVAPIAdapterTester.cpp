@@ -846,6 +846,73 @@ namespace AdapterUnitTest
 			FailTestForNotThrowing();
 		}
 
+		TEST_METHOD(GetGpuMemoryTemp_OnSuccess_ReturnsIt)
+		{
+			// Arrange
+			RigForApiInitialized();
+			const int expected = 35;
+			m_mocks.OnCallFunc(NVAPITunnel::GetThermalSettings)
+				.With(m_fakePhysicalHandler, NV_THERMAL_TARGET::NVAPI_THERMAL_TARGET_MEMORY, _)
+				.Do([&](const NvPhysicalGpuHandle, const NV_THERMAL_TARGET, NV_GPU_THERMAL_SETTINGS* settings) -> NvAPI_Status 
+					{
+						settings->sensor[0].currentTemp = expected;
+						return NvAPI_Status::NVAPI_OK;
+					});
+			auto adapter = std::make_unique<NVAPIAdapter>(m_fakePhysicalHandler);
+			adapter->Initialize();
+
+			// Act
+			const auto actual = adapter->GetGpuMemoryTemp();
+
+			// Assert
+			Assert::AreEqual(expected, actual);
+		}
+
+		TEST_METHOD(GetGpuMemoryTemp_OnFailure_Throws)
+		{
+			// Arrange
+			RigForApiInitialized();
+			m_mocks.OnCallFunc(NVAPITunnel::GetThermalSettings).Return(NvAPI_Status::NVAPI_ERROR);
+			const std::string statusMessage = "Fake failed to get memory temp message.";
+			RigForStatusMessage(statusMessage);
+			const std::string expectedMessage = "Failed to get GPU memory temperature. " + statusMessage;
+			auto adapter = std::make_unique<NVAPIAdapter>(m_fakePhysicalHandler);
+			adapter->Initialize();
+
+			try
+			{
+				// Act
+				adapter->GetGpuMemoryTemp();
+			}
+			catch (const NVAPIError& error)
+			{
+				// Assert
+				Assert::AreEqual(expectedMessage, error.m_message);
+				return;
+			}
+			FailTestForNotThrowing();
+		}
+
+		TEST_METHOD(GetGpuMemoryTemp_WhenApiNotInitialized_Throws)
+		{
+			// Arrange
+			RigForStatusMessage(m_fakeApiNotInitializedMessage);
+			auto adapter = std::make_unique<NVAPIAdapter>(m_fakePhysicalHandler);
+
+			try
+			{
+				// Act
+				adapter->GetGpuMemoryTemp();
+			}
+			catch (const NVAPIError& error)
+			{
+				// Assert
+				Assert::AreEqual(m_fakeApiNotInitializedMessage, error.m_message);
+				return;
+			}
+			FailTestForNotThrowing();
+		}
+
 	private:
 		MockRepository m_mocks;
 		NvPhysicalGpuHandle m_fakePhysicalHandler{ 0 };
