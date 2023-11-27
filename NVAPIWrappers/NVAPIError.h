@@ -3,7 +3,7 @@
 #include <nvapi.h>
 #include <string>
 
-namespace Adapter
+namespace NVAPIWrappers
 {
 	/// <summary>
 	/// Represents a general error that has occurred with the NVAPI library but can be caught as an exception.

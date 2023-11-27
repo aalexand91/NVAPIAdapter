@@ -1,10 +1,10 @@
 #pragma once
 
-#include <Export.h>
+#include "Export.h"
 #include <nvapi.h>
 #include <string>
 
-namespace Adapter
+namespace NVAPIWrappers
 {
 	namespace NVAPIStatusInterpreter
 	{

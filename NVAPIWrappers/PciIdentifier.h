@@ -1,6 +1,6 @@
 #pragma once
 
-namespace Adapter
+namespace NVAPIWrappers
 {
 	/// <summary>Provides PCI identifiers associated with GPU.</summary>
 	struct PciIdentifier

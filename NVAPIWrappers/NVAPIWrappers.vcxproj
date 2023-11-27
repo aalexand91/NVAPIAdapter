@@ -24,7 +24,7 @@
     <ProjectGuid>{d28f7edd-d042-4ab6-a1e3-deac8847b6c5}</ProjectGuid>
     <RootNamespace>Adapter</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
-    <ProjectName>Adapter</ProjectName>
+    <ProjectName>NVAPIWrappers</ProjectName>
     <WindowsTargetPlatformMinVersion>7.0</WindowsTargetPlatformMinVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
@@ -44,7 +44,7 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup>
-    <IncludePath>Include;NVAPI\R535-Developer;$(IncludePath)</IncludePath>
+    <IncludePath>NVAPI\R535-Developer;$(IncludePath)</IncludePath>
     <OutDir>Output\bin\$(Configuration)_$(Platform)\</OutDir>
     <IntDir>$(Configuration)_$(Platform)\</IntDir>
   </PropertyGroup>
@@ -132,20 +132,19 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="NVAPI\R535-Developer\nvapi.h" />
-    <ClInclude Include="Include\Export.h" />
-    <ClInclude Include="Include\NVAPIAdapter.h" />
-    <ClInclude Include="Include\NVAPIError.h" />
-    <ClInclude Include="Include\NVAPIStatusInterpreter.h" />
-    <ClInclude Include="Include\NVAPITunnel.h" />
-    <ClInclude Include="Include\pch.h" />
-    <ClInclude Include="Include\PciIdentifier.h" />
+    <ClInclude Include="Export.h" />
+    <ClInclude Include="NVAPIError.h" />
+    <ClInclude Include="NVAPIStatusInterpreter.h" />
+    <ClInclude Include="NVAPITunnel.h" />
+    <ClInclude Include="NVAPIWrapper.h" />
+    <ClInclude Include="pch.h" />
+    <ClInclude Include="PciIdentifier.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Source\NVAPIAdapter.cpp" />
-    <ClCompile Include="Source\NVAPIStatusInterpreter.cpp" />
-    <ClCompile Include="Source\NVAPITunnel.cpp" />
-    <ClCompile Include="Source\pch.cpp" />
+    <ClCompile Include="NVAPIStatusInterpreter.cpp" />
+    <ClCompile Include="NVAPITunnel.cpp" />
+    <ClCompile Include="NVAPIWrapper.cpp" />
+    <ClCompile Include="pch.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

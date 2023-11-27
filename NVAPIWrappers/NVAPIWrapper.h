@@ -1,28 +1,29 @@
 #pragma once
 
-#include <Export.h>
+#include "Export.h"
 #include <nvapi.h>
-#include <PciIdentifier.h>
+#include "PciIdentifier.h"
+#include <string>
 
-namespace AdapterUnitTest 
+namespace NVAPIWrappers
 {
-	class NVAPIAdapterTester;
-}
-
-namespace Adapter
-{
-	class NVAPIAdapter
+	namespace UnitTest 
 	{
-		friend class AdapterUnitTest::NVAPIAdapterTester;
+		class NVAPIWrapperTester;
+	}
+
+	class NVAPIWrapper
+	{
+		friend class UnitTest::NVAPIWrapperTester;
 
 	public:
-		NVAPIAdapter(NvPhysicalGpuHandle physicalHander) : m_physicalHandler(physicalHander) {}
-		~NVAPIAdapter() = default;
+		NVAPIWrapper(NvPhysicalGpuHandle physicalHander) : m_physicalHandler(physicalHander) {}
+		~NVAPIWrapper() = default;
 
-		NVAPIAdapter(const NVAPIAdapter&) = delete;
-		NVAPIAdapter(NVAPIAdapter&&) = delete;
-		NVAPIAdapter& operator = (const NVAPIAdapter&) = delete;
-		NVAPIAdapter& operator = (NVAPIAdapter&&) = delete;
+		NVAPIWrapper(const NVAPIWrapper&) = delete;
+		NVAPIWrapper(NVAPIWrapper&&) = delete;
+		NVAPIWrapper& operator = (const NVAPIWrapper&) = delete;
+		NVAPIWrapper& operator = (NVAPIWrapper&&) = delete;
 
 		// TODO: Move this to the handler that provides all GPUs in the system.
 		/// <summary>Initializes the NVAPI library.</summary>

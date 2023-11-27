@@ -1,13 +1,13 @@
-#include <pch.h>
+#include "pch.h"
 
-#include <NVAPIAdapter.h>
-#include <NVAPIError.h>
-#include <NvApiStatusInterpreter.h>
-#include <NVAPITunnel.h>
+#include "NVAPIError.h"
+#include "NVAPIStatusInterpreter.h"
+#include "NVAPITunnel.h"
+#include "NVAPIWrapper.h"
 
-namespace Adapter
+namespace NVAPIWrappers
 {
-	void NVAPIAdapter::Initialize()
+	void NVAPIWrapper::Initialize()
 	{
 		if (m_apiInitialized)
 		{
@@ -23,7 +23,7 @@ namespace Adapter
 		throw NVAPIError(message);
 	}
 
-	void NVAPIAdapter::Unload() 
+	void NVAPIWrapper::Unload() 
 	{
 		if (m_apiInitialized) 
 		{
@@ -33,7 +33,7 @@ namespace Adapter
 		}
 	}
 
-	std::string NVAPIAdapter::GetName()
+	std::string NVAPIWrapper::GetName()
 	{
 		AssertApiInitialized();
 		char name[ms_asciiBufferSize] = "\0";
@@ -46,7 +46,7 @@ namespace Adapter
 		throw NVAPIError(message);
 	}
 
-	void NVAPIAdapter::AssertApiInitialized()
+	void NVAPIWrapper::AssertApiInitialized()
 	{
 		if (m_apiInitialized)
 		{
@@ -55,7 +55,7 @@ namespace Adapter
 		throw NVAPIError(NVAPIStatusInterpreter::GetStatusMessage(NvAPI_Status::NVAPI_API_NOT_INITIALIZED));
 	}
 
-	std::string NVAPIAdapter::GetGpuType() 
+	std::string NVAPIWrapper::GetGpuType() 
 	{
 		AssertApiInitialized();
 		NV_GPU_TYPE gpuType = NV_GPU_TYPE::NV_SYSTEM_TYPE_GPU_UNKNOWN;
@@ -68,7 +68,7 @@ namespace Adapter
 		return gpuType == NV_GPU_TYPE::NV_SYSTEM_TYPE_DGPU ? "Discrete" : "Integrated";
 	}
 
-	PciIdentifier NVAPIAdapter::GetPciIdentifiers()
+	PciIdentifier NVAPIWrapper::GetPciIdentifiers()
 	{
 		AssertApiInitialized();
 		PciIdentifier identifier;
@@ -81,7 +81,7 @@ namespace Adapter
 		throw NVAPIError(message);
 	}
 
-	std::string NVAPIAdapter::GetBusType()
+	std::string NVAPIWrapper::GetBusType()
 	{
 		AssertApiInitialized();
 		NV_GPU_BUS_TYPE busType = NV_GPU_BUS_TYPE::NVAPI_GPU_BUS_TYPE_UNDEFINED;
@@ -94,7 +94,7 @@ namespace Adapter
 		throw NVAPIError(message);
 	}
 
-	std::string NVAPIAdapter::GetGpuBusType(const NV_GPU_BUS_TYPE busType)
+	std::string NVAPIWrapper::GetGpuBusType(const NV_GPU_BUS_TYPE busType)
 	{
 		static const std::unordered_map<NV_GPU_BUS_TYPE, std::string> map
 		{
@@ -108,7 +108,7 @@ namespace Adapter
 		return iterator == map.end() ? "Unknown" : iterator->second;
 	}
 
-	unsigned long NVAPIAdapter::GetBusId() 
+	unsigned long NVAPIWrapper::GetBusId() 
 	{
 		AssertApiInitialized();
 		unsigned long id = 0ul;
@@ -121,7 +121,7 @@ namespace Adapter
 		throw NVAPIError(message);
 	}
 
-	std::string NVAPIAdapter::GetVbiosVersion()
+	std::string NVAPIWrapper::GetVbiosVersion()
 	{
 		AssertApiInitialized();
 		char biosVersion[ms_asciiBufferSize] = "\0";
@@ -134,13 +134,13 @@ namespace Adapter
 		throw NVAPIError(message);
 	}
 
-	unsigned long NVAPIAdapter::GetPhysicalFrameBufferSizeInKb()
+	unsigned long NVAPIWrapper::GetPhysicalFrameBufferSizeInKb()
 	{
 		const bool includeVirtualSize = false;
 		return GetFrameBufferSize(includeVirtualSize);
 	}
 
-	unsigned long NVAPIAdapter::GetFrameBufferSize(const bool includeVirtualSize)
+	unsigned long NVAPIWrapper::GetFrameBufferSize(const bool includeVirtualSize)
 	{
 		AssertApiInitialized();
 		unsigned long bufferSize = 0ul;
@@ -156,13 +156,13 @@ namespace Adapter
 		throw NVAPIError(message);
 	}
 
-	unsigned long NVAPIAdapter::GetVirtualFrameBufferSizeInKb()
+	unsigned long NVAPIWrapper::GetVirtualFrameBufferSizeInKb()
 	{
 		const bool includeVirtualSize = true;
 		return GetFrameBufferSize(includeVirtualSize);
 	}
 
-	unsigned int NVAPIAdapter::GetGpuCoreCount()
+	unsigned int NVAPIWrapper::GetGpuCoreCount()
 	{
 		AssertApiInitialized();
 		unsigned long coreCount = 0ul;
@@ -175,7 +175,7 @@ namespace Adapter
 		throw NVAPIError(message);
 	}
 
-	int NVAPIAdapter::GetGpuCoreTemp()
+	int NVAPIWrapper::GetGpuCoreTemp()
 	{
 		AssertApiInitialized();
 		NV_GPU_THERMAL_SETTINGS thermalSettings;
@@ -188,7 +188,7 @@ namespace Adapter
 		throw NVAPIError(message);
 	}
 
-	int NVAPIAdapter::GetGpuMemoryTemp()
+	int NVAPIWrapper::GetGpuMemoryTemp()
 	{
 		AssertApiInitialized();
 		NV_GPU_THERMAL_SETTINGS thermalSettings;

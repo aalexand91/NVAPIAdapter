@@ -1,9 +1,9 @@
-#include <pch.h>
+#include "pch.h"
 
-#include <NVAPIStatusInterpreter.h>
-#include <NVAPITunnel.h>
+#include "NVAPIStatusInterpreter.h"
+#include "NVAPITunnel.h"
 
-namespace Adapter
+namespace NVAPIWrappers
 {
 	const std::string NVAPIStatusInterpreter::GetStatusMessage(const NvAPI_Status status) 
 	{

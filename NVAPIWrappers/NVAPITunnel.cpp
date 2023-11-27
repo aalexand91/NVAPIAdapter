@@ -1,8 +1,8 @@
-#include <pch.h>
+#include "pch.h"
 
-#include <NVAPITunnel.h>
+#include "NVAPITunnel.h"
 
-namespace Adapter
+namespace NVAPIWrappers
 {
 	NvAPI_Status NVAPITunnel::Initialize()
 	{
