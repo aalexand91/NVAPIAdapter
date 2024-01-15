@@ -13,4 +13,19 @@ namespace NVAPIHooks
 	{
 		return NvAPI_GPU_GetFullName(gpuHandle, buffer);
 	}
+
+	NvAPI_Status InitializeApi()
+	{
+		return NvAPI_Initialize();
+	}
+
+	NvAPI_Status UnloadApi()
+	{
+		return NvAPI_Unload();
+	}
+
+	NvAPI_Status GetPhysicalGpuHandles(std::unique_ptr<NvPhysicalGpuHandle>& physicalGpuHandles, unsigned long* numberOfGpus)
+	{
+		return NvAPI_EnumPhysicalGPUs(physicalGpuHandles.get(), numberOfGpus);
+	}
 }

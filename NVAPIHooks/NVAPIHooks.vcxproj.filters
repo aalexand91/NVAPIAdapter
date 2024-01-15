@@ -7,6 +7,7 @@
     <ClInclude Include="ApiExport.h" />
     <ClInclude Include="StatusInterpreter.h" />
     <ClInclude Include="ApiError.h" />
+    <ClInclude Include="PhysicalGpuProvider.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ApiHooks.cpp" />
@@ -14,5 +15,6 @@
     <ClCompile Include="PhysicalGpu.cpp" />
     <ClCompile Include="StatusInterpreter.cpp" />
     <ClCompile Include="ApiError.cpp" />
+    <ClCompile Include="PhysicalGpuProvider.cpp" />
   </ItemGroup>
 </Project>

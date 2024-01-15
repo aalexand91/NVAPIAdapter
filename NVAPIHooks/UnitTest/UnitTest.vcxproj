@@ -183,6 +183,7 @@
   <ItemGroup>
     <ClCompile Include="ApiErrorTester.cpp" />
     <ClCompile Include="pch.cpp" />
+    <ClCompile Include="PhysicalGpuProviderTester.cpp" />
     <ClCompile Include="PhysicalGpuTester.cpp" />
     <ClCompile Include="StatusInterpreterTester.cpp" />
   </ItemGroup>

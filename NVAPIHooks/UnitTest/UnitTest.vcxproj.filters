@@ -8,5 +8,6 @@
     <ClCompile Include="StatusInterpreterTester.cpp" />
     <ClCompile Include="ApiErrorTester.cpp" />
     <ClCompile Include="PhysicalGpuTester.cpp" />
+    <ClCompile Include="PhysicalGpuProviderTester.cpp" />
   </ItemGroup>
 </Project>

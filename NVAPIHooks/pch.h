@@ -12,6 +12,7 @@
 #include <exception>
 #include <Windows.h>	// Must be before NVAPI library.
 #include <nvapi.h>
+#include <stdexcept>
 #include <string>
 
 #endif

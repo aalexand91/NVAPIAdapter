@@ -176,6 +176,7 @@
     <ClInclude Include="ApiHooks.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="PhysicalGpu.h" />
+    <ClInclude Include="PhysicalGpuProvider.h" />
     <ClInclude Include="StatusInterpreter.h" />
   </ItemGroup>
   <ItemGroup>
@@ -183,6 +184,7 @@
     <ClCompile Include="ApiHooks.cpp" />
     <ClCompile Include="pch.cpp" />
     <ClCompile Include="PhysicalGpu.cpp" />
+    <ClCompile Include="PhysicalGpuProvider.cpp" />
     <ClCompile Include="StatusInterpreter.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

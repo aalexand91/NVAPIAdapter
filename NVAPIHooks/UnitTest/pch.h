@@ -12,5 +12,6 @@
 #include <nvapi.h>
 #include <memory>
 #include <string>
+#include <typeinfo>
 
 #endif
