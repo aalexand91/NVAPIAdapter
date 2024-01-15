@@ -7,6 +7,11 @@
 
 namespace NVAPIHooks
 {
+	std::shared_ptr<IPhysicalGpu> PhysicalGpu::CreateInstance(NvPhysicalGpuHandle physicalGpuHandle)
+	{
+		return std::make_shared<PhysicalGpu>(physicalGpuHandle);
+	}
+
 	std::string PhysicalGpu::GetName()
 	{
 		char name[ms_asciiStringBufferSize] = "\0";

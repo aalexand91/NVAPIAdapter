@@ -15,6 +15,15 @@ namespace NVAPIHooks
 		TEST_CLASS(PhysicalGpuTester)
 		{
 		public:
+			TEST_METHOD(CreateInstance_GivenGpuHandle_ReturnsExpectedType)
+			{
+				// Act
+				auto instance = dynamic_cast<IPhysicalGpu*>(PhysicalGpu::CreateInstance(m_fakePhysicalGpuHandle).get());
+
+				// Assert
+				Assert::IsNotNull(instance);
+			}
+
 			TEST_METHOD(GetName_OnSuccess_ReturnsIt)
 			{
 				// Arrange
