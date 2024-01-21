@@ -14,24 +14,12 @@
     <ClInclude Include="Include\pch.h">
       <Filter>Include</Filter>
     </ClInclude>
-    <ClInclude Include="Include\ApiExport.h">
-      <Filter>Include</Filter>
-    </ClInclude>
-    <ClInclude Include="Include\ApiTunnel.h">
-      <Filter>Include</Filter>
-    </ClInclude>
-    <ClInclude Include="Include\StatusInterpreter.h">
-      <Filter>Include</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\pch.cpp">
       <Filter>Source</Filter>
     </ClCompile>
-    <ClCompile Include="Source\ApiTunnel.cpp">
-      <Filter>Source</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\StatusInterpreter.cpp">
+    <ClCompile Include="Source\StatusInterpreterTester.cpp">
       <Filter>Source</Filter>
     </ClCompile>
   </ItemGroup>

@@ -1,6 +1,6 @@
 #include "pch.h"
 
-#include <ApiHooks.h>
+#include <ApiTunnel.h>
 #include "CppUnitTest.h"
 #include <hippomocks.h>
 #include <StatusInterpreter.h>
@@ -19,7 +19,7 @@ namespace NVAPIHooks
 				// Arrange
 				const std::string expected = "Fake API not initialized message.";
 				MockRepository mocks;
-				mocks.OnCallFunc(NVAPIHooks::GetErrorMessage).With(m_fakeStatus, _)
+				mocks.OnCallFunc(ApiTunnel::GetErrorMessage).With(m_fakeStatus, _)
 					.Do([&](const NvAPI_Status, char* message) -> NvAPI_Status
 						{
 							const unsigned bufferSize = 256u;	// Set to the highest number of ASCII characters to ensure adequate buffer size.
@@ -39,7 +39,7 @@ namespace NVAPIHooks
 				// Arrange
 				const std::string expected = "ERROR: Failed to get API error message for status of " + std::to_string(static_cast<unsigned>(m_fakeStatus));
 				MockRepository mocks;
-				mocks.OnCallFunc(NVAPIHooks::GetErrorMessage).With(m_fakeStatus, _).Return(NvAPI_Status::NVAPI_ERROR);
+				mocks.OnCallFunc(ApiTunnel::GetErrorMessage).With(m_fakeStatus, _).Return(NvAPI_Status::NVAPI_ERROR);
 
 				// Act
 				const auto actual = StatusInterpreter::GetErrorMessage(m_fakeStatus);

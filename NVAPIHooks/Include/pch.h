@@ -1,4 +1,3 @@
-// pch.h: This is a precompiled header file.
 // Files listed below are compiled only once, improving build performance for future builds.
 // This also affects IntelliSense performance, including code completion and many code browsing features.
 // However, files listed here are ALL re-compiled if any one of them is updated between builds.
@@ -7,12 +6,10 @@
 #ifndef PCH_H
 #define PCH_H
 
-// Add headers that you want to pre-compile here.
+// add headers that you want to pre-compile here
 
-#include <exception>
-#include <Windows.h>	// Must be before NVAPI library.
+#define WIN32_LEAN_AND_MEAN  // Exclude rarely-used stuff from Windows headers
+#include <windows.h>
 #include <nvapi.h>
-#include <stdexcept>
-#include <string>
 
 #endif
