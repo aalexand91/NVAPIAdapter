@@ -23,6 +23,12 @@
     <ClInclude Include="Include\StatusInterpreter.h">
       <Filter>Include</Filter>
     </ClInclude>
+    <ClInclude Include="Include\ApiError.h">
+      <Filter>Include</Filter>
+    </ClInclude>
+    <ClInclude Include="Include\PhysicalGpu.h">
+      <Filter>Include</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\pch.cpp">
@@ -32,6 +38,12 @@
       <Filter>Source</Filter>
     </ClCompile>
     <ClCompile Include="Source\StatusInterpreter.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\ApiError.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\PhysicalGpu.cpp">
       <Filter>Source</Filter>
     </ClCompile>
   </ItemGroup>

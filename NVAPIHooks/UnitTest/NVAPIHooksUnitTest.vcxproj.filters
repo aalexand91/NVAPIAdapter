@@ -22,5 +22,11 @@
     <ClCompile Include="Source\StatusInterpreterTester.cpp">
       <Filter>Source</Filter>
     </ClCompile>
+    <ClCompile Include="Source\ApiErrorTester.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\PhysicalGpuTester.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

@@ -22,7 +22,9 @@
     <ClInclude Include="Include\pch.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Source\ApiErrorTester.cpp" />
     <ClCompile Include="Source\pch.cpp" />
+    <ClCompile Include="Source\PhysicalGpuTester.cpp" />
     <ClCompile Include="Source\StatusInterpreterTester.cpp" />
   </ItemGroup>
   <ItemGroup>
