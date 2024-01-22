@@ -22,6 +22,7 @@
     <ClInclude Include="Include\ApiError.h" />
     <ClInclude Include="Include\ApiExport.h" />
     <ClInclude Include="Include\ApiTunnel.h" />
+    <ClInclude Include="Include\GeneralApi.h" />
     <ClInclude Include="Include\pch.h" />
     <ClInclude Include="Include\PhysicalGpu.h" />
     <ClInclude Include="Include\StatusInterpreter.h" />
@@ -29,6 +30,7 @@
   <ItemGroup>
     <ClCompile Include="Source\ApiError.cpp" />
     <ClCompile Include="Source\ApiTunnel.cpp" />
+    <ClCompile Include="Source\GeneralApi.cpp" />
     <ClCompile Include="Source\pch.cpp" />
     <ClCompile Include="Source\PhysicalGpu.cpp" />
     <ClCompile Include="Source\StatusInterpreter.cpp" />

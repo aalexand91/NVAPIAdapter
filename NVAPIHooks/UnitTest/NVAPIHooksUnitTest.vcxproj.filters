@@ -28,5 +28,8 @@
     <ClCompile Include="Source\PhysicalGpuTester.cpp">
       <Filter>Source</Filter>
     </ClCompile>
+    <ClCompile Include="Source\GeneralApiTester.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>
