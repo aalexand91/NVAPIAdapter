@@ -10,7 +10,7 @@ namespace NVAPIAdapter
 		System::String^ GetName();
 	};
 
-	public ref class NvidiaGpu : INvidiaGpu
+	public ref class NvidiaGpu sealed : INvidiaGpu
 	{
 	public:
 		NvidiaGpu(IPhysicalGpu^ physicalGpu) : m_physicalGpu(physicalGpu) {}

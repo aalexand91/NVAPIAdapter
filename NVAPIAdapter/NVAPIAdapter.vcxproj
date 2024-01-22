@@ -157,6 +157,7 @@
     <ClInclude Include="Include\PhysicalGpuAdapter.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Source\AssemblyInfo.cpp" />
     <ClCompile Include="Source\NvidiaGpu.cpp" />
     <ClCompile Include="Source\pch.cpp" />
     <ClCompile Include="Source\PhysicalGpuAdapter.cpp" />

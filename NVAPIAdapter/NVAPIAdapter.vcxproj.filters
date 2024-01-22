@@ -31,5 +31,8 @@
     <ClCompile Include="Source\NvidiaGpu.cpp">
       <Filter>Source</Filter>
     </ClCompile>
+    <ClCompile Include="Source\AssemblyInfo.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>
