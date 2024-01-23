@@ -25,6 +25,7 @@
     <ClInclude Include="Include\GeneralApi.h" />
     <ClInclude Include="Include\pch.h" />
     <ClInclude Include="Include\PhysicalGpu.h" />
+    <ClInclude Include="Include\PhysicalGpuProvider.h" />
     <ClInclude Include="Include\StatusInterpreter.h" />
   </ItemGroup>
   <ItemGroup>
@@ -33,6 +34,7 @@
     <ClCompile Include="Source\GeneralApi.cpp" />
     <ClCompile Include="Source\pch.cpp" />
     <ClCompile Include="Source\PhysicalGpu.cpp" />
+    <ClCompile Include="Source\PhysicalGpuProvider.cpp" />
     <ClCompile Include="Source\StatusInterpreter.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">

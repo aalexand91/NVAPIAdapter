@@ -12,4 +12,7 @@
 #include <windows.h>
 #include <nvapi.h>
 
+#include <stdexcept>
+#include <vector>
+
 #endif

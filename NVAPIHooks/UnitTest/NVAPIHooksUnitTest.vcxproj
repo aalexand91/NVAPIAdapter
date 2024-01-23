@@ -25,6 +25,7 @@
     <ClCompile Include="Source\ApiErrorTester.cpp" />
     <ClCompile Include="Source\GeneralApiTester.cpp" />
     <ClCompile Include="Source\pch.cpp" />
+    <ClCompile Include="Source\PhysicalGpuProviderTester.cpp" />
     <ClCompile Include="Source\PhysicalGpuTester.cpp" />
     <ClCompile Include="Source\StatusInterpreterTester.cpp" />
   </ItemGroup>

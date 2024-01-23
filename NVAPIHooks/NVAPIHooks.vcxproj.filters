@@ -32,6 +32,9 @@
     <ClInclude Include="Include\GeneralApi.h">
       <Filter>Include</Filter>
     </ClInclude>
+    <ClInclude Include="Include\PhysicalGpuProvider.h">
+      <Filter>Include</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\pch.cpp">
@@ -50,6 +53,9 @@
       <Filter>Source</Filter>
     </ClCompile>
     <ClCompile Include="Source\GeneralApi.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\PhysicalGpuProvider.cpp">
       <Filter>Source</Filter>
     </ClCompile>
   </ItemGroup>
