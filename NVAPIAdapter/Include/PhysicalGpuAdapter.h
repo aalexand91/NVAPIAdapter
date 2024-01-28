@@ -4,15 +4,17 @@
 
 namespace NVAPIAdapter
 {
-	/// <summary>Test adapter for the native PhysicalGpu class that can be mocked by unit tests.</summary>
+	/// <summary>Adapter for the native PhysicalGpu class that can be faked by unit tests.</summary>
 	interface class IPhysicalGpuAdapter
 	{
 	public:
 		/// <returns>The full name of the GPU.</returns>
 		System::String^ GetName();
+
+		/// <returns>The type of system the GPU is installed in.</returns>
+		System::String^ GetSystemType();
 	};
 
-	/// <summary>.NET adapter for the native PhysicalGpu class.</summary>
 	ref class RealPhysicalGpu : IPhysicalGpuAdapter
 	{
 	public:
@@ -21,6 +23,7 @@ namespace NVAPIAdapter
 		~RealPhysicalGpu();
 
 		virtual System::String^ GetName();
+		virtual System::String^ GetSystemType();
 
 	private:
 		NVAPIHooks::IPhysicalGpu* m_physicalGpu{ nullptr };

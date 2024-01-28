@@ -34,5 +34,35 @@ namespace NVAPIAdapter.UnitTest
             // Assert
             Assert.AreEqual(expected, actual);
         }
+
+        [DataTestMethod]
+        [DataRow(GpuSystemType.Laptop)]
+        [DataRow(GpuSystemType.Desktop)]
+        public void GetSystemType_GivenValidSystemType_ReturnsIt(GpuSystemType expected)
+        {
+            // Arrange
+            myFakePhysicalGpu.GetSystemType().Returns(expected.ToString());
+            var gpu = CreateNvidiaGpu();
+
+            // Act
+            var actual = gpu.GetSystemType();
+
+            // Assert
+            Assert.AreEqual(expected, actual);
+        }
+
+        [TestMethod]
+        public void GetSystemType_GivenUnknownSystemType_ReturnsUnknown()
+        {
+            // Arrange
+            myFakePhysicalGpu.GetSystemType().Returns("FakeSystemType");
+            var gpu = CreateNvidiaGpu();
+
+            // Act
+            var result = gpu.GetSystemType();
+
+            // Assert
+            Assert.AreEqual(GpuSystemType.Unknown, result);
+        }
     }
 }
