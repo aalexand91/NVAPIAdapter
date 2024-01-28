@@ -153,6 +153,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Include\GpuSystemType.h" />
+    <ClInclude Include="Include\GpuType.h" />
     <ClInclude Include="Include\NvidiaGpu.h" />
     <ClInclude Include="Include\NvidiaGpuProvider.h" />
     <ClInclude Include="Include\pch.h" />

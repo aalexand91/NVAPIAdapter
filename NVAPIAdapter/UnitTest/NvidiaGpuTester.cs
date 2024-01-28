@@ -38,7 +38,7 @@ namespace NVAPIAdapter.UnitTest
         [DataTestMethod]
         [DataRow(GpuSystemType.Laptop)]
         [DataRow(GpuSystemType.Desktop)]
-        public void GetSystemType_GivenValidSystemType_ReturnsIt(GpuSystemType expected)
+        public void GetSystemType_GivenKnownType_ReturnsIt(GpuSystemType expected)
         {
             // Arrange
             myFakePhysicalGpu.GetSystemType().Returns(expected.ToString());
@@ -52,7 +52,7 @@ namespace NVAPIAdapter.UnitTest
         }
 
         [TestMethod]
-        public void GetSystemType_GivenUnknownSystemType_ReturnsUnknown()
+        public void GetSystemType_GivenUnknownType_ReturnsUnknown()
         {
             // Arrange
             myFakePhysicalGpu.GetSystemType().Returns("FakeSystemType");
@@ -63,6 +63,36 @@ namespace NVAPIAdapter.UnitTest
 
             // Assert
             Assert.AreEqual(GpuSystemType.Unknown, result);
+        }
+
+        [DataTestMethod]
+        [DataRow(GpuType.Integrated)]
+        [DataRow(GpuType.Discrete)]
+        public void GetGpuType_GivenKnownType_ReturnsIt(GpuType expected)
+        {
+            // Arrange
+            myFakePhysicalGpu.GetGpuType().Returns(expected.ToString());
+            var gpu = CreateNvidiaGpu();
+
+            // Act
+            var actual = gpu.GetGpuType();
+
+            // Assert
+            Assert.AreEqual(expected, actual);
+        }
+
+        [TestMethod]
+        public void GetGpuType_GivenUnknownType_ReturnsUnknown()
+        {
+            // Arrange
+            myFakePhysicalGpu.GetGpuType().Returns("FakeGpuType");
+            var gpu = CreateNvidiaGpu();
+
+            // Act
+            var result = gpu.GetGpuType();
+
+            // Assert
+            Assert.AreEqual(GpuType.Unknown, result);
         }
     }
 }

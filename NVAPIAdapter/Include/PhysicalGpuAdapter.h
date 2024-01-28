@@ -13,6 +13,9 @@ namespace NVAPIAdapter
 
 		/// <returns>The type of system the GPU is installed in.</returns>
 		System::String^ GetSystemType();
+
+		/// <returns>The type of GPU (as integrated, discrete, or unknown.</returns>
+		System::String^ GetGpuType();
 	};
 
 	ref class RealPhysicalGpu : IPhysicalGpuAdapter
@@ -24,6 +27,7 @@ namespace NVAPIAdapter
 
 		virtual System::String^ GetName();
 		virtual System::String^ GetSystemType();
+		virtual System::String^ GetGpuType();
 
 	private:
 		NVAPIHooks::IPhysicalGpu* m_physicalGpu{ nullptr };

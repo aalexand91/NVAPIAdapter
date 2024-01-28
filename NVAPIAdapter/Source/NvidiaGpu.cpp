@@ -14,4 +14,11 @@ namespace NVAPIAdapter
 		if (Enum::TryParse(m_physicalGpu->GetSystemType(), systemType)) return systemType;
 		return GpuSystemType::Unknown;
 	}
+
+	GpuType NvidiaGpu::GetGpuType()
+	{
+		GpuType gpuType;
+		if (Enum::TryParse(m_physicalGpu->GetGpuType(), gpuType)) return gpuType;
+		return GpuType::Unknown;
+	}
 }

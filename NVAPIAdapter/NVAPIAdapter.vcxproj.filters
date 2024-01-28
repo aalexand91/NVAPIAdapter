@@ -29,6 +29,9 @@
     <ClInclude Include="Include\GpuSystemType.h">
       <Filter>Include</Filter>
     </ClInclude>
+    <ClInclude Include="Include\GpuType.h">
+      <Filter>Include</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\pch.cpp">

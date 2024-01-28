@@ -22,4 +22,9 @@ namespace NVAPIAdapter
 	{
 		return gcnew String(m_physicalGpu->GetSystemType().c_str());
 	}
+
+	String^ RealPhysicalGpu::GetGpuType()
+	{
+		return gcnew String(m_physicalGpu->GetGpuType().c_str());
+	}
 }

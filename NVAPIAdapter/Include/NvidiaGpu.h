@@ -1,6 +1,7 @@
 #pragma once
 
 #include "GpuSystemType.h"
+#include "GpuType.h"
 #include "PhysicalGpuAdapter.h"
 
 namespace NVAPIAdapter
@@ -14,6 +15,9 @@ namespace NVAPIAdapter
 
 		/// <returns>The type of system the GPU is installed in.</returns>
 		GpuSystemType GetSystemType();
+
+		/// <returns>The type of GPU (as integrated, discrete, or unknown).</returns>
+		GpuType GetGpuType();
 	};
 
 	public ref class NvidiaGpu sealed : INvidiaGpu
@@ -23,6 +27,7 @@ namespace NVAPIAdapter
 
 		virtual System::String^ GetName();
 		virtual GpuSystemType GetSystemType();
+		virtual GpuType GetGpuType();
 
 	internal:
 		NvidiaGpu(IPhysicalGpuAdapter^ physicalGpu) : m_physicalGpu(physicalGpu) {}
