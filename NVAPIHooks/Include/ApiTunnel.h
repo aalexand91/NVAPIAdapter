@@ -43,5 +43,13 @@ namespace NVAPIHooks
 		/// <param name="systemType">Caches the system type detected.</param>
 		/// <returns>The status of the API upon determining the system type.</returns>
 		HOOKS_API NvAPI_Status GetSystemType(NvPhysicalGpuHandle gpuHandle, NV_SYSTEM_TYPE* systemType);
+
+		/// <summary>
+		/// Determines if the GPU is an intergrated or discrete type.
+		/// </summary>
+		/// <param name="gpuHandle">API handler interfacing with the physical GPU.</param>
+		/// <param name="gpuType">Caches the GPU type.</param>
+		/// <returns>The status of the API upon determining the system type.</returns>
+		HOOKS_API NvAPI_Status GetGpuType(NvPhysicalGpuHandle gpuHandle, NV_GPU_TYPE* gpuType);
 	}
 }

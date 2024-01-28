@@ -31,6 +31,9 @@ namespace NVAPIHooks
 
 		/// <returns>The type of system the GPU is installed in.</returns>
 		virtual std::string GetSystemType() = 0;
+
+		/// <returns>The type of GPU (integrated, discrete, or unknown).</returns>
+		virtual std::string GetGpuType() = 0;
 	};
 
 	class PhysicalGpu : public IPhysicalGpu
@@ -45,6 +48,7 @@ namespace NVAPIHooks
 
 		HOOKS_API std::string GetName() override;
 		HOOKS_API std::string GetSystemType() override;
+		HOOKS_API std::string GetGpuType() override;
 
 	private:
 		static const unsigned ms_asciiStringBufferSize{ 256u };

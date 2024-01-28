@@ -122,6 +122,76 @@ namespace NVAPIHooks
 				Assert::ExpectException<ApiError>(act);
 			}
 
+			TEST_METHOD(GetGpuType_GivenIntegratedType_ReturnsIt)
+			{
+				// Arrange
+				m_mocks.OnCallFunc(ApiTunnel::GetGpuType)
+					.Do([&](NvPhysicalGpuHandle, NV_GPU_TYPE* gpuType) -> NvAPI_Status
+						{
+							*gpuType = NV_GPU_TYPE::NV_SYSTEM_TYPE_IGPU;
+							return NvAPI_Status::NVAPI_OK;
+						});
+				const std::string expected = "Integrated";
+				auto provider = std::make_unique<PhysicalGpu>(m_fakePhysicalGpuHandle);
+
+				// Act
+				const std::string actual = provider->GetGpuType();
+
+				// Assert
+				Assert::AreEqual(expected, actual);
+			}
+
+			TEST_METHOD(GetGpuType_GivenDiscreteType_ReturnsIt)
+			{
+				// Arrange
+				m_mocks.OnCallFunc(ApiTunnel::GetGpuType)
+					.Do([&](NvPhysicalGpuHandle, NV_GPU_TYPE* gpuType) -> NvAPI_Status
+						{
+							*gpuType = NV_GPU_TYPE::NV_SYSTEM_TYPE_DGPU;
+							return NvAPI_Status::NVAPI_OK;
+						});
+				const std::string expected = "Discrete";
+				auto provider = std::make_unique<PhysicalGpu>(m_fakePhysicalGpuHandle);
+
+				// Act
+				const std::string actual = provider->GetGpuType();
+
+				// Assert
+				Assert::AreEqual(expected, actual);
+			}
+
+			TEST_METHOD(GetGpuType_GivenUnknownType_ReturnsUnknown)
+			{
+				// Arrange
+				m_mocks.OnCallFunc(ApiTunnel::GetGpuType)
+					.Do([&](NvPhysicalGpuHandle, NV_GPU_TYPE* gpuType) -> NvAPI_Status
+						{
+							*gpuType = NV_GPU_TYPE::NV_SYSTEM_TYPE_GPU_UNKNOWN;
+							return NvAPI_Status::NVAPI_OK;
+						});
+				const std::string expected = "Unknown";
+				auto provider = std::make_unique<PhysicalGpu>(m_fakePhysicalGpuHandle);
+
+				// Act
+				const std::string actual = provider->GetGpuType();
+
+				// Assert
+				Assert::AreEqual(expected, actual);
+			}
+
+			TEST_METHOD(GetGpuType_WhenDetectingTypeFails_Throws)
+			{
+				// Arrange
+				m_mocks.OnCallFunc(ApiTunnel::GetGpuType).Return(NvAPI_Status::NVAPI_ERROR);
+				auto provider = std::make_unique<PhysicalGpu>(m_fakePhysicalGpuHandle);
+
+				// Act
+				auto act = [&]() -> std::string { return provider->GetGpuType(); };
+
+				// Assert
+				Assert::ExpectException<ApiError>(act);
+			}
+
 		private:
 			NvPhysicalGpuHandle m_fakePhysicalGpuHandle{ 0 };
 			MockRepository m_mocks;
