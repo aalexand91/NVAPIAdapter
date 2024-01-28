@@ -5,7 +5,7 @@
 namespace NVAPIAdapter
 {
 	/// <summary>Test adapter for the native PhysicalGpu class that can be mocked by unit tests.</summary>
-	interface class IPhysicalGpu
+	interface class IPhysicalGpuAdapter
 	{
 	public:
 		/// <returns>The full name of the GPU.</returns>
@@ -13,9 +13,10 @@ namespace NVAPIAdapter
 	};
 
 	/// <summary>.NET adapter for the native PhysicalGpu class.</summary>
-	ref class RealPhysicalGpu : IPhysicalGpu
+	ref class RealPhysicalGpu : IPhysicalGpuAdapter
 	{
 	public:
+		static IPhysicalGpuAdapter^ CreateInstance(NVAPIHooks::IPhysicalGpu* physicalGpu) { return gcnew RealPhysicalGpu(physicalGpu); }
 		RealPhysicalGpu(NVAPIHooks::IPhysicalGpu* physicalGpu) : m_physicalGpu(physicalGpu) {}
 		~RealPhysicalGpu();
 

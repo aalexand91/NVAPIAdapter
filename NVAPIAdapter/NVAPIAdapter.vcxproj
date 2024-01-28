@@ -153,14 +153,18 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Include\NvidiaGpu.h" />
+    <ClInclude Include="Include\NvidiaGpuProvider.h" />
     <ClInclude Include="Include\pch.h" />
     <ClInclude Include="Include\PhysicalGpuAdapter.h" />
+    <ClInclude Include="Include\PhysicalGpuProviderAdapter.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\AssemblyInfo.cpp" />
     <ClCompile Include="Source\NvidiaGpu.cpp" />
+    <ClCompile Include="Source\NvidiaGpuProvider.cpp" />
     <ClCompile Include="Source\pch.cpp" />
     <ClCompile Include="Source\PhysicalGpuAdapter.cpp" />
+    <ClCompile Include="Source\PhysicalGpuProviderAdapter.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -20,6 +20,12 @@
     <ClInclude Include="Include\NvidiaGpu.h">
       <Filter>Include</Filter>
     </ClInclude>
+    <ClInclude Include="Include\PhysicalGpuProviderAdapter.h">
+      <Filter>Include</Filter>
+    </ClInclude>
+    <ClInclude Include="Include\NvidiaGpuProvider.h">
+      <Filter>Include</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\pch.cpp">
@@ -32,6 +38,12 @@
       <Filter>Source</Filter>
     </ClCompile>
     <ClCompile Include="Source\AssemblyInfo.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\PhysicalGpuProviderAdapter.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\NvidiaGpuProvider.cpp">
       <Filter>Source</Filter>
     </ClCompile>
   </ItemGroup>

@@ -1,15 +1,24 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using NVAPIAdapter;
 using NSubstitute;
 
-namespace NVAPIAdapterUnitTest
+namespace NVAPIAdapter.UnitTest
 {
     [TestClass]
     public class NvidiaGpuTester
     {
-        readonly IPhysicalGpu myFakePhysicalGpu = Substitute.For<IPhysicalGpu>();
+        readonly IPhysicalGpuAdapter myFakePhysicalGpu = Substitute.For<IPhysicalGpuAdapter>();
 
         INvidiaGpu CreateNvidiaGpu() => new NvidiaGpu(myFakePhysicalGpu);
+
+        [TestMethod]
+        public void CreateInstance_GivenPhysicalGpu_ReturnsExpectedType()
+        {
+            // Act
+            var instance = NvidiaGpu.CreateInstance(myFakePhysicalGpu);
+
+            // Assert
+            Assert.IsInstanceOfType(instance, typeof(INvidiaGpu));
+        }
 
         [TestMethod]
         public void GetName_WhenCalled_ReturnsIt()

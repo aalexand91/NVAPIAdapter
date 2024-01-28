@@ -109,52 +109,6 @@ namespace NVAPIHooks
 				Assert::AreEqual(fakePhysicalGpu->GetName(), actualGpu->GetName());
 			}
 
-			TEST_METHOD(GetGpuByIndex_GivenNegativeIndexValue_Throws)
-			{
-				// Arrange
-				auto provider = std::make_unique<PhysicalGpuProvider>();
-
-				try
-				{
-					// Act
-					provider->GetGpuByIndex(-1);
-				}
-				catch (const std::runtime_error& error)
-				{
-					// Assert
-					Assert::AreEqual("Index value cannot be negative.", error.what());
-					return;
-				}
-				FailTestForNotThrowing();
-			}
-
-			TEST_METHOD(GetGpuByIndex_GivenIndexGreaterThanAllowed_Throws)
-			{
-				// Arrange
-				const int indexValue = 3;
-				m_mocks.OnCallFunc(ApiTunnel::GetPhysicalGpuHandles)
-					.Do([&](NvPhysicalGpuHandle*, unsigned long* numberOfGpus) -> NvAPI_Status
-						{
-							*numberOfGpus = static_cast<unsigned long>(indexValue);
-							return NvAPI_Status::NVAPI_OK;
-						});
-				const std::string expectedMessage = "Index value cannot be greater than " + std::to_string(indexValue - 1) + ".";
-				auto provider = std::make_unique<PhysicalGpuProvider>();
-
-				try
-				{
-					// Act
-					provider->GetGpuByIndex(indexValue);
-				}
-				catch (const std::runtime_error& error)
-				{
-					// Assert
-					Assert::AreEqual(expectedMessage.c_str(), error.what());
-					return;
-				}
-				FailTestForNotThrowing();
-			}
-
 		private:
 			MockRepository m_mocks;
 

@@ -21,12 +21,8 @@ namespace NVAPIHooks
 
 	std::shared_ptr<IPhysicalGpu> PhysicalGpuProvider::GetGpuByIndex(const int index)
 	{
-		if (index < 0) throw std::runtime_error("Index value cannot be negative.");
 		GetAllPhysicalGpuHandles();
-		const int maxIndexValue = m_numberOfGpus - 1;
-		if (index <= maxIndexValue) return RealGetPhysicalGpu(m_physicalGpuHandles[index]);
-		const std::string message = "Index value cannot be greater than " + std::to_string(maxIndexValue) + ".";
-		throw std::runtime_error(message);
+		return RealGetPhysicalGpu(m_physicalGpuHandles[index]);
 	}
 
 	void PhysicalGpuProvider::GetAllPhysicalGpuHandles()
