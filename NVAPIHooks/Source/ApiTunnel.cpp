@@ -30,5 +30,10 @@ namespace NVAPIHooks
 		{
 			return NvAPI_EnumPhysicalGPUs(physicalGpuHandles, numberOfGpus);
 		}
+
+		NvAPI_Status GetSystemType(NvPhysicalGpuHandle gpuHandle, NV_SYSTEM_TYPE* systemType)
+		{
+			return NvAPI_GPU_GetSystemType(gpuHandle, systemType);
+		}
 	}
 }

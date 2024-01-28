@@ -35,5 +35,13 @@ namespace NVAPIHooks
 		/// <param name="numberOfGpus">Caches the number of GPUs installed in the system.</param>
 		/// <returns>The status of the API upon determining the number of GPUs installed in the system.</returns>
 		HOOKS_API NvAPI_Status GetPhysicalGpuHandles(NvPhysicalGpuHandle* physicalGpuHandles, unsigned long* numberOfGpus);
+
+		/// <summary>
+		/// Determines the type of the system the GPU is installed in.
+		/// </summary>
+		/// <param name="gpuHandle">API handler interfacing with the physical GPU.</param>
+		/// <param name="systemType">Caches the system type detected.</param>
+		/// <returns>The status of the API upon determining the system type.</returns>
+		HOOKS_API NvAPI_Status GetSystemType(NvPhysicalGpuHandle gpuHandle, NV_SYSTEM_TYPE* systemType);
 	}
 }

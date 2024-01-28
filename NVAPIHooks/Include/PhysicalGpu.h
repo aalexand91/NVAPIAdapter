@@ -28,6 +28,9 @@ namespace NVAPIHooks
 
 		/// <returns>The full name of the GPU.</returns>
 		virtual std::string GetName() = 0;
+
+		/// <returns>The type of system the GPU is installed in.</returns>
+		virtual std::string GetSystemType() = 0;
 	};
 
 	class PhysicalGpu : public IPhysicalGpu
@@ -41,6 +44,7 @@ namespace NVAPIHooks
 		PhysicalGpu& operator = (PhysicalGpu&&) = delete;
 
 		HOOKS_API std::string GetName() override;
+		HOOKS_API std::string GetSystemType() override;
 
 	private:
 		static const unsigned ms_asciiStringBufferSize{ 256u };

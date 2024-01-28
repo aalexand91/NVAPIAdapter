@@ -12,6 +12,7 @@
 #include <windows.h>
 #include <nvapi.h>
 
+#include <unordered_map>
 #include <stdexcept>
 #include <vector>
 
