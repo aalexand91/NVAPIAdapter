@@ -21,4 +21,6 @@ namespace NVAPIAdapter
 		if (Enum::TryParse(m_physicalGpu->GetGpuType(), gpuType)) return gpuType;
 		return GpuType::Unknown;
 	}
+
+	PciIdentifier^ NvidiaGpu::GetPciIdentifiers() { return m_physicalGpu->GetPciIdentifiers(); }
 }

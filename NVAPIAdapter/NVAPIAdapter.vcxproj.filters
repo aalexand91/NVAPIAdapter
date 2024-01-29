@@ -32,6 +32,9 @@
     <ClInclude Include="Include\GpuType.h">
       <Filter>Include</Filter>
     </ClInclude>
+    <ClInclude Include="Include\PciIdentifier.h">
+      <Filter>Include</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\pch.cpp">
@@ -50,6 +53,9 @@
       <Filter>Source</Filter>
     </ClCompile>
     <ClCompile Include="Source\NvidiaGpuProvider.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\PciIdentifier.cpp">
       <Filter>Source</Filter>
     </ClCompile>
   </ItemGroup>

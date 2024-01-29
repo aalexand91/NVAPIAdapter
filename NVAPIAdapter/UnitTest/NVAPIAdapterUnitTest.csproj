@@ -59,6 +59,7 @@
   <ItemGroup>
     <Compile Include="NvidiaGpuProviderTester.cs" />
     <Compile Include="NvidiaGpuTester.cs" />
+    <Compile Include="PciIdentifierTester.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

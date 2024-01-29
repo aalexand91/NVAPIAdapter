@@ -1,5 +1,6 @@
 #pragma once
 
+#include "PciIdentifier.h"
 #include <PhysicalGpu.h>
 
 namespace NVAPIAdapter
@@ -16,6 +17,9 @@ namespace NVAPIAdapter
 
 		/// <returns>The type of GPU (as integrated, discrete, or unknown.</returns>
 		System::String^ GetGpuType();
+
+		/// <returns>The PCI identifiers associated with the GPU.</returns>
+		PciIdentifier^ GetPciIdentifiers();
 	};
 
 	ref class RealPhysicalGpu : IPhysicalGpuAdapter
@@ -28,6 +32,7 @@ namespace NVAPIAdapter
 		virtual System::String^ GetName();
 		virtual System::String^ GetSystemType();
 		virtual System::String^ GetGpuType();
+		virtual PciIdentifier^ GetPciIdentifiers();
 
 	private:
 		NVAPIHooks::IPhysicalGpu* m_physicalGpu{ nullptr };

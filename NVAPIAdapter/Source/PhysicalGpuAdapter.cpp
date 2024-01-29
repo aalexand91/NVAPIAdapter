@@ -27,4 +27,15 @@ namespace NVAPIAdapter
 	{
 		return gcnew String(m_physicalGpu->GetGpuType().c_str());
 	}
+
+	PciIdentifier^ RealPhysicalGpu::GetPciIdentifiers()
+	{
+		auto ids = m_physicalGpu->GetPciIdentifiers();
+		auto identifier = gcnew PciIdentifier();
+		identifier->DeviceId = ids.m_deviceId;
+		identifier->SubsystemId = ids.m_subSystemId;
+		identifier->RevisionId = ids.m_revisionId;
+		identifier->ExternalDeviceId = ids.m_externalDeviceId;
+		return identifier;
+	}
 }

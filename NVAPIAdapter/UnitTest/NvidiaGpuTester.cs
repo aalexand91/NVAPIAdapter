@@ -94,5 +94,29 @@ namespace NVAPIAdapter.UnitTest
             // Assert
             Assert.AreEqual(GpuType.Unknown, result);
         }
+
+        [TestMethod]
+        public void GetPciIdentifiers_WhenCalled_ReturnsThem()
+        {
+            // Arrange
+            var expectedIdentifiers = new PciIdentifier
+            {
+                DeviceId = 1,
+                SubsystemId = 2,
+                RevisionId = 3,
+                ExternalDeviceId = 4,
+            };
+            myFakePhysicalGpu.GetPciIdentifiers().Returns(expectedIdentifiers);
+            var gpu = CreateNvidiaGpu();
+
+            // Act
+            var actualIdentifiers = gpu.GetPciIdentifiers();
+
+            // Assert
+            Assert.AreEqual(expectedIdentifiers.DeviceId, actualIdentifiers.DeviceId);
+            Assert.AreEqual(expectedIdentifiers.SubsystemId, actualIdentifiers.SubsystemId);
+            Assert.AreEqual(expectedIdentifiers.RevisionId, actualIdentifiers.RevisionId);
+            Assert.AreEqual(expectedIdentifiers.ExternalDeviceId, actualIdentifiers.ExternalDeviceId);
+        }
     }
 }
