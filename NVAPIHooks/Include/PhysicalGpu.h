@@ -1,6 +1,8 @@
 #pragma once
 
 #include "ApiExport.h"
+#include "PciIdentifiers.h"
+
 #include <memory>
 #include <nvapi.h>
 #include <string>
@@ -34,6 +36,9 @@ namespace NVAPIHooks
 
 		/// <returns>The type of GPU (integrated, discrete, or unknown).</returns>
 		virtual std::string GetGpuType() = 0;
+
+		/// <returns>The PCI identifiers associated with the GPU.</returns>
+		virtual PciIdentifiers GetPciIdentifiers() = 0;
 	};
 
 	class PhysicalGpu : public IPhysicalGpu
@@ -49,6 +54,7 @@ namespace NVAPIHooks
 		HOOKS_API std::string GetName() override;
 		HOOKS_API std::string GetSystemType() override;
 		HOOKS_API std::string GetGpuType() override;
+		HOOKS_API PciIdentifiers GetPciIdentifiers() override;
 
 	private:
 		static const unsigned ms_asciiStringBufferSize{ 256u };

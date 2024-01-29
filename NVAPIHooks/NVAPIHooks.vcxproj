@@ -24,6 +24,7 @@
     <ClInclude Include="Include\ApiTunnel.h" />
     <ClInclude Include="Include\GeneralApi.h" />
     <ClInclude Include="Include\pch.h" />
+    <ClInclude Include="Include\PciIdentifiers.h" />
     <ClInclude Include="Include\PhysicalGpu.h" />
     <ClInclude Include="Include\PhysicalGpuProvider.h" />
     <ClInclude Include="Include\StatusInterpreter.h" />

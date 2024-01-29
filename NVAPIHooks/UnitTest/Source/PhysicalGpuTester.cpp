@@ -30,10 +30,10 @@ namespace NVAPIHooks
 							strncpy_s(buffer, 256u, expected.c_str(), 256u);
 							return NvAPI_Status::NVAPI_OK;
 						});
-				auto physicalGpu = std::make_unique<PhysicalGpu>(m_fakePhysicalGpuHandle);
+				auto gpu = std::make_unique<PhysicalGpu>(m_fakePhysicalGpuHandle);
 
 				// Act
-				const auto actual = physicalGpu->GetName();
+				const auto actual = gpu->GetName();
 
 				// Assert
 				Assert::AreEqual(expected, actual);
@@ -43,10 +43,10 @@ namespace NVAPIHooks
 			{
 				// Arrange
 				m_mocks.OnCallFunc(ApiTunnel::GetName).Return(NvAPI_Status::NVAPI_ERROR);
-				auto physicalGpu = std::make_unique<PhysicalGpu>(m_fakePhysicalGpuHandle);
+				auto gpu = std::make_unique<PhysicalGpu>(m_fakePhysicalGpuHandle);
 				
 				// Act
-				auto act = [&]() -> std::string { return physicalGpu->GetName(); };
+				auto act = [&]() -> std::string { return gpu->GetName(); };
 
 				// Assert
 				Assert::ExpectException<ApiError>(act);
@@ -62,10 +62,10 @@ namespace NVAPIHooks
 							return NvAPI_Status::NVAPI_OK;
 						});
 				const std::string expected = "Laptop";
-				auto physicalGpu = std::make_unique<PhysicalGpu>(m_fakePhysicalGpuHandle);
+				auto gpu = std::make_unique<PhysicalGpu>(m_fakePhysicalGpuHandle);
 
 				// Act
-				const std::string actual = physicalGpu->GetSystemType();
+				const std::string actual = gpu->GetSystemType();
 
 				// Assert
 				Assert::AreEqual(expected, actual);
@@ -81,10 +81,10 @@ namespace NVAPIHooks
 							return NvAPI_Status::NVAPI_OK;
 						});
 				const std::string expected = "Desktop";
-				auto physicalGpu = std::make_unique<PhysicalGpu>(m_fakePhysicalGpuHandle);
+				auto gpu = std::make_unique<PhysicalGpu>(m_fakePhysicalGpuHandle);
 
 				// Act
-				const std::string actual = physicalGpu->GetSystemType();
+				const std::string actual = gpu->GetSystemType();
 
 				// Assert
 				Assert::AreEqual(expected, actual);
@@ -100,10 +100,10 @@ namespace NVAPIHooks
 							return NvAPI_Status::NVAPI_OK;
 						});
 				const std::string expected = "Unknown";
-				auto physicalGpu = std::make_unique<PhysicalGpu>(m_fakePhysicalGpuHandle);
+				auto gpu = std::make_unique<PhysicalGpu>(m_fakePhysicalGpuHandle);
 
 				// Act
-				const std::string actual = physicalGpu->GetSystemType();
+				const std::string actual = gpu->GetSystemType();
 
 				// Assert
 				Assert::AreEqual(expected, actual);
@@ -113,10 +113,10 @@ namespace NVAPIHooks
 			{
 				// Arrange
 				m_mocks.OnCallFunc(ApiTunnel::GetSystemType).Return(NvAPI_Status::NVAPI_ERROR);
-				auto physicalGpu = std::make_unique<PhysicalGpu>(m_fakePhysicalGpuHandle);
+				auto gpu = std::make_unique<PhysicalGpu>(m_fakePhysicalGpuHandle);
 
 				// Act
-				auto act = [&]() -> std::string { return physicalGpu->GetSystemType(); };
+				auto act = [&]() -> std::string { return gpu->GetSystemType(); };
 
 				// Assert
 				Assert::ExpectException<ApiError>(act);
@@ -132,10 +132,10 @@ namespace NVAPIHooks
 							return NvAPI_Status::NVAPI_OK;
 						});
 				const std::string expected = "Integrated";
-				auto provider = std::make_unique<PhysicalGpu>(m_fakePhysicalGpuHandle);
+				auto gpu = std::make_unique<PhysicalGpu>(m_fakePhysicalGpuHandle);
 
 				// Act
-				const std::string actual = provider->GetGpuType();
+				const std::string actual = gpu->GetGpuType();
 
 				// Assert
 				Assert::AreEqual(expected, actual);
@@ -151,10 +151,10 @@ namespace NVAPIHooks
 							return NvAPI_Status::NVAPI_OK;
 						});
 				const std::string expected = "Discrete";
-				auto provider = std::make_unique<PhysicalGpu>(m_fakePhysicalGpuHandle);
+				auto gpu = std::make_unique<PhysicalGpu>(m_fakePhysicalGpuHandle);
 
 				// Act
-				const std::string actual = provider->GetGpuType();
+				const std::string actual = gpu->GetGpuType();
 
 				// Assert
 				Assert::AreEqual(expected, actual);
@@ -170,10 +170,10 @@ namespace NVAPIHooks
 							return NvAPI_Status::NVAPI_OK;
 						});
 				const std::string expected = "Unknown";
-				auto provider = std::make_unique<PhysicalGpu>(m_fakePhysicalGpuHandle);
+				auto gpu = std::make_unique<PhysicalGpu>(m_fakePhysicalGpuHandle);
 
 				// Act
-				const std::string actual = provider->GetGpuType();
+				const std::string actual = gpu->GetGpuType();
 
 				// Assert
 				Assert::AreEqual(expected, actual);
@@ -183,10 +183,52 @@ namespace NVAPIHooks
 			{
 				// Arrange
 				m_mocks.OnCallFunc(ApiTunnel::GetGpuType).Return(NvAPI_Status::NVAPI_ERROR);
-				auto provider = std::make_unique<PhysicalGpu>(m_fakePhysicalGpuHandle);
+				auto gpu = std::make_unique<PhysicalGpu>(m_fakePhysicalGpuHandle);
 
 				// Act
-				auto act = [&]() -> std::string { return provider->GetGpuType(); };
+				auto act = [&]() -> std::string { return gpu->GetGpuType(); };
+
+				// Assert
+				Assert::ExpectException<ApiError>(act);
+			}
+
+			TEST_METHOD(GetPciIdentifiers_GivenIdentifiers_ReturnsThem)
+			{
+				// Arrange
+				const unsigned long expectedDeviceId = 1ul;
+				const unsigned long expectedSubSystemId = 2ul;
+				const unsigned long expectedRevisionId = 3ul;
+				const unsigned long expectedExternalDeviceId = 4ul;
+				m_mocks.OnCallFunc(ApiTunnel::GetPciIdentifiers)
+					.Do([&](NvPhysicalGpuHandle, unsigned long* deviceId, unsigned long* subSystemId,
+						unsigned long* revisionId, unsigned long* externalDeviceId) -> NvAPI_Status
+						{
+							*deviceId = expectedDeviceId;
+							*subSystemId = expectedSubSystemId;
+							*revisionId = expectedRevisionId;
+							*externalDeviceId = expectedExternalDeviceId;
+							return NvAPI_Status::NVAPI_OK;
+						});
+				auto gpu = std::make_unique<PhysicalGpu>(m_fakePhysicalGpuHandle);
+
+				// Act
+				auto actualIdentifiers = gpu->GetPciIdentifiers();
+
+				// Assert
+				Assert::AreEqual(expectedDeviceId, actualIdentifiers.m_deviceId, L"PCI device IDs are not equal.");
+				Assert::AreEqual(expectedSubSystemId, actualIdentifiers.m_subSystemId, L"PCI subsystem IDs are not equal.");
+				Assert::AreEqual(expectedRevisionId, actualIdentifiers.m_revisionId, L"PCI revision IDs are not equal.");
+				Assert::AreEqual(expectedExternalDeviceId, actualIdentifiers.m_externalDeviceId, L"PCI external device IDs are not equal.");
+			}
+
+			TEST_METHOD(GetPciIdentifiers_OnFailure_Throws)
+			{
+				// Arrange
+				m_mocks.OnCallFunc(ApiTunnel::GetPciIdentifiers).Return(NvAPI_Status::NVAPI_ERROR);
+				auto gpu = std::make_unique<PhysicalGpu>(m_fakePhysicalGpuHandle);
+
+				// Act
+				auto act = [&]() -> PciIdentifiers { return gpu->GetPciIdentifiers(); };
 
 				// Assert
 				Assert::ExpectException<ApiError>(act);

@@ -35,6 +35,9 @@
     <ClInclude Include="Include\PhysicalGpuProvider.h">
       <Filter>Include</Filter>
     </ClInclude>
+    <ClInclude Include="Include\PciIdentifiers.h">
+      <Filter>Include</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\pch.cpp">

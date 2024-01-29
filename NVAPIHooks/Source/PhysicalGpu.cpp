@@ -1,9 +1,9 @@
 #include "pch.h"
 
-#include "ApiError.h"
-#include "ApiTunnel.h"
-#include "PhysicalGpu.h"
-#include "StatusInterpreter.h"
+#include <ApiError.h>
+#include <ApiTunnel.h>
+#include <PhysicalGpu.h>
+#include <StatusInterpreter.h>
 
 namespace NVAPIHooks
 {
@@ -43,5 +43,14 @@ namespace NVAPIHooks
 		if (status != NvAPI_Status::NVAPI_OK) throw ApiError("Gailed to get GPU type.", status);
 		auto match = map.find(gpuType);
 		return match == map.end() ? "Unknown" : match->second;
+	}
+
+	PciIdentifiers PhysicalGpu::GetPciIdentifiers()
+	{
+		PciIdentifiers identifiers;
+		auto status = ApiTunnel::GetPciIdentifiers(m_physicalGpuHandle, &identifiers.m_deviceId, 
+			&identifiers.m_subSystemId, &identifiers.m_revisionId, &identifiers.m_externalDeviceId);
+		if (status == NvAPI_Status::NVAPI_OK) return identifiers;
+		throw ApiError("Failed to get PCI identifiers for this GPU.", status);
 	}
 }
