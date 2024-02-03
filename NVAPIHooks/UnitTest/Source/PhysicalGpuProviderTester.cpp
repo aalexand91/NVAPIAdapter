@@ -86,13 +86,7 @@ namespace NVAPIHooks
 							return NvAPI_Status::NVAPI_OK;
 						});
 
-				std::shared_ptr<IPhysicalGpu> expectedGpu;
-				m_mocks.OnCallFunc(PhysicalGpuProvider::RealGetPhysicalGpu).With(fakeHandle)
-					.Do([&](NvPhysicalGpuHandle) -> std::shared_ptr<IPhysicalGpu>
-						{
-							expectedGpu = std::shared_ptr<IPhysicalGpu>(fakePhysicalGpu);
-							return expectedGpu;
-						});
+				m_mocks.OnCallFunc(PhysicalGpuProvider::RealGetPhysicalGpu).With(fakeHandle).Return(fakePhysicalGpu);
 				m_mocks.OnCallFunc(ApiTunnel::GetName).With(fakeHandle, _)
 					.Do([&](NvPhysicalGpuHandle, char* buffer) -> NvAPI_Status
 						{
@@ -103,10 +97,14 @@ namespace NVAPIHooks
 				auto provider = std::make_unique<PhysicalGpuProvider>();
 
 				// Act
-				auto& actualGpu = provider->GetGpuByIndex(0);
+				auto actualGpu = provider->GetGpuByIndex(0);
 
 				// Assert
 				Assert::AreEqual(fakePhysicalGpu->GetName(), actualGpu->GetName());
+
+				// Annihilate
+				delete actualGpu;
+				actualGpu = nullptr;
 			}
 
 		private:

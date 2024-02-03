@@ -18,6 +18,6 @@ namespace NVAPIAdapter
 	IPhysicalGpuAdapter^ RealPhysicalGpuProvider::GetGpuByIndex(const int index)
 	{
 		auto physicalGpu = m_physicalGpuProvider->GetGpuByIndex(index);
-		return gcnew RealPhysicalGpu(physicalGpu.get());
+		return gcnew RealPhysicalGpu(physicalGpu);
 	}
 }

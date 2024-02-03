@@ -26,7 +26,7 @@ namespace NVAPIHooks
 		virtual int GetNumberOfGpus() = 0;
 
 		/// <returns>An interface to the physical GPU based on the handler index.</returns>
-		virtual std::shared_ptr<IPhysicalGpu> GetGpuByIndex(const int index) = 0;
+		virtual IPhysicalGpu* GetGpuByIndex(const int index) = 0;
 	};
 
 	class PhysicalGpuProvider : public IPhysicalGpuProvider
@@ -41,7 +41,7 @@ namespace NVAPIHooks
 		PhysicalGpuProvider& operator = (PhysicalGpuProvider&&) = delete;
 
 		HOOKS_API int GetNumberOfGpus() override;
-		HOOKS_API std::shared_ptr<IPhysicalGpu> GetGpuByIndex(const int index);
+		HOOKS_API IPhysicalGpu* GetGpuByIndex(const int index);
 
 	private:
 		/// <summary>Defaulted to -1 to indicate that the number of GPUs have not been detected.</summary>
@@ -52,11 +52,8 @@ namespace NVAPIHooks
 
 		void GetAllPhysicalGpuHandles();
 
-		/// <summary>
-		/// Creates a real shared pointer to the PhysicalGpu object.
-		/// Static so that the unit tests can mock the object returned.
-		/// </summary>
-		/// <returns>An interface to the physical GPU.</returns>
-		static std::shared_ptr<IPhysicalGpu> RealGetPhysicalGpu(NvPhysicalGpuHandle physicalHandle) { return std::make_shared<PhysicalGpu>(physicalHandle); }
+		/// <summary>Static so that the unit tests can fake the object returned.</summary>
+		/// <returns>The physical GPU object.</returns>
+		static IPhysicalGpu* RealGetPhysicalGpu(NvPhysicalGpuHandle physicalHandle) { return new PhysicalGpu(physicalHandle); }
 	};
 }
