@@ -234,6 +234,134 @@ namespace NVAPIHooks
 				Assert::ExpectException<ApiError>(act);
 			}
 
+			TEST_METHOD(GetGpuBusId_OnSuccess_ReturnsIt)
+			{
+				// Arrange
+				const unsigned long expected = 0xACAul;
+				m_mocks.OnCallFunc(ApiTunnel::GetGpuBusId)
+					.Do([&](NvPhysicalGpuHandle, unsigned long* busId) -> NvAPI_Status
+						{
+							*busId = expected;
+							return NvAPI_Status::NVAPI_OK;
+						});
+				auto gpu = std::make_unique<PhysicalGpu>(m_fakePhysicalGpuHandle);
+
+				// Act
+				const unsigned long actual = gpu->GetGpuBusId();
+
+				// Assert
+				Assert::AreEqual(expected, actual);
+			}
+
+			TEST_METHOD(GetGpuBusId_OnFailure_Throws)
+			{
+				// Arrange
+				m_mocks.OnCallFunc(ApiTunnel::GetGpuBusId).Return(NvAPI_Status::NVAPI_ERROR);
+				auto gpu = std::make_unique<PhysicalGpu>(m_fakePhysicalGpuHandle);
+				
+				// Act
+				auto act = [&]() -> unsigned long { return gpu->GetGpuBusId(); };
+
+				// Assert
+				Assert::ExpectException<ApiError>(act);
+			}
+
+			TEST_METHOD(GetVbiosVersion_OnSuccess_ReturnsIt)
+			{
+				// Arrange
+				const std::string expected = "12.34.56.78.90";
+				m_mocks.OnCallFunc(ApiTunnel::GetVbiosVersion)
+					.Do([&](NvPhysicalGpuHandle, char* biosVersion) -> NvAPI_Status
+						{
+							strncpy_s(biosVersion, 256u, expected.c_str(), 256u);
+							return NvAPI_Status::NVAPI_OK;
+						});
+				auto gpu = std::make_unique<PhysicalGpu>(m_fakePhysicalGpuHandle);
+
+				// Act
+				const std::string actual = gpu->GetVbiosVersion();
+
+				// Assert
+				Assert::AreEqual(expected, actual);
+			}
+
+			TEST_METHOD(GetVbiosVersion_OnFailure_Throws)
+			{
+				// Arrange
+				m_mocks.OnCallFunc(ApiTunnel::GetVbiosVersion).Return(NvAPI_Status::NVAPI_ERROR);
+				auto gpu = std::make_unique<PhysicalGpu>(m_fakePhysicalGpuHandle);
+				
+				// Act
+				auto act = [&]() -> std::string { return gpu->GetVbiosVersion(); };
+
+				// Assert
+				Assert::ExpectException<ApiError>(act);
+			}
+
+			TEST_METHOD(GetPhysicalFrameBufferSize_OnSuccess_ReturnsIt)
+			{
+				// Arrange
+				const unsigned long expected = 0xDEADul;
+				m_mocks.OnCallFunc(ApiTunnel::GetPhysicalFrameBufferSize)
+					.Do([&](NvPhysicalGpuHandle, unsigned long* size) -> NvAPI_Status
+						{
+							*size = expected;
+							return NvAPI_Status::NVAPI_OK;
+						});
+				auto gpu = std::make_unique<PhysicalGpu>(m_fakePhysicalGpuHandle);
+
+				// Act
+				const unsigned long actual = gpu->GetPhysicalFrameBufferSize();
+
+				// Assert
+				Assert::AreEqual(expected, actual);
+			}
+
+			TEST_METHOD(GetPhysicalFrameBufferSize_OnFailure_Throws)
+			{
+				// Arrange
+				m_mocks.OnCallFunc(ApiTunnel::GetPhysicalFrameBufferSize).Return(NvAPI_Status::NVAPI_ERROR);
+				auto gpu = std::make_unique<PhysicalGpu>(m_fakePhysicalGpuHandle);
+
+				// Act
+				auto act = [&]() -> unsigned long { return gpu->GetPhysicalFrameBufferSize(); };
+
+				// Assert
+				Assert::ExpectException<ApiError>(act);
+			}
+
+			TEST_METHOD(GetVirtualFrameBufferSize_OnSuccess_ReturnsIt)
+			{
+				// Arrange
+				const unsigned long expected = 0xBEEFul;
+				m_mocks.OnCallFunc(ApiTunnel::GetVirtualFrameBufferSize)
+					.Do([&](NvPhysicalGpuHandle, unsigned long* size) -> NvAPI_Status
+						{
+							*size = expected;
+							return NvAPI_Status::NVAPI_OK;
+						});
+				auto gpu = std::make_unique<PhysicalGpu>(m_fakePhysicalGpuHandle);
+
+				// Act
+				const unsigned long actual = gpu->GetVirtualFrameBufferSize();
+
+				// Assert
+				Assert::AreEqual(expected, actual);
+			}
+
+			TEST_METHOD(GetVirtualFrameBufferSize_OnFailure_Throws)
+			{
+				// Arrange
+				m_mocks.OnCallFunc(ApiTunnel::GetVirtualFrameBufferSize).Return(NvAPI_Status::NVAPI_ERROR);
+				auto gpu = std::make_unique<PhysicalGpu>(m_fakePhysicalGpuHandle);
+
+				// Act
+				auto act = [&]() -> unsigned long { return gpu->GetVirtualFrameBufferSize(); };
+
+				// Assert
+				Assert::ExpectException<ApiError>(act);
+			}
+
 		private:
 			NvPhysicalGpuHandle m_fakePhysicalGpuHandle{ 0 };
 			MockRepository m_mocks;

@@ -53,4 +53,36 @@ namespace NVAPIHooks
 		if (status == NvAPI_Status::NVAPI_OK) return identifiers;
 		throw ApiError("Failed to get PCI identifiers for this GPU.", status);
 	}
+
+	unsigned long PhysicalGpu::GetGpuBusId()
+	{
+		unsigned long busId = 0ul;
+		auto status = ApiTunnel::GetGpuBusId(m_physicalGpuHandle, &busId);
+		if (status == NvAPI_Status::NVAPI_OK) return busId;
+		throw ApiError("Failed to get GPU bus ID.", status);
+	}
+
+	std::string PhysicalGpu::GetVbiosVersion()
+	{
+		char biosVersion[ms_asciiStringBufferSize] = "\0";
+		auto status = ApiTunnel::GetVbiosVersion(m_physicalGpuHandle, biosVersion);
+		if (status == NvAPI_Status::NVAPI_OK) return biosVersion;
+		throw ApiError("Failed to get video BIOS version.", status);
+	}
+
+	unsigned long PhysicalGpu::GetPhysicalFrameBufferSize()
+	{
+		unsigned long size = 0ul;
+		auto status = ApiTunnel::GetPhysicalFrameBufferSize(m_physicalGpuHandle, &size);
+		if (status == NvAPI_Status::NVAPI_OK) return size;
+		throw ApiError("Failed to get physical framebuffer size.", status);
+	}
+
+	unsigned long PhysicalGpu::GetVirtualFrameBufferSize()
+	{
+		unsigned long size = 0ul;
+		auto status = ApiTunnel::GetVirtualFrameBufferSize(m_physicalGpuHandle, &size);
+		if (status == NvAPI_Status::NVAPI_OK) return size;
+		throw ApiError("Failed to get virtual framebuffer size.", status);
+	}
 }

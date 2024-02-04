@@ -50,5 +50,25 @@ namespace NVAPIHooks
 		{
 			return NvAPI_GPU_GetPCIIdentifiers(gpuHandle, deviceId, subSystemId, revisionId, externalDeviceId);
 		}
+
+		NvAPI_Status GetGpuBusId(NvPhysicalGpuHandle gpuHandle, unsigned long* busId)
+		{
+			return NvAPI_GPU_GetBusId(gpuHandle, busId);
+		}
+
+		NvAPI_Status GetVbiosVersion(NvPhysicalGpuHandle gpuHandle, char* biosVersion)
+		{
+			return NvAPI_GPU_GetVbiosVersionString(gpuHandle, biosVersion);
+		}
+
+		NvAPI_Status GetPhysicalFrameBufferSize(NvPhysicalGpuHandle gpuHandle, unsigned long* size)
+		{
+			return NvAPI_GPU_GetPhysicalFrameBufferSize(gpuHandle, size);
+		}
+		
+		NvAPI_Status GetVirtualFrameBufferSize(NvPhysicalGpuHandle gpuHandle, unsigned long* size)
+		{
+			return NvAPI_GPU_GetVirtualFrameBufferSize(gpuHandle, size);
+		}
 	}
 }

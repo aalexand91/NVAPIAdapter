@@ -37,7 +37,6 @@ namespace AdapterIntegrationTest
         void SelectionComboBox_SelectedIndexChanged(object sender, EventArgs e)
         {
             myGpu = GpuProvider.GetGpuByIndex(SelectionComboBox.SelectedIndex);
-
             SystemTypeButton.Enabled = true;
             GpuTypeButton.Enabled = true;
         }
