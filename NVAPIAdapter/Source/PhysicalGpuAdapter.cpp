@@ -19,11 +19,11 @@ namespace NVAPIAdapter
 	}
 
 	String^ RealPhysicalGpu::GetSystemType() 
-	{
-		return gcnew String(m_physicalGpu->GetSystemType().c_str());
+	{ 
+		return gcnew String(m_physicalGpu->GetSystemType().c_str()); 
 	}
 
-	String^ RealPhysicalGpu::GetGpuType()
+	String^ RealPhysicalGpu::GetGpuType() 
 	{
 		return gcnew String(m_physicalGpu->GetGpuType().c_str());
 	}
@@ -37,5 +37,25 @@ namespace NVAPIAdapter
 		identifier->RevisionId = ids.m_revisionId;
 		identifier->ExternalDeviceId = ids.m_externalDeviceId;
 		return identifier;
+	}
+
+	unsigned long RealPhysicalGpu::GetBusId() 
+	{
+		return m_physicalGpu->GetGpuBusId();
+	}
+
+	String^ RealPhysicalGpu::GetVideoBiosVersion()
+{
+		return gcnew String(m_physicalGpu->GetVbiosVersion().c_str());
+	}
+
+	unsigned long RealPhysicalGpu::GetPhysicalFrameBufferSizeInKb()
+	{
+		return m_physicalGpu->GetPhysicalFrameBufferSize();
+	}
+
+	unsigned long RealPhysicalGpu::GetVirtualFrameBufferSizeInKb()
+	{
+		return m_physicalGpu->GetVirtualFrameBufferSize();
 	}
 }

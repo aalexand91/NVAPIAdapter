@@ -6,6 +6,9 @@
 
 namespace NVAPIHooks
 {
+	/// <summary>
+	/// Directly invokes the NVAPI library. Each function is static so that they can be mocked by unit tests.
+	/// </summary>
 	namespace ApiTunnel
 	{
 		/// <summary>Determines the specific error that occurred with the API.</summary>

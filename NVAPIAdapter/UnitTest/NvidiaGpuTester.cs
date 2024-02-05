@@ -118,5 +118,65 @@ namespace NVAPIAdapter.UnitTest
             Assert.AreEqual(expectedIdentifiers.RevisionId, actualIdentifiers.RevisionId);
             Assert.AreEqual(expectedIdentifiers.ExternalDeviceId, actualIdentifiers.ExternalDeviceId);
         }
+
+        [TestMethod]
+        public void GetBusId_GivenBusId_ReturnsIt()
+        {
+            // Arrange
+            const uint expected = 0xDEADBEEF;
+            myFakePhysicalGpu.GetBusId().Returns(expected);
+            var gpu = CreateNvidiaGpu();
+
+            // Act
+            var actual = gpu.GetBusId();
+
+            // Assert
+            Assert.AreEqual(expected, actual);
+        }
+
+        [TestMethod]
+        public void GetVideoBiosVersion_GivenVideoBiosVersion_ReturnsIt()
+        {
+            // Arrange
+            const string expected = "AA.BB.CC.DD.EE";
+            myFakePhysicalGpu.GetVideoBiosVersion().Returns(expected);
+            var gpu = CreateNvidiaGpu();
+
+            // Act
+            var actual = gpu.GetVideoBiosVersion();
+
+            // Assert
+            Assert.AreEqual(expected, actual);
+        }
+
+        [TestMethod]
+        public void GetPhysicalFrameBufferSizeInKb_GivenSize_ReturnsIt()
+        {
+            // Arrange
+            const uint expected = 12345u;
+            myFakePhysicalGpu.GetPhysicalFrameBufferSizeInKb().Returns(expected);
+            var gpu = CreateNvidiaGpu();
+
+            // Act
+            var actual = gpu.GetPhysicalFrameBufferSizeInKb();
+
+            // Assert
+            Assert.AreEqual(expected, actual);
+        }
+
+        [TestMethod]
+        public void GetVirtualFrameBufferSizeInKb_GivenSize_ReturnsIt()
+        {
+            // Arrange
+            const uint expected = 67890u;
+            myFakePhysicalGpu.GetVirtualFrameBufferSizeInKb().Returns(expected);
+            var gpu = CreateNvidiaGpu();
+
+            // Act
+            var actual = gpu.GetVirtualFrameBufferSizeInKb();
+
+            // Assert
+            Assert.AreEqual(expected, actual);
+        }
     }
 }

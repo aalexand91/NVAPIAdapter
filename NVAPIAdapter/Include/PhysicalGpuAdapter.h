@@ -9,17 +9,14 @@ namespace NVAPIAdapter
 	interface class IPhysicalGpuAdapter
 	{
 	public:
-		/// <returns>The full name of the GPU.</returns>
 		System::String^ GetName();
-
-		/// <returns>The type of system the GPU is installed in.</returns>
 		System::String^ GetSystemType();
-
-		/// <returns>The type of GPU (as integrated, discrete, or unknown.</returns>
 		System::String^ GetGpuType();
-
-		/// <returns>The PCI identifiers associated with the GPU.</returns>
 		PciIdentifier^ GetPciIdentifiers();
+		unsigned long GetBusId();
+		System::String^ GetVideoBiosVersion();
+		unsigned long GetPhysicalFrameBufferSizeInKb();
+		unsigned long GetVirtualFrameBufferSizeInKb();
 	};
 
 	ref class RealPhysicalGpu : IPhysicalGpuAdapter
@@ -33,6 +30,10 @@ namespace NVAPIAdapter
 		virtual System::String^ GetSystemType();
 		virtual System::String^ GetGpuType();
 		virtual PciIdentifier^ GetPciIdentifiers();
+		virtual unsigned long GetBusId();
+		virtual System::String^ GetVideoBiosVersion();
+		virtual unsigned long GetPhysicalFrameBufferSizeInKb();
+		virtual unsigned long GetVirtualFrameBufferSizeInKb();
 
 	private:
 		NVAPIHooks::IPhysicalGpu* m_physicalGpu{ nullptr };

@@ -22,9 +22,24 @@ namespace NVAPIAdapter
 
 		/// <returns>The PCI identifiers associated with the GPU.</returns>
 		PciIdentifier^ GetPciIdentifiers();
+
+		/// <returns>The bus ID associated with the GPU.</returns>
+		unsigned long GetBusId();
+
+		/// <returns>
+		/// The video BIOS version in the form of xx.xx.xx.xx.yy where 
+		/// xx.xx.xx.xx is the major.minor.maintenance.build number and yy is the manufacturer's version number.
+		/// </returns>
+		System::String^ GetVideoBiosVersion();
+
+		/// <returns>The physical framebuffer size in KB. Excludes any RAM dedicated to the GPU.</returns>
+		unsigned long GetPhysicalFrameBufferSizeInKb();
+
+		/// <returns>The virtual framebuffer size in KB. Includes both physical and any RAM dedicated to the GPU.</returns>
+		unsigned long GetVirtualFrameBufferSizeInKb();
 	};
 
-	public ref class NvidiaGpu sealed : INvidiaGpu
+	ref class NvidiaGpu sealed : INvidiaGpu
 	{
 	public:
 		static INvidiaGpu^ CreateInstance(IPhysicalGpuAdapter^ physicalGpu) { return gcnew NvidiaGpu(physicalGpu); }
@@ -33,6 +48,10 @@ namespace NVAPIAdapter
 		virtual GpuSystemType GetSystemType();
 		virtual GpuType GetGpuType();
 		virtual PciIdentifier^ GetPciIdentifiers();
+		virtual unsigned long GetBusId();
+		virtual System::String^ GetVideoBiosVersion();
+		virtual unsigned long GetPhysicalFrameBufferSizeInKb();
+		virtual unsigned long GetVirtualFrameBufferSizeInKb();
 
 	internal:
 		NvidiaGpu(IPhysicalGpuAdapter^ physicalGpu) : m_physicalGpu(physicalGpu) {}
