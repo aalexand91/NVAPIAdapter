@@ -85,4 +85,12 @@ namespace NVAPIHooks
 		if (status == NvAPI_Status::NVAPI_OK) return size;
 		throw ApiError("Failed to get virtual framebuffer size.", status);
 	}
+
+	unsigned long PhysicalGpu::GetGpuCoreCount()
+	{
+		unsigned long count = 0ul;
+		auto status = ApiTunnel::GetGpuCoreCount(m_physicalGpuHandle, &count);
+		if (status == NvAPI_Status::NVAPI_OK) return count;
+		throw ApiError("Failed to get number of cores.", status);
+	}
 }

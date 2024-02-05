@@ -58,4 +58,9 @@ namespace NVAPIAdapter
 	{
 		return m_physicalGpu->GetVirtualFrameBufferSize();
 	}
+
+	unsigned long RealPhysicalGpu::GetGpuCoreCount()
+	{
+		return m_physicalGpu->GetGpuCoreCount();
+	}
 }

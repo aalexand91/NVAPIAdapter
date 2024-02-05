@@ -178,5 +178,20 @@ namespace NVAPIAdapter.UnitTest
             // Assert
             Assert.AreEqual(expected, actual);
         }
+
+        [TestMethod]
+        public void GetCoreCount_GivenCount_ReturnsIt()
+        {
+            // Arrange
+            const uint expected = 12u;
+            myFakePhysicalGpu.GetGpuCoreCount().Returns(expected);
+            var gpu = CreateNvidiaGpu();
+
+            // Act
+            var actual = gpu.GetCoreCount();
+
+            // Assert
+            Assert.AreEqual(expected, actual);
+        }
     }
 }

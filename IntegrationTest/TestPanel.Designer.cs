@@ -38,6 +38,7 @@
             this.VbiosButton = new System.Windows.Forms.Button();
             this.PhysicalFrameBufferButton = new System.Windows.Forms.Button();
             this.VirtualFrameBufferButton = new System.Windows.Forms.Button();
+            this.GpuCoreButton = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // SelectionComboBox
@@ -52,7 +53,7 @@
             // InstructionsLabel
             // 
             this.InstructionsLabel.AutoSize = true;
-            this.InstructionsLabel.Location = new System.Drawing.Point(103, 9);
+            this.InstructionsLabel.Location = new System.Drawing.Point(66, 9);
             this.InstructionsLabel.Name = "InstructionsLabel";
             this.InstructionsLabel.Size = new System.Drawing.Size(634, 16);
             this.InstructionsLabel.TabIndex = 2;
@@ -136,11 +137,23 @@
             this.VirtualFrameBufferButton.UseVisualStyleBackColor = true;
             this.VirtualFrameBufferButton.Click += new System.EventHandler(this.VirtualFrameBufferButton_Click);
             // 
+            // GpuCoreButton
+            // 
+            this.GpuCoreButton.Enabled = false;
+            this.GpuCoreButton.Location = new System.Drawing.Point(172, 81);
+            this.GpuCoreButton.Name = "GpuCoreButton";
+            this.GpuCoreButton.Size = new System.Drawing.Size(137, 34);
+            this.GpuCoreButton.TabIndex = 10;
+            this.GpuCoreButton.Text = "Get Core Count";
+            this.GpuCoreButton.UseVisualStyleBackColor = true;
+            this.GpuCoreButton.Click += new System.EventHandler(this.GpuCoreButton_Click);
+            // 
             // TestPanel
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
+            this.Controls.Add(this.GpuCoreButton);
             this.Controls.Add(this.VirtualFrameBufferButton);
             this.Controls.Add(this.PhysicalFrameBufferButton);
             this.Controls.Add(this.VbiosButton);
@@ -154,6 +167,7 @@
             this.Text = "NVAPIAdapter Test Panel";
             this.ResumeLayout(false);
             this.PerformLayout();
+
         }
 
         #endregion
@@ -167,6 +181,7 @@
         private System.Windows.Forms.Button VbiosButton;
         private System.Windows.Forms.Button PhysicalFrameBufferButton;
         private System.Windows.Forms.Button VirtualFrameBufferButton;
+        private System.Windows.Forms.Button GpuCoreButton;
     }
 }
 

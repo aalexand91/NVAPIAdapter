@@ -37,6 +37,9 @@ namespace NVAPIAdapter
 
 		/// <returns>The virtual framebuffer size in KB. Includes both physical and any RAM dedicated to the GPU.</returns>
 		unsigned long GetVirtualFrameBufferSizeInKb();
+
+		/// <returns>The number of cores defined for the GPU. Returns zero if no cores are defined for the GPU architecture.</returns>
+		unsigned long GetCoreCount();
 	};
 
 	ref class NvidiaGpu sealed : INvidiaGpu
@@ -52,6 +55,7 @@ namespace NVAPIAdapter
 		virtual System::String^ GetVideoBiosVersion();
 		virtual unsigned long GetPhysicalFrameBufferSizeInKb();
 		virtual unsigned long GetVirtualFrameBufferSizeInKb();
+		virtual unsigned long GetCoreCount();
 
 	internal:
 		NvidiaGpu(IPhysicalGpuAdapter^ physicalGpu) : m_physicalGpu(physicalGpu) {}

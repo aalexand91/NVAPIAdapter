@@ -70,5 +70,10 @@ namespace NVAPIHooks
 		{
 			return NvAPI_GPU_GetVirtualFrameBufferSize(gpuHandle, size);
 		}
+
+		NvAPI_Status GetGpuCoreCount(NvPhysicalGpuHandle gpuHandle, unsigned long* count)
+		{
+			return NvAPI_GPU_GetGpuCoreCount(gpuHandle, count);
+		}
 	}
 }

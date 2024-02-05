@@ -362,6 +362,38 @@ namespace NVAPIHooks
 				Assert::ExpectException<ApiError>(act);
 			}
 
+			TEST_METHOD(GetGpuCoreCount_OnSuccess_ReturnsIt)
+			{
+				// Arrange
+				const unsigned long expected = 8ul;
+				m_mocks.OnCallFunc(ApiTunnel::GetGpuCoreCount)
+					.Do([&](NvPhysicalGpuHandle, unsigned long* count) -> NvAPI_Status
+						{
+							*count = expected;
+							return NvAPI_Status::NVAPI_OK;
+						});
+				auto gpu = std::make_unique<PhysicalGpu>(m_fakePhysicalGpuHandle);
+
+				// Act
+				const unsigned long actual = gpu->GetGpuCoreCount();
+
+				// Assert
+				Assert::AreEqual(expected, actual);
+			}
+
+			TEST_METHOD(GetGpuCoreCount_OnFailure_Throws)
+			{
+				// Arrange
+				m_mocks.OnCallFunc(ApiTunnel::GetGpuCoreCount).Return(NvAPI_Status::NVAPI_ERROR);
+				auto gpu = std::make_unique<PhysicalGpu>(m_fakePhysicalGpuHandle);
+
+				// Act
+				auto act = [&]() -> unsigned long { return gpu->GetGpuCoreCount(); };
+
+				// Assert
+				Assert::ExpectException<ApiError>(act);
+			}
+
 		private:
 			NvPhysicalGpuHandle m_fakePhysicalGpuHandle{ 0 };
 			MockRepository m_mocks;

@@ -94,5 +94,11 @@ namespace NVAPIHooks
 		/// <param name="size">Caches the framebuffer size in KB</param>
 		/// <returns>The status of the API upon determining the virtual framebuffer size.</returns>
 		HOOKS_API NvAPI_Status GetVirtualFrameBufferSize(NvPhysicalGpuHandle gpuHandle, unsigned long* size);
+
+		/// <summary>Determines the number of cores defined for the GPU.</summary>
+		/// <param name="gpuHandle">API handler interfacing with the physical GPU.</param>
+		/// <param name="count">Caches the number of cores.</param>
+		/// <returns>The status of the API upon determining the GPU core count.</returns>
+		HOOKS_API NvAPI_Status GetGpuCoreCount(NvPhysicalGpuHandle gpuHandle, unsigned long* count);
 	}
 }

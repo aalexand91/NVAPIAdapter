@@ -17,6 +17,7 @@ namespace NVAPIAdapter
 		System::String^ GetVideoBiosVersion();
 		unsigned long GetPhysicalFrameBufferSizeInKb();
 		unsigned long GetVirtualFrameBufferSizeInKb();
+		unsigned long GetGpuCoreCount();
 	};
 
 	ref class RealPhysicalGpu : IPhysicalGpuAdapter
@@ -34,6 +35,7 @@ namespace NVAPIAdapter
 		virtual System::String^ GetVideoBiosVersion();
 		virtual unsigned long GetPhysicalFrameBufferSizeInKb();
 		virtual unsigned long GetVirtualFrameBufferSizeInKb();
+		virtual unsigned long GetGpuCoreCount();
 
 	private:
 		NVAPIHooks::IPhysicalGpu* m_physicalGpu{ nullptr };

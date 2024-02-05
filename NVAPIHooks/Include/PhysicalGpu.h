@@ -54,6 +54,9 @@ namespace NVAPIHooks
 
 		/// <returns>The virtual framebuffer size in KB. Includes the physical framebuffer size and any RAM dedicated to the GPU.</returns>
 		virtual unsigned long GetVirtualFrameBufferSize() = 0;
+
+		/// <returns>The number of cores defined for the GPU. Returns zero if no cores are defined .</returns>
+		virtual unsigned long GetGpuCoreCount() = 0;
 	};
 
 	class PhysicalGpu : public IPhysicalGpu
@@ -74,6 +77,7 @@ namespace NVAPIHooks
 		HOOKS_API std::string GetVbiosVersion() override;
 		HOOKS_API unsigned long GetPhysicalFrameBufferSize() override;
 		HOOKS_API unsigned long GetVirtualFrameBufferSize() override;
+		HOOKS_API unsigned long GetGpuCoreCount() override;
 
 	private:
 		static const unsigned ms_asciiStringBufferSize{ 256u };

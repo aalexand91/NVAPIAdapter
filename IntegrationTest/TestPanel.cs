@@ -44,6 +44,7 @@ namespace AdapterIntegrationTest
             VbiosButton.Enabled = true;
             PhysicalFrameBufferButton.Enabled = true;
             VirtualFrameBufferButton.Enabled = true;
+            GpuCoreButton.Enabled = true;
         }
 
         void ShowMessage(string message, string caption) => MessageBox.Show(message, caption, MessageBoxButtons.OK);
@@ -54,5 +55,6 @@ namespace AdapterIntegrationTest
         void VbiosButton_Click(object sender, EventArgs e) => ShowMessage(myGpu.GetVideoBiosVersion(), "Video BIOS Version");
         void PhysicalFrameBufferButton_Click(object sender, EventArgs e) => ShowMessage(myGpu.GetPhysicalFrameBufferSizeInKb().ToString(), "Physical Framebuffer Size in KB");
         void VirtualFrameBufferButton_Click(object sender, EventArgs e) => ShowMessage(myGpu.GetVirtualFrameBufferSizeInKb().ToString(), "Virtual Framebuffer Size in KB");
+        void GpuCoreButton_Click(object sender, EventArgs e) => ShowMessage(myGpu.GetCoreCount().ToString(), "GPU Core Count");
     }
 }
