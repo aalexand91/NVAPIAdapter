@@ -15,5 +15,8 @@ namespace NVAPIHooks
 		/// Initializes the NVAPI library. Must be called before interfacing with other API functions.
 		/// </summary>
 		HOOKS_API void Initialize();
+
+		/// <summary>Unloads the NVAPI library.</summary>
+		HOOKS_API void Unload();
 	}
 }

@@ -46,6 +46,30 @@ namespace NVAPIHooks
 				Assert::ExpectException<ApiError>(act);
 			}
 
+			TEST_METHOD(Unload_OnSuccess_Returns)
+			{
+				// Arrange
+				m_mocks.ExpectCallFunc(ApiTunnel::UnloadApi).Return(NvAPI_Status::NVAPI_OK);
+
+				// Act
+				GeneralApi::Unload();
+
+				// Assert
+				m_mocks.VerifyAll();
+			}
+
+			TEST_METHOD(Unload_OnFailure_Throws)
+			{
+				// Arrange
+				m_mocks.OnCallFunc(ApiTunnel::UnloadApi).Return(NvAPI_Status::NVAPI_ERROR);
+
+				// Act
+				auto act = []() -> void { GeneralApi::Unload(); };
+
+				// Assert
+				Assert::ExpectException<ApiError>(act);
+			}
+
 		private:
 			MockRepository m_mocks;
 		};

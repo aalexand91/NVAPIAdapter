@@ -21,5 +21,9 @@ namespace NVAPIHooks
 		/// <param name="message">Caches the respective NVAPI error message.</param>
 		/// <returns>NVAPI status code for determining the current API error message.</returns>
 		HOOKS_API NvAPI_Status GetApiErrorMessage(const NvAPI_Status currentStatus, char* message);
+
+		/// <summary>Unloads the NVAPI library.</summary>
+		/// <returns>NVAPI status code for unloading the library.</returns>
+		HOOKS_API NvAPI_Status UnloadApi();
 	}
 }

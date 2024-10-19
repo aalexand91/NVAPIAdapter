@@ -16,5 +16,10 @@ namespace NVAPIHooks
 		{
 			return NvAPI_GetErrorMessage(currentStatus, message);
 		}
+
+		NvAPI_Status UnloadApi()
+		{
+			return NvAPI_Unload();
+		}
 	}
 }
