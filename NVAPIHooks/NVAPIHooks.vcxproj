@@ -23,6 +23,7 @@
     <ClInclude Include="Header Files\ApiTunnel.h" />
     <ClInclude Include="Header Files\Export.h" />
     <ClInclude Include="Header Files\GeneralApi.h" />
+    <ClInclude Include="Header Files\IPhysicalGpu.h" />
     <ClInclude Include="Header Files\pch.h" />
     <ClInclude Include="Header Files\PhysicalGpu.h" />
   </ItemGroup>
