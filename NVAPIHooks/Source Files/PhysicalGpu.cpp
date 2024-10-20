@@ -8,11 +8,6 @@
 
 namespace NVAPIHooks
 {
-	IPhysicalGpu* PhysicalGpu::CreateInstance(NvPhysicalGpuHandle physicalGpuHandle)
-	{
-		return new PhysicalGpu(physicalGpuHandle);
-	}
-
 	unsigned long PhysicalGpu::GetCoreCount()
 	{
 		unsigned long coreCount = 0ul;

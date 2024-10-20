@@ -68,6 +68,43 @@ namespace NVAPIHooks
 				Assert::ExpectException<ApiError>(act);
 			}
 
+			TEST_METHOD(GetAllPhysicalGpus_GivenGpus_ReturnsThem)
+			{
+				// Arrange
+				auto handle1 = (NvPhysicalGpuHandle)1;
+				auto handle2 = (NvPhysicalGpuHandle)2;
+				auto handle3 = (NvPhysicalGpuHandle)3;
+				const auto expectedTotal = 3ul;
+				m_mocks.OnCallFunc(ApiTunnel::GetPhysicalGpuHandles)
+					.Do([&](NvPhysicalGpuHandle* gpuHandles, unsigned long* totalGpuCount) -> NvAPI_Status 
+						{
+							gpuHandles[0] = handle1;
+							gpuHandles[1] = handle2;
+							gpuHandles[2] = handle3;
+							*totalGpuCount = expectedTotal;
+							return NvAPI_Status::NVAPI_OK;
+						});
+
+				// Act
+				auto physicalGpus = GeneralApi::GetAllPhysicalGpus();
+
+				// Assert
+				const auto actualTotal = static_cast<unsigned long>(physicalGpus.size());
+				Assert::AreEqual(expectedTotal, actualTotal);
+			}
+
+			TEST_METHOD(GetAllPhysicalGpus_OnFailure_Throws)
+			{
+				// Arrange
+				m_mocks.OnCallFunc(ApiTunnel::GetPhysicalGpuHandles).Return(NvAPI_Status::NVAPI_ERROR);
+
+				// Act
+				auto act = []() -> std::vector<std::unique_ptr<IPhysicalGpu>> { return GeneralApi::GetAllPhysicalGpus(); };
+
+				// Assert
+				Assert::ExpectException<ApiError>(act);
+			}
+
 		private:
 			MockRepository m_mocks;
 		};

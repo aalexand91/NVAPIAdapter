@@ -5,7 +5,6 @@
 #include <ApiError.h>
 #include <ApiTunnel.h>
 #include <PhysicalGpu.h>
-#include <typeinfo>
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 
@@ -19,23 +18,6 @@ namespace NVAPIHooks
 			TEST_METHOD_CLEANUP(CleanUpTest)
 			{
 				m_mocks.reset();
-			}
-
-			TEST_METHOD(CreateInstance_GivenHandle_ReturnsExpectedType)
-			{
-				// Arrange
-				auto expected = typeid(IPhysicalGpu*).name();
-
-				// Act
-				auto physicalGpu = PhysicalGpu::CreateInstance(m_fakeGpuHandle);
-
-				// Assert
-				auto actual = typeid(physicalGpu).name();
-				Assert::AreEqual(expected, actual);
-
-				// Annihilate
-				delete physicalGpu;
-				physicalGpu = nullptr;
 			}
 
 			TEST_METHOD(GetCoreCount_WhenCalled_ReturnsIt)

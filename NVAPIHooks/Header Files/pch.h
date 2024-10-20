@@ -14,5 +14,6 @@
 
 #include <nvapi.h>
 #include <string>
+#include <vector>
 
 #endif

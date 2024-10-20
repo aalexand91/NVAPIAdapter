@@ -3,6 +3,9 @@
 #pragma once
 
 #include <Export.h>
+#include <IPhysicalGpu.h>
+#include <memory>
+#include <vector>
 
 namespace NVAPIHooks
 {
@@ -18,5 +21,8 @@ namespace NVAPIHooks
 
 		/// <summary>Unloads the NVAPI library.</summary>
 		HOOKS_API void Unload();
+
+		/// <returns>All physical GPUs detected by the NVAPI library.</returns>
+		HOOKS_API std::vector<std::unique_ptr<IPhysicalGpu>> GetAllPhysicalGpus();
 	}
 }

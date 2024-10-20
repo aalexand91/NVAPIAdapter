@@ -8,6 +8,9 @@
 
 namespace NVAPIHooks
 {
+	/// <summary>
+	/// Wraps the direct NVAPI library function calls that unit test can easily mock.
+	/// </summary>
 	namespace ApiTunnel
 	{
 		/// <summary>Initializes the NVAPI library.</summary>
@@ -33,5 +36,13 @@ namespace NVAPIHooks
 		/// <param name="coreCount">Caches the number of GPU cores.</param>
 		/// <returns>NVAPI status code for determining the number of cores.</returns>
 		HOOKS_API NvAPI_Status GetGpuCoreCount(NvPhysicalGpuHandle gpuHandle, unsigned long* coreCount);
+
+		/// <summary>
+		/// Determines the number of physical GPUs connected and caches their handles and total detected.
+		/// </summary>
+		/// <param name="gpuHandles">Caches an array of physical GPU handles.</param>
+		/// <param name="totalGpuCount">Caches the total number of physical GPUs detected.</param>
+		/// <returns>NVAPI status code for determining the number of physical GPUs.</returns>
+		HOOKS_API NvAPI_Status GetPhysicalGpuHandles(NvPhysicalGpuHandle* gpuHandles, unsigned long* totalGpuCount);
 	}
 }

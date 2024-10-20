@@ -17,9 +17,6 @@ namespace NVAPIHooks
 		/// <summary>Resets the physical GPU handle so that it cannot be used after destruction.</summary>
 		virtual ~PhysicalGpu() { m_physicalGpuHandle = NVAPI_DEFAULT_HANDLE; }
 
-		/// <returns>An instance unit tests can fake.</returns>
-		HOOKS_API static IPhysicalGpu* CreateInstance(NvPhysicalGpuHandle phsyicalGpuHandle);
-
 		HOOKS_API unsigned long GetCoreCount() override;
 
 	private:

@@ -26,5 +26,10 @@ namespace NVAPIHooks
 		{
 			return NvAPI_GPU_GetGpuCoreCount(gpuHandle, coreCount);
 		}
+
+		NvAPI_Status GetPhysicalGpuHandles(NvPhysicalGpuHandle* gpuHandles, unsigned long* totalGpuCount)
+		{
+			return NvAPI_EnumPhysicalGPUs(gpuHandles, totalGpuCount);
+		}
 	}
 }
