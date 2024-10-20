@@ -24,12 +24,14 @@
     <ClInclude Include="Header Files\Export.h" />
     <ClInclude Include="Header Files\GeneralApi.h" />
     <ClInclude Include="Header Files\pch.h" />
+    <ClInclude Include="Header Files\PhysicalGpu.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source Files\ApiError.cpp" />
     <ClCompile Include="Source Files\ApiTunnel.cpp" />
     <ClCompile Include="Source Files\GeneralApi.cpp" />
     <ClCompile Include="Source Files\pch.cpp" />
+    <ClCompile Include="Source Files\PhysicalGpu.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>17.0</VCProjectVersion>

@@ -25,5 +25,13 @@ namespace NVAPIHooks
 		/// <summary>Unloads the NVAPI library.</summary>
 		/// <returns>NVAPI status code for unloading the library.</returns>
 		HOOKS_API NvAPI_Status UnloadApi();
+
+		/// <summary>
+		/// Determines the number of cores defined for the GPU and caches it into the given core count buffer.
+		/// </summary>
+		/// <param name="gpuHandle">Single physical GPU handle.</param>
+		/// <param name="coreCount">Caches the number of GPU cores.</param>
+		/// <returns>NVAPI status code for determining the number of cores.</returns>
+		HOOKS_API NvAPI_Status GetGpuCoreCount(NvPhysicalGpuHandle gpuHandle, unsigned long* coreCount);
 	}
 }

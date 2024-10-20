@@ -25,5 +25,8 @@
     <ClCompile Include="Source Files\ApiErrorTester.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Source Files\PhysicalGpuTester.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

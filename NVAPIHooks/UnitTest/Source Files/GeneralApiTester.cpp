@@ -4,9 +4,7 @@
 
 #include <ApiTunnel.h>
 #include <ApiError.h>
-#include <CppUnitTest.h>
 #include <GeneralApi.h>
-#include <hippomocks.h>
 
 using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 

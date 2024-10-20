@@ -13,6 +13,9 @@
 #define WIN32_LEAN_AND_MEAN
 #include <windows.h>
 
+#include <CppUnitTest.h>
+#include <hippomocks.h>
+#include <memory>
 #include <nvapi.h>
 
 #endif //PCH_H

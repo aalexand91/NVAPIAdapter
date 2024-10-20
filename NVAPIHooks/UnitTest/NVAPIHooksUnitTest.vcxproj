@@ -178,6 +178,7 @@
     <ClCompile Include="Source Files\ApiErrorTester.cpp" />
     <ClCompile Include="Source Files\GeneralApiTester.cpp" />
     <ClCompile Include="Source Files\pch_UnitTest.cpp" />
+    <ClCompile Include="Source Files\PhysicalGpuTester.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\NVAPIHooks.vcxproj">
