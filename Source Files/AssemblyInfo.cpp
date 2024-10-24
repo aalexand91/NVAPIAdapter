@@ -12,4 +12,8 @@ using namespace System::Security::Permissions;
 
 [assembly:AssemblyVersionAttribute(L"1.0.*")];
 
+// Allow internal dependencies to be visible to unit tests and mock library.
+[assembly:InternalsVisibleToAttribute("NVAPIAdapterUnitTest")];
+[assembly:InternalsVisibleToAttribute("DynamicProxyGenAssembly2")];
+
 [assembly:ComVisible(false)];

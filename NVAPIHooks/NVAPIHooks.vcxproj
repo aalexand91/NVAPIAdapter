@@ -61,12 +61,12 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <OutDir>$(SolutionDir)Output\$(Configuration)_$(Platform)\</OutDir>
+    <OutDir>$(SolutionDir)Output\$(Platform)\$(Configuration)\net8.0-windows\</OutDir>
     <IntDir>$(Configuration)_$(Platform)\</IntDir>
     <IncludePath>..\ThirdParty\R560-developer;Header Files;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <OutDir>$(SolutionDir)Output\$(Configuration)_$(Platform)\</OutDir>
+    <OutDir>$(SolutionDir)Output\$(Platform)\$(Configuration)\net8.0-windows\</OutDir>
     <IntDir>$(Configuration)_$(Platform)\</IntDir>
     <IncludePath>..\ThirdParty\R560-developer;Header Files;$(IncludePath)</IncludePath>
   </PropertyGroup>

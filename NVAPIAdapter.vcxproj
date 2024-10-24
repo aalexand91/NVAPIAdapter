@@ -59,12 +59,14 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <OutDir>$(SolutionDir)Output\$(Configuration)_$(Platform)\</OutDir>
+    <OutDir>$(SolutionDir)Output\$(Platform)\$(Configuration)\$(TargetFramework)-$(TargetPlatformIdentifier)\</OutDir>
     <IncludePath>Header Files;NVAPIHooks\Header Files;$(IncludePath)</IncludePath>
+    <IntDir>$(Configuration)_$(Platform)\</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <OutDir>$(SolutionDir)Output\$(Configuration)_$(Platform)\</OutDir>
+    <OutDir>$(SolutionDir)Output\$(Platform)\$(Configuration)\$(TargetFramework)-$(TargetPlatformIdentifier)\</OutDir>
     <IncludePath>Header Files;NVAPIHooks\Header Files;$(IncludePath)</IncludePath>
+    <IntDir>$(Configuration)_$(Platform)\</IntDir>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
