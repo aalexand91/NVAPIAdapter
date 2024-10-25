@@ -17,10 +17,13 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Header Files\NVAPI.h" />
+    <ClInclude Include="Header Files\NvidiaGpu.h" />
+    <ClInclude Include="Header Files\PhysicalGpuAdapter.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source Files\AssemblyInfo.cpp" />
     <ClCompile Include="Source Files\NVAPI.cpp" />
+    <ClCompile Include="Source Files\NvidiaGpu.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>17.0</VCProjectVersion>
