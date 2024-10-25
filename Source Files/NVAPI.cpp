@@ -10,4 +10,9 @@ namespace NVAPIAdapter
 	{
 		InitializeApi();
 	}
+
+	void NVAPI::Unload()
+	{
+		UnloadApi();
+	}
 }

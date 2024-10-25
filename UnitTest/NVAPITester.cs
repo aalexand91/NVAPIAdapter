@@ -6,12 +6,17 @@ using NSubstitute;
 namespace NVAPIAdapter.UnitTest
 {
     [TestClass]
+    [DoNotParallelize]
     public class NVAPITester
     {
+        [NotNull] readonly NVAPI.InitializeApiFunc myInitializeApiSpy = Substitute.For<NVAPI.InitializeApiFunc>();
+        [NotNull] readonly NVAPI.UnloadApiFunc myUnloadApiSpy = Substitute.For<NVAPI.UnloadApiFunc>();
+
         [TestInitialize]
         public void InitTest()
         {
-            NVAPI.InitializeApi = Substitute.For<NVAPI.InitializeApiFunc>();
+            NVAPI.InitializeApi = myInitializeApiSpy;
+            NVAPI.UnloadApi = myUnloadApiSpy;
         }
 
         [TestMethod]
@@ -21,7 +26,17 @@ namespace NVAPIAdapter.UnitTest
             NVAPI.Initialize();
 
             // Assert
-            NVAPI.InitializeApi.Received().Invoke();
+            myInitializeApiSpy.Received().Invoke();
+        }
+
+        [TestMethod]
+        public void Unload_WhenCalled_UnloadsApi()
+        {
+            // Act
+            NVAPI.Unload();
+
+            // Assert
+            myUnloadApiSpy.Received().Invoke();
         }
     }
 }
