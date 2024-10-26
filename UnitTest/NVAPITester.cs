@@ -9,12 +9,16 @@ namespace NVAPIAdapter.UnitTest
     [DoNotParallelize]
     public class NVAPITester
     {
+        [NotNull] readonly NVAPI.CreateNvidiaGpuFunc myFakeCreateNvidiaGpu = Substitute.For<NVAPI.CreateNvidiaGpuFunc>();
+        [NotNull] readonly NVAPI.GetAllPhysicalGpusFunc myFakeGetAllPhysicalGpus = Substitute.For<NVAPI.GetAllPhysicalGpusFunc>();
         [NotNull] readonly NVAPI.InitializeApiFunc myInitializeApiSpy = Substitute.For<NVAPI.InitializeApiFunc>();
         [NotNull] readonly NVAPI.UnloadApiFunc myUnloadApiSpy = Substitute.For<NVAPI.UnloadApiFunc>();
 
         [TestInitialize]
         public void InitTest()
         {
+            NVAPI.CreateNvidiaGpu = myFakeCreateNvidiaGpu;
+            NVAPI.GetAllPhysicalGpus = myFakeGetAllPhysicalGpus;
             NVAPI.InitializeApi = myInitializeApiSpy;
             NVAPI.UnloadApi = myUnloadApiSpy;
         }
@@ -37,6 +41,27 @@ namespace NVAPIAdapter.UnitTest
 
             // Assert
             myUnloadApiSpy.Received().Invoke();
+        }
+
+        [TestMethod]
+        public void GetAllGpus_GivenGpus_ReturnsThem()
+        {
+            // Arrange
+            var gpuAdapterA = Substitute.For<IPhysicalGpuAdapter>();
+            var gpuAdapterB = Substitute.For<IPhysicalGpuAdapter>();
+            myFakeGetAllPhysicalGpus.Invoke().Returns([gpuAdapterA, gpuAdapterB]);
+
+            var gpuA = Substitute.For<INvidiaGpu>();
+            myFakeCreateNvidiaGpu.Invoke(gpuAdapterA).Returns(gpuA);
+            var gpuB = Substitute.For<INvidiaGpu>();
+            myFakeCreateNvidiaGpu.Invoke(gpuAdapterB).Returns(gpuB);
+
+            // Act
+            var gpus = NVAPI.GetAllGpus().ToList();
+
+            // Assert
+            CollectionAssert.Contains(gpus, gpuA);
+            CollectionAssert.Contains(gpus, gpuB);
         }
     }
 }

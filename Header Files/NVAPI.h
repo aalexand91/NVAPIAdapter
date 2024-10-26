@@ -3,8 +3,8 @@
 #pragma once
 
 #include <GeneralApi.h>
-
-using namespace System;
+#include <NvidiaGpu.h>
+#include <PhysicalGpuAdapter.h>
 
 namespace NVAPIAdapter 
 {
@@ -17,6 +17,12 @@ namespace NVAPIAdapter
 
 		delegate void UnloadApiFunc();
 		static UnloadApiFunc^ UnloadApi = gcnew UnloadApiFunc(NVAPIHooks::GeneralApi::Unload);
+
+		delegate System::Collections::Generic::IEnumerable<IPhysicalGpuAdapter^>^ GetAllPhysicalGpusFunc();
+		static GetAllPhysicalGpusFunc^ GetAllPhysicalGpus = gcnew GetAllPhysicalGpusFunc(RealGetAllPhysicalGpus);
+
+		delegate INvidiaGpu^ CreateNvidiaGpuFunc(IPhysicalGpuAdapter^ adpater);
+		static CreateNvidiaGpuFunc^ CreateNvidiaGpu = gcnew CreateNvidiaGpuFunc(NvidiaGpu::CreateInstance);
 #pragma endregion
 
 	public:
@@ -25,5 +31,11 @@ namespace NVAPIAdapter
 
 		/// <summary>Unloads the NVAPI library.</summary>
 		static void Unload();
+
+		/// <returns>A collection of all GPUs detected by the NVAPI library.</returns>
+		static System::Collections::Generic::IEnumerable<INvidiaGpu^>^ GetAllGpus();
+
+	private:
+		static System::Collections::Generic::IEnumerable<IPhysicalGpuAdapter^>^ RealGetAllPhysicalGpus();
 	};
 }
