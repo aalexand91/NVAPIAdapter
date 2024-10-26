@@ -3,7 +3,6 @@
 #pragma once
 
 #include <IPhysicalGpu.h>
-#include <memory>
 
 namespace NVAPIAdapter
 {
@@ -11,6 +10,7 @@ namespace NVAPIAdapter
 	interface class IPhysicalGpuAdapter
 	{
 		unsigned long GetCoreCount();
+		System::String^ GetFullName();
 	};
 
 	ref class PhysicalGpuAdapter : IPhysicalGpuAdapter
@@ -18,6 +18,7 @@ namespace NVAPIAdapter
 	public:
 		PhysicalGpuAdapter(NVAPIHooks::IPhysicalGpu* physicalGpu) : m_physicalGpu(physicalGpu) { }
 		virtual unsigned long GetCoreCount() { return m_physicalGpu->GetCoreCount(); }
+		virtual System::String^ GetFullName() { return gcnew System::String(m_physicalGpu->GetFullName().c_str()); }
 
 	private:
 		NVAPIHooks::IPhysicalGpu* m_physicalGpu = nullptr;

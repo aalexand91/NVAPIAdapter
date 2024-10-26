@@ -14,6 +14,12 @@ namespace NVAPIAdapter
 		{
 			System::UInt32 get();
 		}
+
+		/// <summary>Full name of the GPU. For example: "Quadro FX 1400".</summary>
+		property System::String^ Name
+		{
+			System::String^ get();
+		}
 	};
 
 	ref class NvidiaGpu : INvidiaGpu
@@ -23,6 +29,7 @@ namespace NVAPIAdapter
 		static INvidiaGpu^ CreateInstance(IPhysicalGpuAdapter^ physicalGpuAdapter);
 
 		virtual property System::UInt32 CoreCount { System::UInt32 get(); }
+		virtual property System::String^ Name { System::String^ get(); }
 
 	private:
 		IPhysicalGpuAdapter^ m_physicalGpu;

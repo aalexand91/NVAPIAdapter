@@ -27,5 +27,20 @@ namespace NVAPIAdapter.UnitTest
             // Assert
             Assert.AreEqual(expected, actual);
         }
+
+        [TestMethod]
+        public void Name_GivenName_ReturnsIt()
+        {
+            // Arrange
+            const string expected = "FakeName";
+            myFakePhysicalGpu.GetFullName().Returns(expected);
+            var gpu = CreateNvidiaGpu();
+
+            // Act
+            var actual = gpu.Name;
+
+            // Assert
+            Assert.AreEqual(expected, actual);
+        }
     }
 }

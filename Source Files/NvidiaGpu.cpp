@@ -2,6 +2,8 @@
 
 #include <NvidiaGpu.h>
 
+using namespace System;
+
 namespace NVAPIAdapter
 {
 	INvidiaGpu^ NvidiaGpu::CreateInstance(IPhysicalGpuAdapter^ physicalGpuAdapter)
@@ -9,8 +11,13 @@ namespace NVAPIAdapter
 		return gcnew NvidiaGpu(physicalGpuAdapter);
 	}
 
-	System::UInt32 NvidiaGpu::CoreCount::get()
+	UInt32 NvidiaGpu::CoreCount::get()
 	{
 		return m_physicalGpu->GetCoreCount();
+	}
+
+	String^ NvidiaGpu::Name::get() 
+	{
+		return m_physicalGpu->GetFullName();
 	}
 }
