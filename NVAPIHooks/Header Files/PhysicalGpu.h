@@ -18,6 +18,7 @@ namespace NVAPIHooks
 		virtual ~PhysicalGpu() { m_physicalGpuHandle = NVAPI_DEFAULT_HANDLE; }
 
 		HOOKS_API unsigned long GetCoreCount() override;
+		HOOKS_API std::string GetFullName() override;
 
 	private:
 		NvPhysicalGpuHandle m_physicalGpuHandle{ NVAPI_DEFAULT_HANDLE };

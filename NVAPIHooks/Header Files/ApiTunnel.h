@@ -44,5 +44,11 @@ namespace NVAPIHooks
 		/// <param name="totalGpuCount">Caches the total number of physical GPUs detected.</param>
 		/// <returns>NVAPI status code for determining the number of physical GPUs.</returns>
 		HOOKS_API NvAPI_Status GetPhysicalGpuHandles(NvPhysicalGpuHandle* gpuHandles, unsigned long* totalGpuCount);
+
+		/// <summary>Determines the full GPU name as an ASCII string such as "Quadro FX 1400".</summary>
+		/// <param name="gpuHandle">Single physical GPU handle.</param>
+		/// <param name="name">Caches the GPU name.</param>
+		/// <returns>NVAPI status code for determining the GPU name./returns>
+		HOOKS_API NvAPI_Status GetFullName(NvPhysicalGpuHandle gpuHandle, char* name);
 	}
 }

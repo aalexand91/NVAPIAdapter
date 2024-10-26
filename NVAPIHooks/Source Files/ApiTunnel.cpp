@@ -31,5 +31,10 @@ namespace NVAPIHooks
 		{
 			return NvAPI_EnumPhysicalGPUs(gpuHandles, totalGpuCount);
 		}
+
+		NvAPI_Status GetFullName(NvPhysicalGpuHandle gpuHandle, char* name)
+		{
+			return NvAPI_GPU_GetFullName(gpuHandle, name);
+		}
 	}
 }

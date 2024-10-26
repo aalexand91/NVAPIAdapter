@@ -2,6 +2,8 @@
 
 #pragma once
 
+#include <string>
+
 namespace NVAPIHooks
 {
 	class IPhysicalGpu
@@ -16,5 +18,8 @@ namespace NVAPIHooks
 
 		/// <returns>Number of cores defined for the GPU.</returns>
 		virtual unsigned long GetCoreCount() = 0;
+
+		/// <returns>The name of the GPU.</returns>
+		virtual std::string GetFullName() = 0;
 	};
 }
