@@ -34,7 +34,7 @@ namespace NVAPIAdapter
 		auto physicalGpus = GeneralApi::GetAllPhysicalGpus();
 		for (auto index = 0; index < physicalGpus.size(); index++)
 		{
-			auto adapter = gcnew PhysicalGpuAdapter(physicalGpus[index].get());
+			auto adapter = gcnew PhysicalGpuAdapter(physicalGpus[index]);
 			adapterCollection->Add(adapter);
 		}
 		return adapterCollection;

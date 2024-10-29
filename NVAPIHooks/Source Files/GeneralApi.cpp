@@ -25,7 +25,7 @@ namespace NVAPIHooks
 			throw ApiError("Failed to unload NVAPI library.", status);
 		}
 
-		std::vector<std::unique_ptr<IPhysicalGpu>> GetAllPhysicalGpus()
+		std::vector<IPhysicalGpu*> GetAllPhysicalGpus()
 		{
 			NvPhysicalGpuHandle detectedHandles[NVAPI_MAX_PHYSICAL_GPUS];
 			unsigned long totalGpuCount = 0ul;
@@ -35,10 +35,11 @@ namespace NVAPIHooks
 				throw ApiError("Failed to detect physical GPUs.", status);
 			}
 
-			std::vector<std::unique_ptr<IPhysicalGpu>> physicalGpus;
+			std::vector<IPhysicalGpu*> physicalGpus;
 			for (unsigned long handleNumber = 0ul; handleNumber < totalGpuCount; handleNumber++)
 			{
-				physicalGpus.push_back(std::make_unique<PhysicalGpu>(detectedHandles[handleNumber]));
+				auto physicalGpu = new PhysicalGpu(detectedHandles[handleNumber]);
+				physicalGpus.push_back(physicalGpu);
 			}
 			return physicalGpus;
 		}

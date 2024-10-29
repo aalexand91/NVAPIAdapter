@@ -99,7 +99,7 @@ namespace NVAPIHooks
 				m_mocks.OnCallFunc(ApiTunnel::GetPhysicalGpuHandles).Return(NvAPI_Status::NVAPI_ERROR);
 
 				// Act
-				auto act = []() -> std::vector<std::unique_ptr<IPhysicalGpu>> { return GeneralApi::GetAllPhysicalGpus(); };
+				auto act = []() -> std::vector<IPhysicalGpu*> { return GeneralApi::GetAllPhysicalGpus(); };
 
 				// Assert
 				Assert::ExpectException<ApiError>(act);

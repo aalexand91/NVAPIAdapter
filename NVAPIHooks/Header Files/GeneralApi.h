@@ -23,6 +23,6 @@ namespace NVAPIHooks
 		HOOKS_API void Unload();
 
 		/// <returns>All physical GPUs detected by the NVAPI library.</returns>
-		HOOKS_API std::vector<std::unique_ptr<IPhysicalGpu>> GetAllPhysicalGpus();
+		HOOKS_API std::vector<IPhysicalGpu*> GetAllPhysicalGpus();
 	}
 }
