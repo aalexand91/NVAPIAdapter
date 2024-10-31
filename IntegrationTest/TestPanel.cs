@@ -1,60 +1,47 @@
-﻿using NVAPIAdapter;
-using System;
-using System.Data;
-using System.Linq;
-using System.Windows.Forms;
+// Copyright 2024 Anthony Alexander
 
-namespace AdapterIntegrationTest
+using JetBrains.Annotations;
+
+namespace NVAPIAdapter.IntegrationTest
 {
     public partial class TestPanel : Form
     {
-        INvidiaGpuProvider GpuProvider => myGpuProvider.Value;
-        Lazy<INvidiaGpuProvider> myGpuProvider;
+        [CanBeNull] private INvidiaGpu? mySelectedGpu = null;
+        [NotNull] private readonly IReadOnlyCollection<INvidiaGpu> myDetectedGpus = new List<INvidiaGpu>();
 
         public TestPanel()
         {
             InitializeComponent();
-            myGpuProvider = new Lazy<INvidiaGpuProvider>(GetGpuProvider);
-            PopulateSelectionComboBox();
+            NVAPI.Initialize();
+            myDetectedGpus = NVAPI.GetAllGpus().ToList();
+            InitializeGpuComboBox();
         }
 
-        INvidiaGpuProvider GetGpuProvider()
+        private void InitializeGpuComboBox()
         {
-            var provider = NvidiaGpuProvider.CreateInstance();
-            provider.Initialize();
-            return provider;
+            if (!myDetectedGpus.Any())
+            {
+                const string message = "No Nvidia GPUs were detected. Make sure at least one is connected and restart the application.";
+                MessageBox.Show(message, caption: "No GPUS detected", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
+            foreach (var gpu in myDetectedGpus)
+            {
+                GpuComboBox.Items.Add(gpu.Name);
+            }
+            GpuComboBox.Enabled = true;
         }
 
-        void PopulateSelectionComboBox()
+        private void GpuComboBox_SelectedIndexChanged(object sender, EventArgs e)
         {
-            var gpuNames = GpuProvider.GetAllGpus()
-                .Select(gpu => gpu.GetName());
-            foreach (var name in gpuNames) SelectionComboBox.Items.Add(name);
+            mySelectedGpu = myDetectedGpus.ElementAt(GpuComboBox.SelectedIndex);
+            CoreCountButton.Enabled = true;
         }
 
-        INvidiaGpu myGpu;
-
-        void SelectionComboBox_SelectedIndexChanged(object sender, EventArgs e)
+        private void CoreCountButton_Click(object sender, EventArgs e)
         {
-            myGpu = GpuProvider.GetGpuByIndex(SelectionComboBox.SelectedIndex);
-            SystemTypeButton.Enabled = true;
-            GpuTypeButton.Enabled = true;
-            PciIdentifiersButton.Enabled = true;
-            BusIdButton.Enabled = true;
-            VbiosButton.Enabled = true;
-            PhysicalFrameBufferButton.Enabled = true;
-            VirtualFrameBufferButton.Enabled = true;
-            GpuCoreButton.Enabled = true;
+            MessageBox.Show(mySelectedGpu?.CoreCount.ToString(), caption: "GPU Core Count", MessageBoxButtons.OK);
         }
-
-        void ShowMessage(string message, string caption) => MessageBox.Show(message, caption, MessageBoxButtons.OK);
-        void SystemTypeButton_Click(object sender, EventArgs e) => ShowMessage(myGpu.GetSystemType().ToString(), "GPU System Type");
-        void GpuTypeButton_Click(object sender, EventArgs e) => ShowMessage(myGpu.GetGpuType().ToString(), "GPU Type");
-        void PciIdentifiersButton_Click(object sender, EventArgs e) => ShowMessage(myGpu.GetPciIdentifiers().ToString(), "PCI Identifiers");
-        void BusIdButton_Click(object sender, EventArgs e) => ShowMessage(myGpu.GetBusId().ToString(), "Bus ID");
-        void VbiosButton_Click(object sender, EventArgs e) => ShowMessage(myGpu.GetVideoBiosVersion(), "Video BIOS Version");
-        void PhysicalFrameBufferButton_Click(object sender, EventArgs e) => ShowMessage(myGpu.GetPhysicalFrameBufferSizeInKb().ToString(), "Physical Framebuffer Size in KB");
-        void VirtualFrameBufferButton_Click(object sender, EventArgs e) => ShowMessage(myGpu.GetVirtualFrameBufferSizeInKb().ToString(), "Virtual Framebuffer Size in KB");
-        void GpuCoreButton_Click(object sender, EventArgs e) => ShowMessage(myGpu.GetCoreCount().ToString(), "GPU Core Count");
     }
 }

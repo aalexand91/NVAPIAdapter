@@ -46,10 +46,12 @@
 #define HM_NS HippoMocks::
 #endif
 
+#ifdef _MSC_VER
 #ifdef _WIN64
 #define WINCALL
 #else
 #define WINCALL __stdcall
+#endif
 #endif
 #ifndef DEBUGBREAK
 #ifdef _MSC_VER
@@ -78,9 +80,6 @@ extern "C" __declspec(dllimport) void WINCALL DebugBreak();
 #ifdef __EDG__
 #define FUNCTION_BASE 3
 #define FUNCTION_STRIDE 2
-#elif defined (__SUNPRO_CC) //Tested with SUN CC v12.1 on x86
-#define FUNCTION_BASE 2
-#define FUNCTION_STRIDE 1
 #else
 #define FUNCTION_BASE 0
 #define FUNCTION_STRIDE 1
@@ -88,7 +87,6 @@ extern "C" __declspec(dllimport) void WINCALL DebugBreak();
 
 #if defined(_M_IX86) || defined(__i386__) || defined(i386) || defined(_X86_) || defined(__THW_INTEL) ||  defined(__x86_64__) || defined(_M_X64)
 #define SOME_X86
-#elif defined (sparc)
 #elif defined(arm) || defined(__arm__) || defined(ARM) || defined(_ARM_) || defined(__aarch64__)
 #define SOME_ARM
 #endif
@@ -100,7 +98,7 @@ extern "C" __declspec(dllimport) void WINCALL DebugBreak();
 #ifdef SOME_X86
 #if defined(_MSC_VER) && (defined(_WIN32) || defined(_WIN64))
 #define _HIPPOMOCKS__ENABLE_CFUNC_MOCKING_SUPPORT
-#elif (defined(__linux__) || defined(__FreeBSD__)) && defined(__GNUC__)
+#elif defined(__linux__) && defined(__GNUC__)
 #define _HIPPOMOCKS__ENABLE_CFUNC_MOCKING_SUPPORT
 #elif defined(__APPLE__)
 #define _HIPPOMOCKS__ENABLE_CFUNC_MOCKING_SUPPORT
@@ -109,7 +107,7 @@ extern "C" __declspec(dllimport) void WINCALL DebugBreak();
 #define _HIPPOMOCKS__ENABLE_CFUNC_MOCKING_SUPPORT
 
 // This clear-cache is *required*. The tests will fail if you remove it.
-extern "C" void __clear_cache(void *beg, void *end);
+extern "C" void __clear_cache(char *beg, char *end);
 #endif
 
 #if defined(__GNUC__) && !defined(__EXCEPTIONS)
@@ -272,27 +270,16 @@ public:
   Replace(T funcptr, T replacement)
 	  : origFunc(horrible_cast<void *>(funcptr))
   {
+	Unprotect _allow_write(origFunc, sizeof(backupData));
+	memcpy(backupData, origFunc, sizeof(backupData));
 #ifdef SOME_X86
 #ifdef CMOCK_FUNC_PLATFORMIS64BIT
 	if (llabs((long long)origFunc - (long long)replacement) < 0x80000000LL) {
 #endif
-	  Unprotect _allow_write(origFunc, sizeof(backupData));
-	  memcpy(backupData, origFunc, sizeof(backupData));
-
 	  *(unsigned char *)origFunc = 0xE9;
 	  *(e9ptrsize_t*)(horrible_cast<intptr_t>(origFunc) + 1) = (e9ptrsize_t)(horrible_cast<intptr_t>(replacement) - horrible_cast<intptr_t>(origFunc) - sizeof(e9ptrsize_t) - 1);
 #ifdef CMOCK_FUNC_PLATFORMIS64BIT
 	} else {
-	  if (*(unsigned char *)origFunc == 0xE9) {
-		// If this is a jmp instruction (rip + 32-bit signed) then most likely this is a entry into the import table,
-		// overwriting it will corrupt the next entry in the table, we need to find the real address and replace the content in there.
-		unsigned char *pFunc = (unsigned char *)origFunc;
-		pFunc += *(e9ptrsize_t*)(pFunc + 1) + sizeof(e9ptrsize_t) + 1;
-		origFunc = horrible_cast<void *>(pFunc);
-	  }
-	  Unprotect _allow_write(origFunc, sizeof(backupData));
-	  memcpy(backupData, origFunc, sizeof(backupData));
-
 	  unsigned char *func = (unsigned char *)origFunc;
 	  func[0] = 0xFF; // jmp (rip + imm32)
 	  func[1] = 0x25;
@@ -304,9 +291,6 @@ public:
 	}
 #endif
 #elif defined(SOME_ARM)
-	Unprotect _allow_write(origFunc, sizeof(backupData));
-	memcpy(backupData, origFunc, sizeof(backupData));
-
 	unsigned int *rawptr = (unsigned int *)((intptr_t)(origFunc) & (~3));
 	if ((intptr_t)origFunc & 1) {
 	  rawptr[0] = 0x6800A001;
@@ -1207,7 +1191,7 @@ int virtual_function_index(unsigned char *func)
 		{ // mov ecx, this; jump [eax + v/Ib/Iw]
 		case 0x20ff018b: return 0;
 #ifdef _WIN32
-		case 0x0424448b:
+		case 0x0424448b: 
 			if (func[7] == 0x20)
 				return 0;
 			return *(unsigned char *)(func + 8) / sizeof(void*);
@@ -1253,7 +1237,7 @@ std::pair<int, int> virtual_index(T t)
 			unsigned char *value;
 			unsigned long baseoffs;
 		} u;
-	} conv = {};
+	} conv;
 	conv.t = t;
 
 	int value = virtual_function_index<0>((unsigned char *)conv.u.value);
@@ -1272,57 +1256,6 @@ std::pair<int, int> virtual_index(T t)
 
 	if (conv.u.vindex != 0)
 		return std::pair<int, int>((conv.u.delta + conv.u.vtordisp)/sizeof(void*), conv.u.vindex * 2 + 1);
-
-#elif defined (__SUNPRO_CC)
-    union {
-        T t;
-        struct
-        {
-            unsigned char *value;
-            unsigned long baseoffs;
-        } u;
-    } conv;
-    conv.t = t;
-   //is virtual call
-    unsigned char prolog[]= {0x55, 0x8b, 0xec, 0x83, 0xec,
-            0x04, 0x89, 0x5d, 0xfc,
-            0x8b, 0x45};//, 0x08, 0x8b, 0x40, 0x00,
-            //0x8b, 0x40}; //movl <index>
-	unsigned char* opcodes = conv.u.value;
-    if (0 == memcmp(opcodes, prolog, sizeof(prolog)))
-    {
-        if (opcodes[11] == 0x08 || opcodes[11] == 0x0c)
-        {
-            unsigned char epilogue[] = { 0x8b, 0x5d, 0xfc, 0xc9, 0xff, 0xe0 };
-
-            int i;
-            for (i = 0; i < 4; i++)
-            {
-                if (0 == memcmp(&opcodes[18 + i], epilogue, sizeof(epilogue)))
-                {
-                    break;
-                }
-            }
-            //is virtual call prologue
-            int index = 0;// = opcodes[17] / 4; //offset of function index
-
-            switch (i)
-            {
-                case 3:
-                    index += static_cast<unsigned int>(opcodes[17 + 3]) << (8 * 3);
-                case 2:
-                    index += static_cast<unsigned int>(opcodes[17 + 2]) << (8 * 2);
-                case 1:
-                    index += static_cast<unsigned int>(opcodes[17 + 1]) << (8 * 1);
-                case 0:
-                default:
-                    index += static_cast<unsigned int>(opcodes[17]);
-            }
-            index = index / 4;
-
-            return std::pair<int, int>(conv.u.baseoffs / 4, index);
-        }
-    }
 #else
 #error No virtual indexing found for this compiler! Please contact the maintainers of HippoMocks
 #endif
@@ -4090,7 +4023,7 @@ public:
 	if (staticFuncMap.find(func) == staticFuncMap.end())
 	{
 	  staticFuncMap[func] = X;
-	  staticReplaces.push_front(new Replace(func, fp));
+	  staticReplaces.push_back(new Replace(func, fp));
 	}
 	return staticFuncMap[func];
   }
@@ -4315,7 +4248,7 @@ noexcept(false)
 			{
 				latentException->rethrow();
 			}
-			catch(BASE_EXCEPTION & e)
+			catch(BASE_EXCEPTION e)
 			{
 				printf("Latent exception masked!\nException:\n%s\n", e.what());
 			}
@@ -4402,8 +4335,8 @@ public:
 		mock<Z> *realMock = mock<Z>::getRealThis();
 		if (realMock->isZombie)
 			RAISEEXCEPTION(ZombieMockException(realMock->repo));
-		MockRepository *myRepo = realMock->repo;
-		return myRepo->template DoExpectation<Y>(realMock, realMock->translateX(X), ref_tuple<>());
+		MockRepository *repo = realMock->repo;
+		return repo->template DoExpectation<Y>(realMock, realMock->translateX(X), ref_tuple<>());
 	}
 	template <int X, typename A>
 	Y expectation1(A a)
@@ -4411,8 +4344,8 @@ public:
 		mock<Z> *realMock = mock<Z>::getRealThis();
 		if (realMock->isZombie)
 			RAISEEXCEPTION(ZombieMockException(realMock->repo));
-		MockRepository *myRepo = realMock->repo;
-		return myRepo->template DoExpectation<Y>(realMock, realMock->translateX(X), ref_tuple<A>(a));
+		MockRepository *repo = realMock->repo;
+		return repo->template DoExpectation<Y>(realMock, realMock->translateX(X), ref_tuple<A>(a));
 	}
 	template <int X, typename A, typename B>
 	Y expectation2(A a, B b)
@@ -4420,8 +4353,8 @@ public:
 		mock<Z> *realMock = mock<Z>::getRealThis();
 		if (realMock->isZombie)
 			RAISEEXCEPTION(ZombieMockException(realMock->repo));
-		MockRepository *myRepo = realMock->repo;
-		return myRepo->template DoExpectation<Y>(realMock, realMock->translateX(X), ref_tuple<A,B>(a,b));
+		MockRepository *repo = realMock->repo;
+		return repo->template DoExpectation<Y>(realMock, realMock->translateX(X), ref_tuple<A,B>(a,b));
 	}
 	template <int X, typename A, typename B, typename C>
 	Y expectation3(A a, B b, C c)
@@ -4429,8 +4362,8 @@ public:
 		mock<Z> *realMock = mock<Z>::getRealThis();
 		if (realMock->isZombie)
 			RAISEEXCEPTION(ZombieMockException(realMock->repo));
-		MockRepository *myRepo = realMock->repo;
-		return myRepo->template DoExpectation<Y>(realMock, realMock->translateX(X), ref_tuple<A,B,C>(a,b,c));
+		MockRepository *repo = realMock->repo;
+		return repo->template DoExpectation<Y>(realMock, realMock->translateX(X), ref_tuple<A,B,C>(a,b,c));
 	}
 	template <int X, typename A, typename B, typename C, typename D>
 	Y expectation4(A a, B b, C c, D d)
@@ -4438,8 +4371,8 @@ public:
 		mock<Z> *realMock = mock<Z>::getRealThis();
 		if (realMock->isZombie)
 			RAISEEXCEPTION(ZombieMockException(realMock->repo));
-		MockRepository *myRepo = realMock->repo;
-		return myRepo->template DoExpectation<Y>(realMock, realMock->translateX(X), ref_tuple<A,B,C,D>(a,b,c,d));
+		MockRepository *repo = realMock->repo;
+		return repo->template DoExpectation<Y>(realMock, realMock->translateX(X), ref_tuple<A,B,C,D>(a,b,c,d));
 	}
 	template <int X, typename A, typename B, typename C, typename D, typename E>
 	Y expectation5(A a, B b, C c, D d, E e)
@@ -4447,8 +4380,8 @@ public:
 		mock<Z> *realMock = mock<Z>::getRealThis();
 		if (realMock->isZombie)
 			RAISEEXCEPTION(ZombieMockException(realMock->repo));
-		MockRepository *myRepo = realMock->repo;
-		return myRepo->template DoExpectation<Y>(realMock, realMock->translateX(X), ref_tuple<A,B,C,D,E>(a,b,c,d,e));
+		MockRepository *repo = realMock->repo;
+		return repo->template DoExpectation<Y>(realMock, realMock->translateX(X), ref_tuple<A,B,C,D,E>(a,b,c,d,e));
 	}
 	template <int X, typename A, typename B, typename C, typename D, typename E, typename F>
 	Y expectation6(A a, B b, C c, D d, E e, F f)
@@ -4456,8 +4389,8 @@ public:
 		mock<Z> *realMock = mock<Z>::getRealThis();
 		if (realMock->isZombie)
 			RAISEEXCEPTION(ZombieMockException(realMock->repo));
-		MockRepository *myRepo = realMock->repo;
-		return myRepo->template DoExpectation<Y>(realMock, realMock->translateX(X), ref_tuple<A,B,C,D,E,F>(a,b,c,d,e,f));
+		MockRepository *repo = realMock->repo;
+		return repo->template DoExpectation<Y>(realMock, realMock->translateX(X), ref_tuple<A,B,C,D,E,F>(a,b,c,d,e,f));
 	}
 	template <int X, typename A, typename B, typename C, typename D, typename E, typename F, typename G>
 	Y expectation7(A a, B b, C c, D d, E e, F f, G g)
@@ -4465,8 +4398,8 @@ public:
 		mock<Z> *realMock = mock<Z>::getRealThis();
 		if (realMock->isZombie)
 			RAISEEXCEPTION(ZombieMockException(realMock->repo));
-		MockRepository *myRepo = realMock->repo;
-		return myRepo->template DoExpectation<Y>(realMock, realMock->translateX(X), ref_tuple<A,B,C,D,E,F,G>(a,b,c,d,e,f,g));
+		MockRepository *repo = realMock->repo;
+		return repo->template DoExpectation<Y>(realMock, realMock->translateX(X), ref_tuple<A,B,C,D,E,F,G>(a,b,c,d,e,f,g));
 	}
 	template <int X, typename A, typename B, typename C, typename D, typename E, typename F, typename G, typename H>
 	Y expectation8(A a, B b, C c, D d, E e, F f, G g, H h)
@@ -4474,8 +4407,8 @@ public:
 		mock<Z> *realMock = mock<Z>::getRealThis();
 		if (realMock->isZombie)
 			RAISEEXCEPTION(ZombieMockException(realMock->repo));
-		MockRepository *myRepo = realMock->repo;
-		return myRepo->template DoExpectation<Y>(realMock, realMock->translateX(X), ref_tuple<A,B,C,D,E,F,G,H>(a,b,c,d,e,f,g,h));
+		MockRepository *repo = realMock->repo;
+		return repo->template DoExpectation<Y>(realMock, realMock->translateX(X), ref_tuple<A,B,C,D,E,F,G,H>(a,b,c,d,e,f,g,h));
 	}
 	template <int X, typename A, typename B, typename C, typename D, typename E, typename F, typename G, typename H, typename I>
 	Y expectation9(A a, B b, C c, D d, E e, F f, G g, H h, I i)
@@ -4483,8 +4416,8 @@ public:
 		mock<Z> *realMock = mock<Z>::getRealThis();
 		if (realMock->isZombie)
 			RAISEEXCEPTION(ZombieMockException(realMock->repo));
-		MockRepository *myRepo = realMock->repo;
-		return myRepo->template DoExpectation<Y>(realMock, realMock->translateX(X), ref_tuple<A,B,C,D,E,F,G,H,I>(a,b,c,d,e,f,g,h,i));
+		MockRepository *repo = realMock->repo;
+		return repo->template DoExpectation<Y>(realMock, realMock->translateX(X), ref_tuple<A,B,C,D,E,F,G,H,I>(a,b,c,d,e,f,g,h,i));
 	}
 	template <int X, typename A, typename B, typename C, typename D, typename E, typename F, typename G, typename H, typename I, typename J>
 	Y expectation10(A a, B b, C c, D d, E e, F f, G g, H h, I i, J j)
@@ -4492,8 +4425,8 @@ public:
 		mock<Z> *realMock = mock<Z>::getRealThis();
 		if (realMock->isZombie)
 			RAISEEXCEPTION(ZombieMockException(realMock->repo));
-		MockRepository *myRepo = realMock->repo;
-		return myRepo->template DoExpectation<Y>(realMock, realMock->translateX(X), ref_tuple<A,B,C,D,E,F,G,H,I,J>(a,b,c,d,e,f,g,h,i,j));
+		MockRepository *repo = realMock->repo;
+		return repo->template DoExpectation<Y>(realMock, realMock->translateX(X), ref_tuple<A,B,C,D,E,F,G,H,I,J>(a,b,c,d,e,f,g,h,i,j));
 	}
 	template <int X, typename A, typename B, typename C, typename D, typename E, typename F, typename G, typename H, typename I, typename J, typename K>
 	Y expectation11(A a, B b, C c, D d, E e, F f, G g, H h, I i, J j, K k)
@@ -4501,8 +4434,8 @@ public:
 		mock<Z> *realMock = mock<Z>::getRealThis();
 		if (realMock->isZombie)
 			RAISEEXCEPTION(ZombieMockException(realMock->repo));
-		MockRepository *myRepo = realMock->repo;
-		return myRepo->template DoExpectation<Y>(realMock, realMock->translateX(X), ref_tuple<A,B,C,D,E,F,G,H,I,J,K>(a,b,c,d,e,f,g,h,i,j,k));
+		MockRepository *repo = realMock->repo;
+		return repo->template DoExpectation<Y>(realMock, realMock->translateX(X), ref_tuple<A,B,C,D,E,F,G,H,I,J,K>(a,b,c,d,e,f,g,h,i,j,k));
 	}
 	template <int X, typename A, typename B, typename C, typename D, typename E, typename F, typename G, typename H, typename I, typename J, typename K, typename L>
 	Y expectation12(A a, B b, C c, D d, E e, F f, G g, H h, I i, J j, K k, L l)
@@ -4510,8 +4443,8 @@ public:
 		mock<Z> *realMock = mock<Z>::getRealThis();
 		if (realMock->isZombie)
 			RAISEEXCEPTION(ZombieMockException(realMock->repo));
-		MockRepository *myRepo = realMock->repo;
-		return myRepo->template DoExpectation<Y>(realMock, realMock->translateX(X), ref_tuple<A,B,C,D,E,F,G,H,I,J,K,L>(a,b,c,d,e,f,g,h,i,j,k,l));
+		MockRepository *repo = realMock->repo;
+		return repo->template DoExpectation<Y>(realMock, realMock->translateX(X), ref_tuple<A,B,C,D,E,F,G,H,I,J,K,L>(a,b,c,d,e,f,g,h,i,j,k,l));
 	}
 	template <int X, typename A, typename B, typename C, typename D, typename E, typename F, typename G, typename H, typename I, typename J, typename K, typename L, typename M>
 	Y expectation13(A a, B b, C c, D d, E e, F f, G g, H h, I i, J j, K k, L l, M m)
@@ -4519,8 +4452,8 @@ public:
 		mock<Z> *realMock = mock<Z>::getRealThis();
 		if (realMock->isZombie)
 			RAISEEXCEPTION(ZombieMockException(realMock->repo));
-		MockRepository *myRepo = realMock->repo;
-		return myRepo->template DoExpectation<Y>(realMock, realMock->translateX(X), ref_tuple<A,B,C,D,E,F,G,H,I,J,K,L,M>(a,b,c,d,e,f,g,h,i,j,k,l,m));
+		MockRepository *repo = realMock->repo;
+		return repo->template DoExpectation<Y>(realMock, realMock->translateX(X), ref_tuple<A,B,C,D,E,F,G,H,I,J,K,L,M>(a,b,c,d,e,f,g,h,i,j,k,l,m));
 	}
 	template <int X, typename A, typename B, typename C, typename D, typename E, typename F, typename G, typename H, typename I, typename J, typename K, typename L, typename M, typename N>
 	Y expectation14(A a, B b, C c, D d, E e, F f, G g, H h, I i, J j, K k, L l, M m, N n)
@@ -4528,8 +4461,8 @@ public:
 		mock<Z> *realMock = mock<Z>::getRealThis();
 		if (realMock->isZombie)
 			RAISEEXCEPTION(ZombieMockException(realMock->repo));
-		MockRepository *myRepo = realMock->repo;
-		return myRepo->template DoExpectation<Y>(realMock, realMock->translateX(X), ref_tuple<A,B,C,D,E,F,G,H,I,J,K,L,M,N>(a,b,c,d,e,f,g,h,i,j,k,l,m,n));
+		MockRepository *repo = realMock->repo;
+		return repo->template DoExpectation<Y>(realMock, realMock->translateX(X), ref_tuple<A,B,C,D,E,F,G,H,I,J,K,L,M,N>(a,b,c,d,e,f,g,h,i,j,k,l,m,n));
 	}
 	template <int X, typename A, typename B, typename C, typename D, typename E, typename F, typename G, typename H, typename I, typename J, typename K, typename L, typename M, typename N, typename O>
 	Y expectation15(A a, B b, C c, D d, E e, F f, G g, H h, I i, J j, K k, L l, M m, N n, O o)
@@ -4537,8 +4470,8 @@ public:
 		mock<Z> *realMock = mock<Z>::getRealThis();
 		if (realMock->isZombie)
 			RAISEEXCEPTION(ZombieMockException(realMock->repo));
-		MockRepository *myRepo = realMock->repo;
-		return myRepo->template DoExpectation<Y>(realMock, realMock->translateX(X), ref_tuple<A,B,C,D,E,F,G,H,I,J,K,L,M,N,O>(a,b,c,d,e,f,g,h,i,j,k,l,m,n,o));
+		MockRepository *repo = realMock->repo;
+		return repo->template DoExpectation<Y>(realMock, realMock->translateX(X), ref_tuple<A,B,C,D,E,F,G,H,I,J,K,L,M,N,O>(a,b,c,d,e,f,g,h,i,j,k,l,m,n,o));
 	}
 	template <int X, typename A, typename B, typename C, typename D, typename E, typename F, typename G, typename H, typename I, typename J, typename K, typename L, typename M, typename N, typename O, typename P>
 	Y expectation16(A a, B b, C c, D d, E e, F f, G g, H h, I i, J j, K k, L l, M m, N n, O o, P p)
@@ -4546,8 +4479,8 @@ public:
 		mock<Z> *realMock = mock<Z>::getRealThis();
 		if (realMock->isZombie)
 			RAISEEXCEPTION(ZombieMockException(realMock->repo));
-		MockRepository *myRepo = realMock->repo;
-		return myRepo->template DoExpectation<Y>(realMock, realMock->translateX(X), ref_tuple<A,B,C,D,E,F,G,H,I,J,K,L,M,N,O,P>(a,b,c,d,e,f,g,h,i,j,k,l,m,n,o,p));
+		MockRepository *repo = realMock->repo;
+		return repo->template DoExpectation<Y>(realMock, realMock->translateX(X), ref_tuple<A,B,C,D,E,F,G,H,I,J,K,L,M,N,O,P>(a,b,c,d,e,f,g,h,i,j,k,l,m,n,o,p));
 	}
 
 	template <int X>
@@ -4840,8 +4773,8 @@ public:
 		mock<Z> *realMock = mock<Z>::getRealThis();
 		if (realMock->isZombie)
 			RAISEEXCEPTION(ZombieMockException(realMock->repo));
-		MockRepository *myRepo = realMock->repo;
-		myRepo->DoVoidExpectation(realMock, realMock->translateX(X), ref_tuple<>());
+		MockRepository *repo = realMock->repo;
+		repo->DoVoidExpectation(realMock, realMock->translateX(X), ref_tuple<>());
 	}
 	template <int X, typename A>
 	void expectation1(A a)
@@ -4849,8 +4782,8 @@ public:
 		mock<Z> *realMock = mock<Z>::getRealThis();
 		if (realMock->isZombie)
 			RAISEEXCEPTION(ZombieMockException(realMock->repo));
-		MockRepository *myRepo = realMock->repo;
-		myRepo->DoVoidExpectation(realMock, realMock->translateX(X), ref_tuple<A>(a));
+		MockRepository *repo = realMock->repo;
+		repo->DoVoidExpectation(realMock, realMock->translateX(X), ref_tuple<A>(a));
 	}
 	template <int X, typename A, typename B>
 	void expectation2(A a, B b)
@@ -4858,8 +4791,8 @@ public:
 		mock<Z> *realMock = mock<Z>::getRealThis();
 		if (realMock->isZombie)
 			RAISEEXCEPTION(ZombieMockException(realMock->repo));
-		MockRepository *myRepo = realMock->repo;
-		myRepo->DoVoidExpectation(realMock, realMock->translateX(X), ref_tuple<A,B>(a,b));
+		MockRepository *repo = realMock->repo;
+		repo->DoVoidExpectation(realMock, realMock->translateX(X), ref_tuple<A,B>(a,b));
 	}
 	template <int X, typename A, typename B, typename C>
 	void expectation3(A a, B b, C c)
@@ -4867,8 +4800,8 @@ public:
 		mock<Z> *realMock = mock<Z>::getRealThis();
 		if (realMock->isZombie)
 			RAISEEXCEPTION(ZombieMockException(realMock->repo));
-		MockRepository *myRepo = realMock->repo;
-		myRepo->DoVoidExpectation(realMock, realMock->translateX(X), ref_tuple<A,B,C>(a,b,c));
+		MockRepository *repo = realMock->repo;
+		repo->DoVoidExpectation(realMock, realMock->translateX(X), ref_tuple<A,B,C>(a,b,c));
 	}
 	template <int X, typename A, typename B, typename C, typename D>
 	void expectation4(A a, B b, C c, D d)
@@ -4876,8 +4809,8 @@ public:
 		mock<Z> *realMock = mock<Z>::getRealThis();
 		if (realMock->isZombie)
 			RAISEEXCEPTION(ZombieMockException(realMock->repo));
-		MockRepository *myRepo = realMock->repo;
-		myRepo->DoVoidExpectation(realMock, realMock->translateX(X), ref_tuple<A,B,C,D>(a,b,c,d));
+		MockRepository *repo = realMock->repo;
+		repo->DoVoidExpectation(realMock, realMock->translateX(X), ref_tuple<A,B,C,D>(a,b,c,d));
 	}
 	template <int X, typename A, typename B, typename C, typename D, typename E>
 	void expectation5(A a, B b, C c, D d, E e)
@@ -4885,8 +4818,8 @@ public:
 		mock<Z> *realMock = mock<Z>::getRealThis();
 		if (realMock->isZombie)
 			RAISEEXCEPTION(ZombieMockException(realMock->repo));
-		MockRepository *myRepo = realMock->repo;
-		myRepo->DoVoidExpectation(realMock, realMock->translateX(X), ref_tuple<A,B,C,D,E>(a,b,c,d,e));
+		MockRepository *repo = realMock->repo;
+		repo->DoVoidExpectation(realMock, realMock->translateX(X), ref_tuple<A,B,C,D,E>(a,b,c,d,e));
 	}
 	template <int X, typename A, typename B, typename C, typename D, typename E, typename F>
 	void expectation6(A a, B b, C c, D d, E e, F f)
@@ -4894,8 +4827,8 @@ public:
 		mock<Z> *realMock = mock<Z>::getRealThis();
 		if (realMock->isZombie)
 			RAISEEXCEPTION(ZombieMockException(realMock->repo));
-		MockRepository *myRepo = realMock->repo;
-		myRepo->DoVoidExpectation(realMock, realMock->translateX(X), ref_tuple<A,B,C,D,E,F>(a,b,c,d,e,f));
+		MockRepository *repo = realMock->repo;
+		repo->DoVoidExpectation(realMock, realMock->translateX(X), ref_tuple<A,B,C,D,E,F>(a,b,c,d,e,f));
 	}
 	template <int X, typename A, typename B, typename C, typename D, typename E, typename F, typename G>
 	void expectation7(A a, B b, C c, D d, E e, F f, G g)
@@ -4903,8 +4836,8 @@ public:
 		mock<Z> *realMock = mock<Z>::getRealThis();
 		if (realMock->isZombie)
 			RAISEEXCEPTION(ZombieMockException(realMock->repo));
-		MockRepository *myRepo = realMock->repo;
-		myRepo->DoVoidExpectation(realMock, realMock->translateX(X), ref_tuple<A,B,C,D,E,F,G>(a,b,c,d,e,f,g));
+		MockRepository *repo = realMock->repo;
+		repo->DoVoidExpectation(realMock, realMock->translateX(X), ref_tuple<A,B,C,D,E,F,G>(a,b,c,d,e,f,g));
 	}
 	template <int X, typename A, typename B, typename C, typename D, typename E, typename F, typename G, typename H>
 	void expectation8(A a, B b, C c, D d, E e, F f, G g, H h)
@@ -4912,8 +4845,8 @@ public:
 		mock<Z> *realMock = mock<Z>::getRealThis();
 		if (realMock->isZombie)
 			RAISEEXCEPTION(ZombieMockException(realMock->repo));
-		MockRepository *myRepo = realMock->repo;
-		myRepo->DoVoidExpectation(realMock, realMock->translateX(X), ref_tuple<A,B,C,D,E,F,G,H>(a,b,c,d,e,f,g,h));
+		MockRepository *repo = realMock->repo;
+		repo->DoVoidExpectation(realMock, realMock->translateX(X), ref_tuple<A,B,C,D,E,F,G,H>(a,b,c,d,e,f,g,h));
 	}
 	template <int X, typename A, typename B, typename C, typename D, typename E, typename F, typename G, typename H, typename I>
 	void expectation9(A a, B b, C c, D d, E e, F f, G g, H h, I i)
@@ -4921,8 +4854,8 @@ public:
 		mock<Z> *realMock = mock<Z>::getRealThis();
 		if (realMock->isZombie)
 			RAISEEXCEPTION(ZombieMockException(realMock->repo));
-		MockRepository *myRepo = realMock->repo;
-		myRepo->DoVoidExpectation(realMock, realMock->translateX(X), ref_tuple<A,B,C,D,E,F,G,H,I>(a,b,c,d,e,f,g,h,i));
+		MockRepository *repo = realMock->repo;
+		repo->DoVoidExpectation(realMock, realMock->translateX(X), ref_tuple<A,B,C,D,E,F,G,H,I>(a,b,c,d,e,f,g,h,i));
 	}
 	template <int X, typename A, typename B, typename C, typename D, typename E, typename F, typename G, typename H, typename I, typename J>
 	void expectation10(A a, B b, C c, D d, E e, F f, G g, H h, I i, J j)
@@ -4930,8 +4863,8 @@ public:
 		mock<Z> *realMock = mock<Z>::getRealThis();
 		if (realMock->isZombie)
 			RAISEEXCEPTION(ZombieMockException(realMock->repo));
-		MockRepository *myRepo = realMock->repo;
-		myRepo->DoVoidExpectation(realMock, realMock->translateX(X), ref_tuple<A,B,C,D,E,F,G,H,I,J>(a,b,c,d,e,f,g,h,i,j));
+		MockRepository *repo = realMock->repo;
+		repo->DoVoidExpectation(realMock, realMock->translateX(X), ref_tuple<A,B,C,D,E,F,G,H,I,J>(a,b,c,d,e,f,g,h,i,j));
 	}
 	template <int X, typename A, typename B, typename C, typename D, typename E, typename F, typename G, typename H, typename I, typename J, typename K>
 	void expectation11(A a, B b, C c, D d, E e, F f, G g, H h, I i, J j, K k)
@@ -4939,8 +4872,8 @@ public:
 		mock<Z> *realMock = mock<Z>::getRealThis();
 		if (realMock->isZombie)
 			RAISEEXCEPTION(ZombieMockException(realMock->repo));
-		MockRepository *myRepo = realMock->repo;
-		myRepo->DoVoidExpectation(realMock, realMock->translateX(X), ref_tuple<A,B,C,D,E,F,G,H,I,J,K>(a,b,c,d,e,f,g,h,i,j,k));
+		MockRepository *repo = realMock->repo;
+		repo->DoVoidExpectation(realMock, realMock->translateX(X), ref_tuple<A,B,C,D,E,F,G,H,I,J,K>(a,b,c,d,e,f,g,h,i,j,k));
 	}
 	template <int X, typename A, typename B, typename C, typename D, typename E, typename F, typename G, typename H, typename I, typename J, typename K, typename L>
 	void expectation12(A a, B b, C c, D d, E e, F f, G g, H h, I i, J j, K k, L l)
@@ -4948,8 +4881,8 @@ public:
 		mock<Z> *realMock = mock<Z>::getRealThis();
 		if (realMock->isZombie)
 			RAISEEXCEPTION(ZombieMockException(realMock->repo));
-		MockRepository *myRepo = realMock->repo;
-		myRepo->DoVoidExpectation(realMock, realMock->translateX(X), ref_tuple<A,B,C,D,E,F,G,H,I,J,K,L>(a,b,c,d,e,f,g,h,i,j,k,l));
+		MockRepository *repo = realMock->repo;
+		repo->DoVoidExpectation(realMock, realMock->translateX(X), ref_tuple<A,B,C,D,E,F,G,H,I,J,K,L>(a,b,c,d,e,f,g,h,i,j,k,l));
 	}
 	template <int X, typename A, typename B, typename C, typename D, typename E, typename F, typename G, typename H, typename I, typename J, typename K, typename L, typename M>
 	void expectation13(A a, B b, C c, D d, E e, F f, G g, H h, I i, J j, K k, L l, M m)
@@ -4957,8 +4890,8 @@ public:
 		mock<Z> *realMock = mock<Z>::getRealThis();
 		if (realMock->isZombie)
 			RAISEEXCEPTION(ZombieMockException(realMock->repo));
-		MockRepository *myRepo = realMock->repo;
-		myRepo->DoVoidExpectation(realMock, realMock->translateX(X), ref_tuple<A,B,C,D,E,F,G,H,I,J,K,L,M>(a,b,c,d,e,f,g,h,i,j,k,l,m));
+		MockRepository *repo = realMock->repo;
+		repo->DoVoidExpectation(realMock, realMock->translateX(X), ref_tuple<A,B,C,D,E,F,G,H,I,J,K,L,M>(a,b,c,d,e,f,g,h,i,j,k,l,m));
 	}
 	template <int X, typename A, typename B, typename C, typename D, typename E, typename F, typename G, typename H, typename I, typename J, typename K, typename L, typename M, typename N>
 	void expectation14(A a, B b, C c, D d, E e, F f, G g, H h, I i, J j, K k, L l, M m, N n)
@@ -4966,8 +4899,8 @@ public:
 		mock<Z> *realMock = mock<Z>::getRealThis();
 		if (realMock->isZombie)
 			RAISEEXCEPTION(ZombieMockException(realMock->repo));
-		MockRepository *myRepo = realMock->repo;
-		myRepo->DoVoidExpectation(realMock, realMock->translateX(X), ref_tuple<A,B,C,D,E,F,G,H,I,J,K,L,M,N>(a,b,c,d,e,f,g,h,i,j,k,l,m,n));
+		MockRepository *repo = realMock->repo;
+		repo->DoVoidExpectation(realMock, realMock->translateX(X), ref_tuple<A,B,C,D,E,F,G,H,I,J,K,L,M,N>(a,b,c,d,e,f,g,h,i,j,k,l,m,n));
 	}
 	template <int X, typename A, typename B, typename C, typename D, typename E, typename F, typename G, typename H, typename I, typename J, typename K, typename L, typename M, typename N, typename O>
 	void expectation15(A a, B b, C c, D d, E e, F f, G g, H h, I i, J j, K k, L l, M m, N n, O o)
@@ -4975,8 +4908,8 @@ public:
 		mock<Z> *realMock = mock<Z>::getRealThis();
 		if (realMock->isZombie)
 			RAISEEXCEPTION(ZombieMockException(realMock->repo));
-		MockRepository *myRepo = realMock->repo;
-		myRepo->DoVoidExpectation(realMock, realMock->translateX(X), ref_tuple<A,B,C,D,E,F,G,H,I,J,K,L,M,N,O>(a,b,c,d,e,f,g,h,i,j,k,l,m,n,o));
+		MockRepository *repo = realMock->repo;
+		repo->DoVoidExpectation(realMock, realMock->translateX(X), ref_tuple<A,B,C,D,E,F,G,H,I,J,K,L,M,N,O>(a,b,c,d,e,f,g,h,i,j,k,l,m,n,o));
 	}
 	template <int X, typename A, typename B, typename C, typename D, typename E, typename F, typename G, typename H, typename I, typename J, typename K, typename L, typename M, typename N, typename O, typename P>
 	void expectation16(A a, B b, C c, D d, E e, F f, G g, H h, I i, J j, K k, L l, M m, N n, O o, P p)
@@ -4984,8 +4917,8 @@ public:
 		mock<Z> *realMock = mock<Z>::getRealThis();
 		if (realMock->isZombie)
 			RAISEEXCEPTION(ZombieMockException(realMock->repo));
-		MockRepository *myRepo = realMock->repo;
-		myRepo->DoVoidExpectation(realMock, realMock->translateX(X), ref_tuple<A,B,C,D,E,F,G,H,I,J,K,L,M,N,O,P>(a,b,c,d,e,f,g,h,i,j,k,l,m,n,o,p));
+		MockRepository *repo = realMock->repo;
+		repo->DoVoidExpectation(realMock, realMock->translateX(X), ref_tuple<A,B,C,D,E,F,G,H,I,J,K,L,M,N,O,P>(a,b,c,d,e,f,g,h,i,j,k,l,m,n,o,p));
 	}
 	template <int X>
 	static void static_expectation0()
@@ -6327,7 +6260,7 @@ base *MockRepository::Mock() {
 }
 inline std::ostream &operator<<(std::ostream &os, const Call &call)
 {
-	os << call.fileName << "(" << call.lineno << "): "; //format for Visual studio, enables doubleclick on output line
+	os << call.fileName << "(" << call.lineno << ") ";
 	if (call.expectation == Once)
 		os << "Expectation for ";
 	else
@@ -6402,7 +6335,7 @@ using HippoMocks::In;
 #undef DONTCARE_NAME
 #undef VIRT_FUNC_LIMIT
 #undef EXTRA_DESTRUCTOR
-//#undef FUNCTION_BASE // needed for test
+#undef FUNCTION_BASE
 #undef FUNCTION_STRIDE
 #undef CFUNC_MOCK_PLATFORMIS64BIT
 
