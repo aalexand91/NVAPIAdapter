@@ -50,5 +50,13 @@ namespace NVAPIHooks
 		/// <param name="name">Caches the GPU name.</param>
 		/// <returns>NVAPI status code for determining the GPU name./returns>
 		HOOKS_API NvAPI_Status GetFullName(NvPhysicalGpuHandle gpuHandle, char* name);
+
+		/// <summary>
+		/// Determines the GPU bus type, for example: PCI, PCIe, etc.
+		/// </summary>
+		/// <param name="gpuHandle">Single physical GPU handle.</param>
+		/// <param name="busType">Caches the GPU bus type.</param>
+		/// <returns>NVAPI status code for determining the GPU bus type.</returns>
+		HOOKS_API NvAPI_Status GetBusType(NvPhysicalGpuHandle gpuHandle, NV_GPU_BUS_TYPE* busType);
 	}
 }

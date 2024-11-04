@@ -36,5 +36,10 @@ namespace NVAPIHooks
 		{
 			return NvAPI_GPU_GetFullName(gpuHandle, name);
 		}
+
+		NvAPI_Status GetBusType(NvPhysicalGpuHandle gpuHandle, NV_GPU_BUS_TYPE* busType)
+		{
+			return NvAPI_GPU_GetBusType(gpuHandle, busType);
+		}
 	}
 }
