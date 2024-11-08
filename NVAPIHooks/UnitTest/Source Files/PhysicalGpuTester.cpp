@@ -1,4 +1,22 @@
-// Copyright 2024 Anthony Alexander
+// Copyright (c) 2024 Anthony Alexander
+
+// Permission is hereby granted, free of charge, to any person obtaining a copy
+// of this software and associated documentation files (the "Software"), to deal
+// in the Software without restriction, including without limitation the rights
+// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+// copies of the Software, and to permit persons to whom the Software is
+// furnished to do so, subject to the following conditions:
+
+// The above copyright notice and this permission notice shall be included in all
+// copies or substantial portions of the Software.
+//
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+// SOFTWARE.
 
 #include <pch_UnitTest.h>
 
@@ -85,6 +103,55 @@ namespace NVAPIHooks
 
 				// Assert
 				Assert::ExpectException<ApiError>(act);
+			}
+
+			TEST_METHOD(GetBusType_OnSuccess_ReturnsBusType)
+			{
+				// Arrange
+				auto physicalGpu = std::make_unique<PhysicalGpu>(m_fakeGpuHandle);
+				for (const auto& [busTypeValue, busTypeString] : physicalGpu->m_busTypeMap)
+				{
+					m_mocks.OnCallFunc(ApiTunnel::GetBusType).With(m_fakeGpuHandle, _)
+						.Do([&](NvPhysicalGpuHandle, NV_GPU_BUS_TYPE* busType) -> NvAPI_Status
+							{
+								*busType = busTypeValue;
+								return NvAPI_Status::NVAPI_OK;
+							});
+					const std::string expected = busTypeString;
+
+					// Act
+					auto actual = physicalGpu->GetBusType();
+
+					// Assert
+					Assert::AreEqual(expected, actual);
+				}
+			}
+
+			TEST_METHOD(GetBusType_OnApiTunnelFailure_Throws)
+			{
+				// Arrange
+				m_mocks.OnCallFunc(ApiTunnel::GetBusType).Return(NvAPI_Status::NVAPI_ERROR);
+				auto physicalGpu = std::make_unique<PhysicalGpu>(m_fakeGpuHandle);
+
+				// Act
+				auto act = [&]() -> std::string { return physicalGpu->GetBusType(); };
+
+				// Assert
+				Assert::ExpectException<ApiError>(act);
+			}
+
+			TEST_METHOD(GetBusType_GivenUnknownBusType_ReturnsUnknown)
+			{
+				// Arrange
+				m_mocks.OnCallFunc(ApiTunnel::GetBusType).Return(NvAPI_Status::NVAPI_OK);
+				const std::string expected = "Unknown";
+				auto physicalGpu = std::make_unique<PhysicalGpu>(m_fakeGpuHandle);
+
+				// Act
+				auto actual = physicalGpu->GetBusType();
+
+				// Assert
+				Assert::AreEqual(expected, actual);
 			}
 
 		private:
