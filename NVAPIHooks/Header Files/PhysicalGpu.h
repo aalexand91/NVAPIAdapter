@@ -46,6 +46,7 @@ namespace NVAPIHooks
 		HOOKS_API unsigned long GetCoreCount() override;
 		HOOKS_API std::string GetFullName() override;
 		HOOKS_API std::string GetBusType() override;
+		HOOKS_API std::string GetSystemType() override;
 
 	private:
 		NvPhysicalGpuHandle m_physicalGpuHandle{ NVAPI_DEFAULT_HANDLE };

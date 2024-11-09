@@ -36,7 +36,8 @@ int main()
     std::cout << "Printing various GPU information...\n";
     std::cout << "Name: " << physicalGpu->GetFullName() << std::endl;
     std::cout << "Core count: " << physicalGpu->GetCoreCount() << std::endl;
-    std::cout << "GPU bus type: " << physicalGpu->GetBusType() << std::endl;
+    std::cout << "Bus type: " << physicalGpu->GetBusType() << std::endl;
+    std::cout << "System type: " << physicalGpu->GetSystemType() << std::endl;
     std::cout << "\n";
     std::cout << "Unloading API...\n";
     GeneralApi::Unload();

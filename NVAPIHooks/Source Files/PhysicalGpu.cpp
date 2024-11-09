@@ -54,4 +54,19 @@ namespace NVAPIHooks
 		// that a new GPU type should be added to the map.
 		return pair == m_busTypeMap.end() ? "Unknown" : pair->second;
 	}
+
+	std::string PhysicalGpu::GetSystemType()
+	{
+		NV_SYSTEM_TYPE systemType = NV_SYSTEM_TYPE::NV_SYSTEM_TYPE_UNKNOWN;
+		const auto status = ApiTunnel::GetSystemType(m_physicalGpuHandle, &systemType);
+		if (status != NvAPI_Status::NVAPI_OK) throw ApiError("Failed to get GPU system type.", status);
+		
+		switch (systemType)
+		{
+		case NV_SYSTEM_TYPE::NV_SYSTEM_TYPE_LAPTOP: return "Laptop";
+		case NV_SYSTEM_TYPE::NV_SYSTEM_TYPE_DESKTOP: return "Desktop";
+		default: return "Unknown";
+		}
+
+	}
 }

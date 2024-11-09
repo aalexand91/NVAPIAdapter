@@ -40,7 +40,10 @@ namespace NVAPIHooks
 		/// <returns>The name of the GPU.</returns>
 		virtual std::string GetFullName() = 0;
 
-		/// <returns>The GPU bus type.</returns>
+		/// <returns>The GPU bus type such as PCIe.</returns>
 		virtual std::string GetBusType() = 0;
+
+		/// <returns>The GPU system type such as Laptop or Desktop.</returns>
+		virtual std::string GetSystemType() = 0;
 	};
 }

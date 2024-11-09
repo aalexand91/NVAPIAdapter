@@ -76,5 +76,13 @@ namespace NVAPIHooks
 		/// <param name="busType">Caches the GPU bus type.</param>
 		/// <returns>NVAPI status code for determining the GPU bus type.</returns>
 		HOOKS_API NvAPI_Status GetBusType(NvPhysicalGpuHandle gpuHandle, NV_GPU_BUS_TYPE* busType);
+
+		/// <summary>
+		/// Determines the GPU system type, for example: Laptop
+		/// </summary>
+		/// <param name="gpuHandle"><Single physical GPU handle./param>
+		/// <param name="systemType">Caches the GPU system type.</param>
+		/// <returns>NVAPI status code for determining the GPU system type.</returns>
+		HOOKS_API NvAPI_Status GetSystemType(NvPhysicalGpuHandle gpuHandle, NV_SYSTEM_TYPE* systemType);
 	}
 }

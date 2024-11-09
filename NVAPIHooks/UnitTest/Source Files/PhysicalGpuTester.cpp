@@ -154,6 +154,76 @@ namespace NVAPIHooks
 				Assert::AreEqual(expected, actual);
 			}
 
+			TEST_METHOD(GetSystemType_GivenLaptopType_ReturnsLaptop)
+			{
+				// Arrange
+				m_mocks.OnCallFunc(ApiTunnel::GetSystemType).With(m_fakeGpuHandle, _)
+					.Do([&](NvPhysicalGpuHandle, NV_SYSTEM_TYPE* systemType) -> NvAPI_Status
+						{
+							*systemType = NV_SYSTEM_TYPE::NV_SYSTEM_TYPE_LAPTOP;
+							return NvAPI_Status::NVAPI_OK;
+						});
+				const std::string expected = "Laptop";
+				auto physicalGpu = std::make_unique<PhysicalGpu>(m_fakeGpuHandle);
+
+				// Act
+				auto actual = physicalGpu->GetSystemType();
+
+				// Assert
+				Assert::AreEqual(expected, actual);
+			}
+
+			TEST_METHOD(GetSystemType_GivenDesktopType_ReturnsDesktop)
+			{
+				// Arrange
+				m_mocks.OnCallFunc(ApiTunnel::GetSystemType).With(m_fakeGpuHandle, _)
+					.Do([&](NvPhysicalGpuHandle, NV_SYSTEM_TYPE* systemType) -> NvAPI_Status
+						{
+							*systemType = NV_SYSTEM_TYPE::NV_SYSTEM_TYPE_DESKTOP;
+							return NvAPI_Status::NVAPI_OK;
+						});
+				const std::string expected = "Desktop";
+				auto physicalGpu = std::make_unique<PhysicalGpu>(m_fakeGpuHandle);
+
+				// Act
+				auto actual = physicalGpu->GetSystemType();
+
+				// Assert
+				Assert::AreEqual(expected, actual);
+			}
+
+			TEST_METHOD(GetSystemType_GivenUnknownType_ReturnsUnknown)
+			{
+				// Arrange
+				m_mocks.OnCallFunc(ApiTunnel::GetSystemType).With(m_fakeGpuHandle, _)
+					.Do([&](NvPhysicalGpuHandle, NV_SYSTEM_TYPE* systemType) -> NvAPI_Status
+						{
+							*systemType = NV_SYSTEM_TYPE::NV_SYSTEM_TYPE_UNKNOWN;
+							return NvAPI_Status::NVAPI_OK;
+						});
+				const std::string expected = "Unknown";
+				auto physicalGpu = std::make_unique<PhysicalGpu>(m_fakeGpuHandle);
+
+				// Act
+				auto actual = physicalGpu->GetSystemType();
+
+				// Assert
+				Assert::AreEqual(expected, actual);
+			}
+
+			TEST_METHOD(GetSystemType_OnFailure_Throws)
+			{
+				// Arrange
+				m_mocks.OnCallFunc(ApiTunnel::GetSystemType).Return(NvAPI_Status::NVAPI_ERROR);
+				auto physicalGpu = std::make_unique<PhysicalGpu>(m_fakeGpuHandle);
+
+				// Act
+				auto act = [&]()-> std::string {return physicalGpu->GetSystemType(); };
+
+				// Assert
+				Assert::ExpectException<ApiError>(act);
+			}
+
 		private:
 			NvPhysicalGpuHandle m_fakeGpuHandle{ (NvPhysicalGpuHandle)1 };
 			MockRepository m_mocks;
