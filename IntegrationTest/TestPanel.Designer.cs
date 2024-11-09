@@ -1,4 +1,22 @@
-﻿// Copyright 2024 Anthony Alexander
+﻿// Copyright (c) 2024 Anthony Alexander
+
+// Permission is hereby granted, free of charge, to any person obtaining a copy
+// of this software and associated documentation files (the "Software"), to deal
+// in the Software without restriction, including without limitation the rights
+// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+// copies of the Software, and to permit persons to whom the Software is
+// furnished to do so, subject to the following conditions:
+
+// The above copyright notice and this permission notice shall be included in all
+// copies or substantial portions of the Software.
+//
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+// SOFTWARE.
 
 namespace NVAPIAdapter.IntegrationTest
 {
@@ -35,6 +53,8 @@ namespace NVAPIAdapter.IntegrationTest
             InstructionLabel = new Label();
             GpuComboBox = new ComboBox();
             CoreCountButton = new Button();
+            BusTypeButton = new Button();
+            SystemTypeButton = new Button();
             SuspendLayout();
             // 
             // InstructionLabel
@@ -68,11 +88,35 @@ namespace NVAPIAdapter.IntegrationTest
             CoreCountButton.UseVisualStyleBackColor = true;
             CoreCountButton.Click += CoreCountButton_Click;
             // 
+            // BusTypeButton
+            // 
+            BusTypeButton.Enabled = false;
+            BusTypeButton.Location = new Point(175, 92);
+            BusTypeButton.Name = "BusTypeButton";
+            BusTypeButton.Size = new Size(157, 71);
+            BusTypeButton.TabIndex = 3;
+            BusTypeButton.Text = "Bus Type";
+            BusTypeButton.UseVisualStyleBackColor = true;
+            BusTypeButton.Click += BusTypeButton_Click;
+            // 
+            // SystemTypeButton
+            // 
+            SystemTypeButton.Enabled = false;
+            SystemTypeButton.Location = new Point(338, 92);
+            SystemTypeButton.Name = "SystemTypeButton";
+            SystemTypeButton.Size = new Size(157, 71);
+            SystemTypeButton.TabIndex = 4;
+            SystemTypeButton.Text = "System Type";
+            SystemTypeButton.UseVisualStyleBackColor = true;
+            SystemTypeButton.Click += SystemTypeButton_Click;
+            // 
             // TestPanel
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(800, 450);
+            Controls.Add(SystemTypeButton);
+            Controls.Add(BusTypeButton);
             Controls.Add(CoreCountButton);
             Controls.Add(GpuComboBox);
             Controls.Add(InstructionLabel);
@@ -87,5 +131,7 @@ namespace NVAPIAdapter.IntegrationTest
         private Label InstructionLabel;
         private ComboBox GpuComboBox;
         private Button CoreCountButton;
+        private Button BusTypeButton;
+        private Button SystemTypeButton;
     }
 }
