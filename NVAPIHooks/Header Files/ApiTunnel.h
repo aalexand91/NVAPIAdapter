@@ -84,5 +84,15 @@ namespace NVAPIHooks
 		/// <param name="systemType">Caches the GPU system type.</param>
 		/// <returns>NVAPI status code for determining the GPU system type.</returns>
 		HOOKS_API NvAPI_Status GetSystemType(NvPhysicalGpuHandle gpuHandle, NV_SYSTEM_TYPE* systemType);
+
+		/// <summary>Determines the GPU PCI identifiers.</summary>
+		/// <param name="gpuHandle">Single physical GPU handle.</param>
+		/// <param name="internalDeviceId">Caches the internal PCI device identifier.</param>
+		/// <param name="subsystemId">Caches the subsystem PCI device identifier.</param>
+		/// <param name="revisionId">Caches the device-specific revision identifier.</param>
+		/// <param name="externalDeviceId">Caches the external PCI device identifier.</param>
+		/// <returns>NVAPI status code for determining the GPU PCI identifiers.</returns>
+		HOOKS_API NvAPI_Status GetPciIdentifiers(NvPhysicalGpuHandle gpuHandle, unsigned long* internalDeviceId,
+			unsigned long* subsystemId, unsigned long* revisionId, unsigned long* externalDeviceId);
 	}
 }

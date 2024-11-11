@@ -224,6 +224,161 @@ namespace NVAPIHooks
 				Assert::ExpectException<ApiError>(act);
 			}
 
+			TEST_METHOD(GetPciInternalId_OnSuccess_ReturnsInternalId)
+			{
+				// Arrange
+				const unsigned long expected = 11102024ul;
+				m_mocks.OnCallFunc(ApiTunnel::GetPciIdentifiers).With(m_fakeGpuHandle, _, _, _, _)
+					.Do([&](NvPhysicalGpuHandle, unsigned long* internalId, unsigned long*,
+						unsigned long*, unsigned long*) -> NvAPI_Status
+						{
+							*internalId = expected;
+							return NvAPI_Status::NVAPI_OK;
+						});
+				auto physicalGpu = std::make_unique<PhysicalGpu>(m_fakeGpuHandle);
+
+				// Act
+				auto actual = physicalGpu->GetPciInternalId();
+
+				// Assert
+				Assert::AreEqual(expected, actual);
+			}
+
+			TEST_METHOD(GetPciInternalId_OnFailure_Throws)
+			{
+				// Arrange
+				m_mocks.OnCallFunc(ApiTunnel::GetPciIdentifiers).Return(NvAPI_Status::NVAPI_ERROR);
+				auto physicalGpu = std::make_unique<PhysicalGpu>(m_fakeGpuHandle);
+
+				// Act
+				auto act = [&]() -> unsigned long { return physicalGpu->GetPciInternalId(); };
+
+				// Assert
+				Assert::ExpectException<ApiError>(act);
+			}
+
+			TEST_METHOD(GetPciExternalId_OnSuccess_ReturnsExternalId)
+			{
+				// Arrange
+				const unsigned long expected = 1959ul;
+				m_mocks.OnCallFunc(ApiTunnel::GetPciIdentifiers).With(m_fakeGpuHandle, _, _, _, _)
+					.Do([&](NvPhysicalGpuHandle, unsigned long*, unsigned long*,
+						unsigned long*, unsigned long* externalId) -> NvAPI_Status
+						{
+							*externalId = expected;
+							return NvAPI_Status::NVAPI_OK;
+						});
+				auto physicalGpu = std::make_unique<PhysicalGpu>(m_fakeGpuHandle);
+
+				// Act
+				auto actual = physicalGpu->GetPciExternalId();
+
+				// Assert
+				Assert::AreEqual(expected, actual);
+			}
+
+			TEST_METHOD(GetPciExternalId_OnFailure_Throws)
+			{
+				// Arrange
+				m_mocks.OnCallFunc(ApiTunnel::GetPciIdentifiers).Return(NvAPI_Status::NVAPI_ERROR);
+				auto physicalGpu = std::make_unique<PhysicalGpu>(m_fakeGpuHandle);
+
+				// Act
+				auto act = [&]() -> unsigned long { return physicalGpu->GetPciExternalId(); };
+
+				// Assert
+				Assert::ExpectException<ApiError>(act);
+			}
+
+			TEST_METHOD(GetPciRevisionId_OnSuccess_ReturnsRevisionId)
+			{
+				// Arrange
+				const unsigned long expected = 3022024ul;
+				m_mocks.OnCallFunc(ApiTunnel::GetPciIdentifiers).With(m_fakeGpuHandle, _, _, _, _)
+					.Do([&](NvPhysicalGpuHandle, unsigned long*, unsigned long*,
+						unsigned long* revisionId, unsigned long*) -> NvAPI_Status
+						{
+							*revisionId = expected;
+							return NvAPI_Status::NVAPI_OK;
+						});
+				auto physicalGpu = std::make_unique<PhysicalGpu>(m_fakeGpuHandle);
+
+				// Act
+				auto actual = physicalGpu->GetPciRevisionId();
+
+				// Assert
+				Assert::AreEqual(expected, actual);
+			}
+
+			TEST_METHOD(GetPciRevisionId_OnFailure_Throws)
+			{
+				// Arrange
+				m_mocks.OnCallFunc(ApiTunnel::GetPciIdentifiers).Return(NvAPI_Status::NVAPI_ERROR);
+				auto physicalGpu = std::make_unique<PhysicalGpu>(m_fakeGpuHandle);
+
+				// Act
+				auto act = [&]() -> unsigned long { return physicalGpu->GetPciRevisionId(); };
+
+				// Assert
+				Assert::ExpectException<ApiError>(act);
+			}
+
+			TEST_METHOD(GetPciSubsystemId_OnSuccess_ReturnsSubsystemId)
+			{
+				// Arrange
+				const unsigned long expected = 8012019ul;
+				m_mocks.OnCallFunc(ApiTunnel::GetPciIdentifiers).With(m_fakeGpuHandle, _, _, _, _)
+					.Do([&](NvPhysicalGpuHandle, unsigned long*, unsigned long* subsystemId,
+						unsigned long*, unsigned long*) -> NvAPI_Status
+						{
+							*subsystemId = expected;
+							return NvAPI_Status::NVAPI_OK;
+						});
+				auto physicalGpu = std::make_unique<PhysicalGpu>(m_fakeGpuHandle);
+
+				// Act
+				auto actual = physicalGpu->GetPciSubsystemId();
+
+				// Assert
+				Assert::AreEqual(expected, actual);
+			}
+
+			TEST_METHOD(GetPciSubsystemId_OnFailure_Throws)
+			{
+				// Arrange
+				m_mocks.OnCallFunc(ApiTunnel::GetPciIdentifiers).Return(NvAPI_Status::NVAPI_ERROR);
+				auto physicalGpu = std::make_unique<PhysicalGpu>(m_fakeGpuHandle);
+
+				// Act
+				auto act = [&]() -> unsigned long { return physicalGpu->GetPciSubsystemId(); };
+
+				// Assert
+				Assert::ExpectException<ApiError>(act);
+			}
+
+			// Ideally, we don't test private methods as they get tested through the public ones that use them.
+			// This is an exception to that since we can't really pass an unknown type through the public methods.
+			TEST_METHOD(GetPciIdentifier_GivenUnknownPciIdType_Throws)
+			{
+				// Arrange
+				m_mocks.OnCallFunc(ApiTunnel::GetPciIdentifiers).Return(NvAPI_Status::NVAPI_OK);
+				const char* expectedMessage = "Unknown PCI identifier type provided.";
+				auto physicalGpu = std::make_unique<PhysicalGpu>(m_fakeGpuHandle);
+
+				try
+				{
+					// Act
+					auto identifier = physicalGpu->GetPciIdentifier(PciIdentifierType::UNKNOWN);
+				}
+				catch (const std::invalid_argument& ex)
+				{
+					// Assert
+					Assert::AreEqual(expectedMessage, ex.what());
+					return;
+				}
+				Assert::Fail(L"Expected exception to be thrown but did not.");
+			}
+
 		private:
 			NvPhysicalGpuHandle m_fakeGpuHandle{ (NvPhysicalGpuHandle)1 };
 			MockRepository m_mocks;

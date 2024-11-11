@@ -48,4 +48,13 @@ namespace NVAPIAdapter
 	{
 		return m_physicalGpu->GetSystemType();
 	}
+
+	IPciIdentifier^ NvidiaGpu::GetPciIdentifier()
+	{
+		const auto internalId = m_physicalGpu->GetPciInternalId();
+		const auto externalId = m_physicalGpu->GetPciExternalId();
+		const auto revisionId = m_physicalGpu->GetPciRevisionId();
+		const auto subsystemId = m_physicalGpu->GetPciSubsystemId();
+		return gcnew PciIdentifier(internalId, externalId, revisionId, subsystemId);
+	}
 }

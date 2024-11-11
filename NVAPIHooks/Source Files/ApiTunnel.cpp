@@ -64,5 +64,11 @@ namespace NVAPIHooks
 		{
 			return NvAPI_GPU_GetSystemType(gpuHandle, systemType);
 		}
+
+		NvAPI_Status GetPciIdentifiers(NvPhysicalGpuHandle gpuHandle, unsigned long* internalDeviceId,
+			unsigned long* subSystemId, unsigned long* revisionId, unsigned long* externalDeviceId)
+		{
+			return NvAPI_GPU_GetPCIIdentifiers(gpuHandle, internalDeviceId, subSystemId, revisionId, externalDeviceId);
+		}
 	}
 }

@@ -33,6 +33,7 @@
 #include <memory>
 #include <nvapi.h>
 #include <string>
+#include <stdexcept>
 #include <vector>
 #include <unordered_map>
 
