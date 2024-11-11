@@ -23,6 +23,7 @@
 #include <Export.h>
 #include <IPhysicalGpu.h>
 #include <nvapi.h>
+#include <PciIdentifierTypes.h>
 #include <unordered_map>
 
 namespace NVAPIHooks
@@ -47,6 +48,10 @@ namespace NVAPIHooks
 		HOOKS_API std::string GetFullName() override;
 		HOOKS_API std::string GetBusType() override;
 		HOOKS_API std::string GetSystemType() override;
+		HOOKS_API unsigned long GetPciInternalId() override;
+		HOOKS_API unsigned long GetPciExternalId() override;
+		HOOKS_API unsigned long GetPciRevisionId() override;
+		HOOKS_API unsigned long GetPciSubsystemId() override;
 
 	private:
 		NvPhysicalGpuHandle m_physicalGpuHandle{ NVAPI_DEFAULT_HANDLE };
@@ -59,5 +64,7 @@ namespace NVAPIHooks
 			{NV_GPU_BUS_TYPE::NVAPI_GPU_BUS_TYPE_FPCI, "FPCI"},
 			{NV_GPU_BUS_TYPE::NVAPI_GPU_BUS_TYPE_AXI, "AXI"},
 		};
+
+		[[nodiscard]] HOOKS_API unsigned long GetPciIdentifier(const PciIdentifierType idType);
 	};
 }

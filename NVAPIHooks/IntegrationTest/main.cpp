@@ -38,6 +38,10 @@ int main()
     std::cout << "Core count: " << physicalGpu->GetCoreCount() << std::endl;
     std::cout << "Bus type: " << physicalGpu->GetBusType() << std::endl;
     std::cout << "System type: " << physicalGpu->GetSystemType() << std::endl;
+    std::cout << "PCI internal ID: " << physicalGpu->GetPciInternalId() << std::endl;
+    std::cout << "PCI external ID: " << physicalGpu->GetPciExternalId() << std::endl;
+    std::cout << "PCI revision ID: " << physicalGpu->GetPciRevisionId() << std::endl;
+    std::cout << "PCI subsystem ID: " << physicalGpu->GetPciSubsystemId() << std::endl;
     std::cout << "\n";
     std::cout << "Unloading API...\n";
     GeneralApi::Unload();

@@ -67,6 +67,41 @@ namespace NVAPIHooks
 		case NV_SYSTEM_TYPE::NV_SYSTEM_TYPE_DESKTOP: return "Desktop";
 		default: return "Unknown";
 		}
+	}
 
+	unsigned long PhysicalGpu::GetPciIdentifier(const PciIdentifierType idType)
+	{
+		unsigned long internalId, subsystemId, revisionId, externalId;
+		const auto status = ApiTunnel::GetPciIdentifiers(m_physicalGpuHandle, &internalId, &subsystemId, &revisionId, &externalId);
+		if (status != NvAPI_Status::NVAPI_OK) throw ApiError("Failed to determine PCI identifiers.", status);
+
+		switch (idType)
+		{
+		case PciIdentifierType::INTERNAL: return internalId;
+		case PciIdentifierType::EXTERNAL: return externalId;
+		case PciIdentifierType::REVISION: return revisionId;
+		case PciIdentifierType::SUBSYSTEM: return subsystemId;
+		default: throw std::invalid_argument("Unknown PCI identifier type provided.");
+		}
+	}
+
+	unsigned long PhysicalGpu::GetPciInternalId()
+	{
+		return GetPciIdentifier(PciIdentifierType::INTERNAL);
+	}
+
+	unsigned long PhysicalGpu::GetPciExternalId()
+	{
+		return GetPciIdentifier(PciIdentifierType::EXTERNAL);
+	}
+
+	unsigned long PhysicalGpu::GetPciRevisionId()
+	{
+		return GetPciIdentifier(PciIdentifierType::REVISION);
+	}
+
+	unsigned long PhysicalGpu::GetPciSubsystemId()
+	{
+		return GetPciIdentifier(PciIdentifierType::SUBSYSTEM);
 	}
 }

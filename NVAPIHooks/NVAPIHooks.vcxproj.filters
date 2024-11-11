@@ -32,6 +32,9 @@
     <ClInclude Include="Header Files\IPhysicalGpu.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Header Files\PciIdentifierTypes.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source Files\pch.cpp">

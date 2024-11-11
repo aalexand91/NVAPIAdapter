@@ -17,6 +17,7 @@
     <ClInclude Include="Header Files\GeneralApi.h" />
     <ClInclude Include="Header Files\IPhysicalGpu.h" />
     <ClInclude Include="Header Files\pch.h" />
+    <ClInclude Include="Header Files\PciIdentifierTypes.h" />
     <ClInclude Include="Header Files\PhysicalGpu.h" />
   </ItemGroup>
   <ItemGroup>

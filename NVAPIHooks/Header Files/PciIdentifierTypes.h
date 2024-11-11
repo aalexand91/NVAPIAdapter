@@ -20,42 +20,14 @@
 
 #pragma once
 
-#include <string>
-
 namespace NVAPIHooks
 {
-	class IPhysicalGpu
+	enum class PciIdentifierType
 	{
-	public:
-		IPhysicalGpu() = default;
-		~IPhysicalGpu() = default;
-		IPhysicalGpu(const IPhysicalGpu&) = delete;
-		IPhysicalGpu(IPhysicalGpu&&) = delete;
-		IPhysicalGpu& operator = (const IPhysicalGpu&) = delete;
-		IPhysicalGpu& operator = (IPhysicalGpu&&) = delete;
-
-		/// <returns>Number of cores defined for the GPU.</returns>
-		virtual unsigned long GetCoreCount() = 0;
-
-		/// <returns>The name of the GPU.</returns>
-		virtual std::string GetFullName() = 0;
-
-		/// <returns>The GPU bus type such as PCIe.</returns>
-		virtual std::string GetBusType() = 0;
-
-		/// <returns>The GPU system type such as Laptop or Desktop.</returns>
-		virtual std::string GetSystemType() = 0;
-
-		/// <returns>The PCI internal identifier value.</returns>
-		virtual unsigned long GetPciInternalId() = 0;
-
-		/// <returns>The PCI external identifier value.</returns>
-		virtual unsigned long GetPciExternalId() = 0;
-
-		/// <returns>The PCI revision identifier value.</returns>
-		virtual unsigned long GetPciRevisionId() = 0;
-
-		/// <returns>The PCI subsystem indentifer value.</returns>
-		virtual unsigned long GetPciSubsystemId() = 0;
+		INTERNAL,
+		EXTERNAL,
+		REVISION,
+		SUBSYSTEM,
+		UNKNOWN,
 	};
 }
