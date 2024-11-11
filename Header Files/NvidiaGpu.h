@@ -20,6 +20,7 @@
 
 #pragma once
 
+#include <PciIdentifier.h>
 #include <PhysicalGpuAdapter.h>
 
 namespace NVAPIAdapter
@@ -50,6 +51,9 @@ namespace NVAPIAdapter
 		{
 			System::String^ get();
 		}
+
+		/// <returns>The GPU PCI internal, external, revision, and subsystem IDs via the IPciIdentifier object.</returns>
+		IPciIdentifier^ GetPciIdentifier();
 	};
 
 	ref class NvidiaGpu : INvidiaGpu
@@ -62,6 +66,7 @@ namespace NVAPIAdapter
 		virtual property System::String^ Name { System::String^ get(); }
 		virtual property System::String^ SystemType { System::String^ get(); }
 		virtual property System::String^ BusType { System::String^ get(); }
+		virtual IPciIdentifier^ GetPciIdentifier();
 
 	private:
 		IPhysicalGpuAdapter^ m_physicalGpu;

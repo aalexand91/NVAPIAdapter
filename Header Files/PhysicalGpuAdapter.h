@@ -31,6 +31,10 @@ namespace NVAPIAdapter
 		System::String^ GetFullName();
 		System::String^ GetBusType();
 		System::String^ GetSystemType();
+		unsigned long GetPciInternalId();
+		unsigned long GetPciExternalId();
+		unsigned long GetPciRevisionId();
+		unsigned long GetPciSubsystemId();
 	};
 
 	ref class PhysicalGpuAdapter : IPhysicalGpuAdapter
@@ -42,6 +46,10 @@ namespace NVAPIAdapter
 		virtual System::String^ GetFullName() { return gcnew System::String(m_physicalGpu->GetFullName().c_str()); }
 		virtual System::String^ GetBusType() { return gcnew System::String(m_physicalGpu->GetBusType().c_str()); }
 		virtual System::String^ GetSystemType() { return gcnew System::String(m_physicalGpu->GetSystemType().c_str()); }
+		virtual unsigned long GetPciInternalId() { return m_physicalGpu->GetPciInternalId(); }
+		virtual unsigned long GetPciExternalId() { return m_physicalGpu->GetPciExternalId(); }
+		virtual unsigned long GetPciRevisionId() { return m_physicalGpu->GetPciRevisionId(); }
+		virtual unsigned long GetPciSubsystemId() { return m_physicalGpu->GetPciSubsystemId(); }
 
 	private:
 		NVAPIHooks::IPhysicalGpu* m_physicalGpu = nullptr;

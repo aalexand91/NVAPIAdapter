@@ -90,5 +90,33 @@ namespace NVAPIAdapter.UnitTest
             // Assert
             Assert.AreEqual(expected, actual);
         }
+
+        [TestMethod]
+        public void GetPciIdentifier_GivenIdentifier_ReturnsEachId()
+        {
+            // Arrange
+            const uint expectedInternalId = 11102024;
+            myFakePhysicalGpu.GetPciInternalId().Returns(expectedInternalId);
+
+            const uint expectedExternalId = 6212016;
+            myFakePhysicalGpu.GetPciExternalId().Returns(expectedExternalId);
+
+            const uint expectedRevisionId = 12202016;
+            myFakePhysicalGpu.GetPciRevisionId().Returns(expectedRevisionId);
+
+            const uint expectedSubsystemId = 2282020;
+            myFakePhysicalGpu.GetPciSubsystemId().Returns(expectedSubsystemId);
+
+            var gpu = CreateNvidiaGpu();
+
+            // Act
+            var pciIdentifier = gpu.GetPciIdentifier();
+
+            // Assert
+            Assert.AreEqual(expectedInternalId, pciIdentifier.InternalId);
+            Assert.AreEqual(expectedExternalId, pciIdentifier.ExternalId);
+            Assert.AreEqual(expectedRevisionId, pciIdentifier.RevisionId);
+            Assert.AreEqual(expectedSubsystemId, pciIdentifier.SubsystemId);
+        }
     }
 }
