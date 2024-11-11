@@ -57,6 +57,7 @@ namespace NVAPIAdapter.IntegrationTest
             CoreCountButton.Enabled = true;
             BusTypeButton.Enabled = true;
             SystemTypeButton.Enabled = true;
+            PciIdButton.Enabled = true;
         }
 
         [NotNull] INvidiaGpu SelectedGpu => mySelectedGpu ?? throw new NullReferenceException("GPU was not selected.");
@@ -74,6 +75,16 @@ namespace NVAPIAdapter.IntegrationTest
         private void SystemTypeButton_Click(object sender, EventArgs e)
         {
             MessageBox.Show(SelectedGpu.SystemType, caption: "GPU System Type", MessageBoxButtons.OK);
+        }
+
+        private void PciIdButton_Click(object sender, EventArgs e)
+        {
+            var pciIdentifier = SelectedGpu.GetPciIdentifier();
+            var message = $@"Internal ID: {pciIdentifier.InternalId}
+External ID: {pciIdentifier.ExternalId}
+Revision ID: {pciIdentifier.RevisionId}
+Subsystem ID: {pciIdentifier.SubsystemId}";
+            MessageBox.Show(message, caption: "PCI Identifiers", MessageBoxButtons.OK);
         }
     }
 }

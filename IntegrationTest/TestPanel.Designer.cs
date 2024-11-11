@@ -55,6 +55,7 @@ namespace NVAPIAdapter.IntegrationTest
             CoreCountButton = new Button();
             BusTypeButton = new Button();
             SystemTypeButton = new Button();
+            PciIdButton = new Button();
             SuspendLayout();
             // 
             // InstructionLabel
@@ -110,11 +111,23 @@ namespace NVAPIAdapter.IntegrationTest
             SystemTypeButton.UseVisualStyleBackColor = true;
             SystemTypeButton.Click += SystemTypeButton_Click;
             // 
+            // PciIdButton
+            // 
+            PciIdButton.Enabled = false;
+            PciIdButton.Location = new Point(501, 92);
+            PciIdButton.Name = "PciIdButton";
+            PciIdButton.Size = new Size(157, 71);
+            PciIdButton.TabIndex = 5;
+            PciIdButton.Text = "PCI Identifiers";
+            PciIdButton.UseVisualStyleBackColor = true;
+            PciIdButton.Click += PciIdButton_Click;
+            // 
             // TestPanel
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(800, 450);
+            Controls.Add(PciIdButton);
             Controls.Add(SystemTypeButton);
             Controls.Add(BusTypeButton);
             Controls.Add(CoreCountButton);
@@ -133,5 +146,6 @@ namespace NVAPIAdapter.IntegrationTest
         private Button CoreCountButton;
         private Button BusTypeButton;
         private Button SystemTypeButton;
+        private Button PciIdButton;
     }
 }
