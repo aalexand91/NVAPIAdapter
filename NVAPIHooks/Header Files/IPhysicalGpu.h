@@ -60,5 +60,8 @@ namespace NVAPIHooks
 
 		/// <returns>The physical frame buffer size in KB. Excludes any dedicated RAM.</returns>
 		virtual unsigned long GetPhysicalFrameBufferSize() = 0;
+
+		/// <returns>The virtual frame buffer size in KB. Includes both physical and any dedicated RAM.</returns>
+		virtual unsigned long GetVirtualFrameBufferSize() = 0;
 	};
 }
