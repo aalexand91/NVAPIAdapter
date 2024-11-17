@@ -52,6 +52,7 @@ namespace NVAPIHooks
 		HOOKS_API unsigned long GetPciExternalId() override;
 		HOOKS_API unsigned long GetPciRevisionId() override;
 		HOOKS_API unsigned long GetPciSubsystemId() override;
+		HOOKS_API unsigned long GetPhysicalFrameBufferSize() override;
 
 	private:
 		NvPhysicalGpuHandle m_physicalGpuHandle{ NVAPI_DEFAULT_HANDLE };
