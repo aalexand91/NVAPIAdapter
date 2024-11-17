@@ -54,6 +54,12 @@ namespace NVAPIAdapter
 
 		/// <returns>The GPU PCI internal, external, revision, and subsystem IDs via the IPciIdentifier object.</returns>
 		IPciIdentifier^ GetPciIdentifier();
+
+		/// <summary>The GPU physical frame buffer size in KB. Excludes any dedicated RAM.</summary>
+		property System::UInt32 PhysicalFrameBufferSizeInKb
+		{
+			System::UInt32 get();
+		}
 	};
 
 	ref class NvidiaGpu : INvidiaGpu
@@ -67,6 +73,7 @@ namespace NVAPIAdapter
 		virtual property System::String^ SystemType { System::String^ get(); }
 		virtual property System::String^ BusType { System::String^ get(); }
 		virtual IPciIdentifier^ GetPciIdentifier();
+		virtual property System::UInt32 PhysicalFrameBufferSizeInKb { System::UInt32 get(); }
 
 	private:
 		IPhysicalGpuAdapter^ m_physicalGpu;
