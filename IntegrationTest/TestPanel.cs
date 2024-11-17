@@ -58,6 +58,8 @@ namespace NVAPIAdapter.IntegrationTest
             BusTypeButton.Enabled = true;
             SystemTypeButton.Enabled = true;
             PciIdButton.Enabled = true;
+            PhysicalFrameBufferSizeButton.Enabled = true;
+            VirtualFrameBufferSizeButton.Enabled = true;
         }
 
         [NotNull] INvidiaGpu SelectedGpu => mySelectedGpu ?? throw new NullReferenceException("GPU was not selected.");
@@ -85,6 +87,18 @@ External ID: {pciIdentifier.ExternalId}
 Revision ID: {pciIdentifier.RevisionId}
 Subsystem ID: {pciIdentifier.SubsystemId}";
             MessageBox.Show(message, caption: "PCI Identifiers", MessageBoxButtons.OK);
+        }
+
+        private void PhysicalFrameBufferSizeButton_Click(object sender, EventArgs e)
+        {
+            MessageBox.Show(SelectedGpu.PhysicalFrameBufferSizeInKb.ToString(),
+                caption: "GPU Physical Frame Buffer Size", MessageBoxButtons.OK);
+        }
+
+        private void VirtualFrameBufferSizeButton_Click(object sender, EventArgs e)
+        {
+            MessageBox.Show(SelectedGpu.VirtualFrameBufferSizeInKb.ToString(),
+                caption: "GPU Virtual Frame Buffer Size", MessageBoxButtons.OK);
         }
     }
 }

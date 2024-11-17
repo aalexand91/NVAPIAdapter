@@ -104,4 +104,20 @@ namespace NVAPIHooks
 	{
 		return GetPciIdentifier(PciIdentifierType::SUBSYSTEM);
 	}
+
+	unsigned long PhysicalGpu::GetPhysicalFrameBufferSize()
+	{
+		unsigned long bufferSize = 0ul;
+		const auto status = ApiTunnel::GetPhysicalFrameBufferSize(m_physicalGpuHandle, &bufferSize);
+		if (status == NvAPI_Status::NVAPI_OK) return bufferSize;
+		throw ApiError("Failed to determine GPU physical frame buffer size.", status);
+	}
+
+	unsigned long PhysicalGpu::GetVirtualFrameBufferSize()
+	{
+		unsigned long bufferSize = 0ul;
+		const auto status = ApiTunnel::GetVirtualFrameBufferSize(m_physicalGpuHandle, &bufferSize);
+		if (status == NvAPI_Status::NVAPI_OK) return bufferSize;
+		throw ApiError("Failed to determine GPU virtual frame buffer size.", status);
+	}
 }

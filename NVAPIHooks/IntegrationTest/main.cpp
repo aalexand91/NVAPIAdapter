@@ -42,6 +42,8 @@ int main()
     std::cout << "PCI external ID: " << physicalGpu->GetPciExternalId() << std::endl;
     std::cout << "PCI revision ID: " << physicalGpu->GetPciRevisionId() << std::endl;
     std::cout << "PCI subsystem ID: " << physicalGpu->GetPciSubsystemId() << std::endl;
+    std::cout << "Physical frame buffer size (KB): " << physicalGpu->GetPhysicalFrameBufferSize() << std::endl;
+    std::cout << "Virtual frame buffer size (KB): " << physicalGpu->GetVirtualFrameBufferSize() << std::endl;
     std::cout << "\n";
     std::cout << "Unloading API...\n";
     GeneralApi::Unload();

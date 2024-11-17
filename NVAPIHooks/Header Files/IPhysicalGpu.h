@@ -55,7 +55,13 @@ namespace NVAPIHooks
 		/// <returns>The PCI revision identifier value.</returns>
 		virtual unsigned long GetPciRevisionId() = 0;
 
-		/// <returns>The PCI subsystem indentifer value.</returns>
+		/// <returns>The PCI subsystem identifier value.</returns>
 		virtual unsigned long GetPciSubsystemId() = 0;
+
+		/// <returns>The physical frame buffer size in KB. Excludes any dedicated RAM.</returns>
+		virtual unsigned long GetPhysicalFrameBufferSize() = 0;
+
+		/// <returns>The virtual frame buffer size in KB. Includes both physical and any dedicated RAM.</returns>
+		virtual unsigned long GetVirtualFrameBufferSize() = 0;
 	};
 }

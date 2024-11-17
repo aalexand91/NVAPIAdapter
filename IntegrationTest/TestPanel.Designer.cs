@@ -56,6 +56,8 @@ namespace NVAPIAdapter.IntegrationTest
             BusTypeButton = new Button();
             SystemTypeButton = new Button();
             PciIdButton = new Button();
+            PhysicalFrameBufferSizeButton = new Button();
+            VirtualFrameBufferSizeButton = new Button();
             SuspendLayout();
             // 
             // InstructionLabel
@@ -114,7 +116,7 @@ namespace NVAPIAdapter.IntegrationTest
             // PciIdButton
             // 
             PciIdButton.Enabled = false;
-            PciIdButton.Location = new Point(501, 92);
+            PciIdButton.Location = new Point(12, 169);
             PciIdButton.Name = "PciIdButton";
             PciIdButton.Size = new Size(157, 71);
             PciIdButton.TabIndex = 5;
@@ -122,11 +124,35 @@ namespace NVAPIAdapter.IntegrationTest
             PciIdButton.UseVisualStyleBackColor = true;
             PciIdButton.Click += PciIdButton_Click;
             // 
+            // PhysicalFrameBufferSizeButton
+            // 
+            PhysicalFrameBufferSizeButton.Enabled = false;
+            PhysicalFrameBufferSizeButton.Location = new Point(501, 92);
+            PhysicalFrameBufferSizeButton.Name = "PhysicalFrameBufferSizeButton";
+            PhysicalFrameBufferSizeButton.Size = new Size(157, 71);
+            PhysicalFrameBufferSizeButton.TabIndex = 6;
+            PhysicalFrameBufferSizeButton.Text = "Physical Frame Buffer Size (KB)";
+            PhysicalFrameBufferSizeButton.UseVisualStyleBackColor = true;
+            PhysicalFrameBufferSizeButton.Click += PhysicalFrameBufferSizeButton_Click;
+            // 
+            // VirtualFrameBufferSizeButton
+            // 
+            VirtualFrameBufferSizeButton.Enabled = false;
+            VirtualFrameBufferSizeButton.Location = new Point(664, 92);
+            VirtualFrameBufferSizeButton.Name = "VirtualFrameBufferSizeButton";
+            VirtualFrameBufferSizeButton.Size = new Size(157, 71);
+            VirtualFrameBufferSizeButton.TabIndex = 7;
+            VirtualFrameBufferSizeButton.Text = "Virtual Frame Buffer Size (KB)";
+            VirtualFrameBufferSizeButton.UseVisualStyleBackColor = true;
+            VirtualFrameBufferSizeButton.Click += VirtualFrameBufferSizeButton_Click;
+            // 
             // TestPanel
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(800, 450);
+            ClientSize = new Size(839, 450);
+            Controls.Add(VirtualFrameBufferSizeButton);
+            Controls.Add(PhysicalFrameBufferSizeButton);
             Controls.Add(PciIdButton);
             Controls.Add(SystemTypeButton);
             Controls.Add(BusTypeButton);
@@ -147,5 +173,7 @@ namespace NVAPIAdapter.IntegrationTest
         private Button BusTypeButton;
         private Button SystemTypeButton;
         private Button PciIdButton;
+        private Button PhysicalFrameBufferSizeButton;
+        private Button VirtualFrameBufferSizeButton;
     }
 }

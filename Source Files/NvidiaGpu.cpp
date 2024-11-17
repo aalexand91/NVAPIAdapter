@@ -57,4 +57,14 @@ namespace NVAPIAdapter
 		const auto subsystemId = m_physicalGpu->GetPciSubsystemId();
 		return gcnew PciIdentifier(internalId, externalId, revisionId, subsystemId);
 	}
+
+	UInt32 NvidiaGpu::PhysicalFrameBufferSizeInKb::get()
+	{
+		return m_physicalGpu->GetPhysicalFrameBufferSizeInKb();
+	}
+
+	UInt32 NvidiaGpu::VirtualFrameBufferSizeInKb::get()
+	{
+		return m_physicalGpu->GetVirtualFrameBufferSizeInKb();
+	}
 }

@@ -379,6 +379,70 @@ namespace NVAPIHooks
 				Assert::Fail(L"Expected exception to be thrown but did not.");
 			}
 
+			TEST_METHOD(GetPhysicalFrameBufferSize_OnSuccss_ReturnsSize)
+			{
+				// Arrange
+				const unsigned long expected = 0xABCDEF;
+				m_mocks.OnCallFunc(ApiTunnel::GetPhysicalFrameBufferSize).With(m_fakeGpuHandle, _)
+					.Do([&](NvPhysicalGpuHandle, unsigned long* bufferSize) -> NvAPI_Status
+						{
+							*bufferSize = expected;
+							return NvAPI_Status::NVAPI_OK;
+						});
+				auto physicalGpu = std::make_unique<PhysicalGpu>(m_fakeGpuHandle);
+
+				// Act
+				auto actual = physicalGpu->GetPhysicalFrameBufferSize();
+
+				// Assert
+				Assert::AreEqual(expected, actual);
+			}
+
+			TEST_METHOD(GetPhysicalFrameBufferSize_OnFailure_Throws)
+			{
+				// Arrange
+				m_mocks.OnCallFunc(ApiTunnel::GetPhysicalFrameBufferSize).Return(NvAPI_Status::NVAPI_ERROR);
+				auto physicalGpu = std::make_unique<PhysicalGpu>(m_fakeGpuHandle);
+
+				// Act
+				auto act = [&]() -> unsigned long { return physicalGpu->GetPhysicalFrameBufferSize(); };
+
+				// Assert
+				Assert::ExpectException<ApiError>(act);
+			}
+
+			TEST_METHOD(GetVirtualFrameBufferSize_OnSuccess_ReturnsSize)
+			{
+				// Arrange
+				const unsigned long expected = 0xFEDCBA;
+				m_mocks.OnCallFunc(ApiTunnel::GetVirtualFrameBufferSize).With(m_fakeGpuHandle, _)
+					.Do([&](NvPhysicalGpuHandle, unsigned long* bufferSize) -> NvAPI_Status
+						{
+							*bufferSize = expected;
+							return NvAPI_Status::NVAPI_OK;
+						});
+				auto physicalGpu = std::make_unique<PhysicalGpu>(m_fakeGpuHandle);
+
+				// Act
+				auto actual = physicalGpu->GetVirtualFrameBufferSize();
+
+				// Assert
+				Assert::AreEqual(expected, actual);
+			}
+
+			TEST_METHOD(GetVirtualFrameBufferSize_OnFailure_Throws)
+			{
+				// Arrange
+				m_mocks.OnCallFunc(ApiTunnel::GetVirtualFrameBufferSize).Return(NvAPI_Status::NVAPI_ERROR);
+				auto physicalGpu = std::make_unique<PhysicalGpu>(m_fakeGpuHandle);
+
+				// Act
+				auto act = [&]() -> unsigned long { return physicalGpu->GetVirtualFrameBufferSize(); };
+
+				// Assert
+				Assert::ExpectException<ApiError>(act);
+			}
+
 		private:
 			NvPhysicalGpuHandle m_fakeGpuHandle{ (NvPhysicalGpuHandle)1 };
 			MockRepository m_mocks;

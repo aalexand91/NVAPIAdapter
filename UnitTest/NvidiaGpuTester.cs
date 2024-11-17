@@ -118,5 +118,35 @@ namespace NVAPIAdapter.UnitTest
             Assert.AreEqual(expectedRevisionId, pciIdentifier.RevisionId);
             Assert.AreEqual(expectedSubsystemId, pciIdentifier.SubsystemId);
         }
+
+        [TestMethod]
+        public void PhysicalFrameBufferSizeInKb_GivenSize_ReturnsIt()
+        {
+            // Arrange
+            const uint expected = 11162024;
+            myFakePhysicalGpu.GetPhysicalFrameBufferSizeInKb().Returns(expected);
+            var gpu = CreateNvidiaGpu();
+
+            // Act
+            var actual = gpu.PhysicalFrameBufferSizeInKb;
+
+            // Assert
+            Assert.AreEqual(expected, actual);
+        }
+
+        [TestMethod]
+        public void VirtualFrameBufferSizeInKb_GivenSize_ReturnsIt()
+        {
+            // Arrange
+            const uint expected = 9451116;
+            myFakePhysicalGpu.GetVirtualFrameBufferSizeInKb().Returns(expected);
+            var gpu = CreateNvidiaGpu();
+
+            // Act
+            var actual = gpu.VirtualFrameBufferSizeInKb;
+
+            // Assert
+            Assert.AreEqual(expected, actual);
+        }
     }
 }
