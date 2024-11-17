@@ -94,5 +94,21 @@ namespace NVAPIHooks
 		/// <returns>NVAPI status code for determining the GPU PCI identifiers.</returns>
 		HOOKS_API NvAPI_Status GetPciIdentifiers(NvPhysicalGpuHandle gpuHandle, unsigned long* internalDeviceId,
 			unsigned long* subsystemId, unsigned long* revisionId, unsigned long* externalDeviceId);
+
+		/// <summary>
+		/// Determines the physical frame buffer size in KB. Does not include any system RAM.
+		/// </summary>
+		/// <param name="gpuHandle">Single physical GPU handle.</param>
+		/// <param name="bufferSize">Caches the physical frame buffer size.</param>
+		/// <returns>NVAPI status code for determining the GPU physical frame buffer size.</returns>
+		HOOKS_API NvAPI_Status GetPhysicalFrameBufferSize(NvPhysicalGpuHandle gpuHandle, unsigned long* bufferSize);
+
+		/// <summary>
+		/// Determines the virtual frame buffer size in KB. Includes both physical and any RAM dedicated for the GPU.
+		/// </summary>
+		/// <param name="gpuHandle">Single physical GPU handle.</param>
+		/// <param name="bufferSize">Caches the virtual frame buffer size.</param>
+		/// <returns>NVAPI status code for determining the GPU virtual frame buffer size.</returns>
+		HOOKS_API NvAPI_Status GetVirtualFrameBufferSize(NvPhysicalGpuHandle gpuHandle, unsigned long* bufferSize);
 	}
 }
