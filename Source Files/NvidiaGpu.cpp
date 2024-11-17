@@ -62,4 +62,9 @@ namespace NVAPIAdapter
 	{
 		return m_physicalGpu->GetPhysicalFrameBufferSizeInKb();
 	}
+
+	UInt32 NvidiaGpu::VirtualFrameBufferSizeInKb::get()
+	{
+		return m_physicalGpu->GetVirtualFrameBufferSizeInKb();
+	}
 }

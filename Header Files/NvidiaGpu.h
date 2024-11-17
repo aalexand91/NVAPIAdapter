@@ -60,6 +60,12 @@ namespace NVAPIAdapter
 		{
 			System::UInt32 get();
 		}
+
+		/// <summary>The GPU virtual frame buffer size in KB. Includes both physical and any dedicated RAM.</summary>
+		property System::UInt32 VirtualFrameBufferSizeInKb
+		{
+			System::UInt32 get();
+		}
 	};
 
 	ref class NvidiaGpu : INvidiaGpu
@@ -74,6 +80,7 @@ namespace NVAPIAdapter
 		virtual property System::String^ BusType { System::String^ get(); }
 		virtual IPciIdentifier^ GetPciIdentifier();
 		virtual property System::UInt32 PhysicalFrameBufferSizeInKb { System::UInt32 get(); }
+		virtual property System::UInt32 VirtualFrameBufferSizeInKb { System::UInt32 get(); }
 
 	private:
 		IPhysicalGpuAdapter^ m_physicalGpu;

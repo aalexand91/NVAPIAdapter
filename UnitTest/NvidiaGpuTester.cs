@@ -133,5 +133,20 @@ namespace NVAPIAdapter.UnitTest
             // Assert
             Assert.AreEqual(expected, actual);
         }
+
+        [TestMethod]
+        public void VirtualFrameBufferSizeInKb_GivenSize_ReturnsIt()
+        {
+            // Arrange
+            const uint expected = 9451116;
+            myFakePhysicalGpu.GetVirtualFrameBufferSizeInKb().Returns(expected);
+            var gpu = CreateNvidiaGpu();
+
+            // Act
+            var actual = gpu.VirtualFrameBufferSizeInKb;
+
+            // Assert
+            Assert.AreEqual(expected, actual);
+        }
     }
 }
