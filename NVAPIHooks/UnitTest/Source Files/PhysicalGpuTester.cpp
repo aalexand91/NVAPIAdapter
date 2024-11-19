@@ -443,7 +443,7 @@ namespace NVAPIHooks
 				Assert::ExpectException<ApiError>(act);
 			}
 
-			TEST_METHOD(GetVbioVersion_OnSuccess_ReturnsVbiosVersion)
+			TEST_METHOD(GetVbiosVersion_OnSuccess_ReturnsVbiosVersion)
 			{
 				// Arrange
 				const std::string expected = "01.23.45.67.89";
