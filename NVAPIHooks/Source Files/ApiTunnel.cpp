@@ -80,5 +80,10 @@ namespace NVAPIHooks
 		{
 			return NvAPI_GPU_GetVirtualFrameBufferSize(gpuHandle, bufferSize);
 		}
+
+		NvAPI_Status GetVbiosVersion(NvPhysicalGpuHandle gpuHandle, char* vbiosVersion)
+		{
+			return NvAPI_GPU_GetVbiosVersionString(gpuHandle, vbiosVersion);
+		}
 	}
 }
