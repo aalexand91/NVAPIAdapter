@@ -58,6 +58,7 @@ namespace NVAPIAdapter.IntegrationTest
             PciIdButton = new Button();
             PhysicalFrameBufferSizeButton = new Button();
             VirtualFrameBufferSizeButton = new Button();
+            VbiosButton = new Button();
             SuspendLayout();
             // 
             // InstructionLabel
@@ -146,11 +147,23 @@ namespace NVAPIAdapter.IntegrationTest
             VirtualFrameBufferSizeButton.UseVisualStyleBackColor = true;
             VirtualFrameBufferSizeButton.Click += VirtualFrameBufferSizeButton_Click;
             // 
+            // VbiosButton
+            // 
+            VbiosButton.Enabled = false;
+            VbiosButton.Location = new Point(175, 169);
+            VbiosButton.Name = "VbiosButton";
+            VbiosButton.Size = new Size(157, 71);
+            VbiosButton.TabIndex = 8;
+            VbiosButton.Text = "VBIOS Version";
+            VbiosButton.UseVisualStyleBackColor = true;
+            VbiosButton.Click += VbiosButton_Click;
+            // 
             // TestPanel
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(839, 450);
+            Controls.Add(VbiosButton);
             Controls.Add(VirtualFrameBufferSizeButton);
             Controls.Add(PhysicalFrameBufferSizeButton);
             Controls.Add(PciIdButton);
@@ -175,5 +188,6 @@ namespace NVAPIAdapter.IntegrationTest
         private Button PciIdButton;
         private Button PhysicalFrameBufferSizeButton;
         private Button VirtualFrameBufferSizeButton;
+        private Button VbiosButton;
     }
 }

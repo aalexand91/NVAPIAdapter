@@ -60,6 +60,7 @@ namespace NVAPIAdapter.IntegrationTest
             PciIdButton.Enabled = true;
             PhysicalFrameBufferSizeButton.Enabled = true;
             VirtualFrameBufferSizeButton.Enabled = true;
+            VbiosButton.Enabled = true;
         }
 
         [NotNull] INvidiaGpu SelectedGpu => mySelectedGpu ?? throw new NullReferenceException("GPU was not selected.");
@@ -99,6 +100,11 @@ Subsystem ID: {pciIdentifier.SubsystemId}";
         {
             MessageBox.Show(SelectedGpu.VirtualFrameBufferSizeInKb.ToString(),
                 caption: "GPU Virtual Frame Buffer Size", MessageBoxButtons.OK);
+        }
+
+        private void VbiosButton_Click(object sender, EventArgs e)
+        {
+            MessageBox.Show(SelectedGpu.VideoBiosVersion, caption: "VBIOS Version", MessageBoxButtons.OK);
         }
     }
 }
