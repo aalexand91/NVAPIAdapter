@@ -44,6 +44,7 @@ int main()
     std::cout << "PCI subsystem ID: " << physicalGpu->GetPciSubsystemId() << std::endl;
     std::cout << "Physical frame buffer size (KB): " << physicalGpu->GetPhysicalFrameBufferSize() << std::endl;
     std::cout << "Virtual frame buffer size (KB): " << physicalGpu->GetVirtualFrameBufferSize() << std::endl;
+    std::cout << "Video BIOS version: " << physicalGpu->GetVbiosVersion() << std::endl;
     std::cout << "\n";
     std::cout << "Unloading API...\n";
     GeneralApi::Unload();
