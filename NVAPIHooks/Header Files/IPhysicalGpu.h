@@ -63,5 +63,11 @@ namespace NVAPIHooks
 
 		/// <returns>The virtual frame buffer size in KB. Includes both physical and any dedicated RAM.</returns>
 		virtual unsigned long GetVirtualFrameBufferSize() = 0;
+
+		/// <returns>
+		/// The video BIOS string in the form of xx.xx.xx.xx.yy where the xx numbers are 
+		/// the video BIOS version and the yy numbers are the manufacturer's version.
+		/// </returns>
+		virtual std::string GetVbiosVersion() = 0;
 	};
 }

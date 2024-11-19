@@ -120,4 +120,12 @@ namespace NVAPIHooks
 		if (status == NvAPI_Status::NVAPI_OK) return bufferSize;
 		throw ApiError("Failed to determine GPU virtual frame buffer size.", status);
 	}
+
+	std::string PhysicalGpu::GetVbiosVersion()
+	{
+		char vbiosVersion[NVAPI_SHORT_STRING_MAX];
+		const auto status = ApiTunnel::GetVbiosVersion(m_physicalGpuHandle, vbiosVersion);
+		if (status == NvAPI_Status::NVAPI_OK) return std::string(vbiosVersion);
+		throw ApiError("Failed to determine GPU video BIOS string.", status);
+	}
 }

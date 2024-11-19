@@ -443,6 +443,38 @@ namespace NVAPIHooks
 				Assert::ExpectException<ApiError>(act);
 			}
 
+			TEST_METHOD(GetVbiosVersion_OnSuccess_ReturnsVbiosVersion)
+			{
+				// Arrange
+				const std::string expected = "01.23.45.67.89";
+				m_mocks.OnCallFunc(ApiTunnel::GetVbiosVersion).With(m_fakeGpuHandle, _)
+					.Do([&](NvPhysicalGpuHandle, char* vbiosVersion) -> NvAPI_Status
+						{
+							sprintf_s(vbiosVersion, sizeof(expected), expected.c_str());
+							return NvAPI_Status::NVAPI_OK;
+						});
+				auto physicalGpu = std::make_unique<PhysicalGpu>(m_fakeGpuHandle);
+
+				// Act
+				auto actual = physicalGpu->GetVbiosVersion();
+
+				// Assert
+				Assert::AreEqual(expected, actual);
+			}
+
+			TEST_METHOD(GetVbiosVersion_OnFailure_Throws)
+			{
+				// Arrange
+				m_mocks.OnCallFunc(ApiTunnel::GetVbiosVersion).Return(NvAPI_Status::NVAPI_ERROR);
+				auto physicalGpu = std::make_unique<PhysicalGpu>(m_fakeGpuHandle);
+
+				// Act
+				auto act = [&]() -> std::string {return physicalGpu->GetVbiosVersion(); };
+
+				// Assert
+				Assert::ExpectException<ApiError>(act);
+			}
+
 		private:
 			NvPhysicalGpuHandle m_fakeGpuHandle{ (NvPhysicalGpuHandle)1 };
 			MockRepository m_mocks;

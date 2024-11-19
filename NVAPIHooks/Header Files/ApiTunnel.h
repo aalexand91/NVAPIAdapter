@@ -110,5 +110,14 @@ namespace NVAPIHooks
 		/// <param name="bufferSize">Caches the virtual frame buffer size.</param>
 		/// <returns>NVAPI status code for determining the GPU virtual frame buffer size.</returns>
 		HOOKS_API NvAPI_Status GetVirtualFrameBufferSize(NvPhysicalGpuHandle gpuHandle, unsigned long* bufferSize);
+
+		/// <summary>
+		/// Determines the VBIOS version of the GPU in the form of xx.xx.xx.xx.yy where the
+		/// xx numbers represent the video BIOS version and the yy numbers are the manufacturer's revision.
+		/// </summary>
+		/// <param name="gpuHandle">Single physical GPU handle.</param>
+		/// <param name="vbiosVersion">Caches the VBIOS version.</param>
+		/// <returns>NVAPI status code for determining the GPU video BIOS version string.</returns>
+		HOOKS_API NvAPI_Status GetVbiosVersion(NvPhysicalGpuHandle gpuHandle, char* vbiosVersion);
 	}
 }
