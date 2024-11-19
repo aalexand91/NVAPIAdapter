@@ -66,6 +66,15 @@ namespace NVAPIAdapter
 		{
 			System::UInt32 get();
 		}
+
+		/// <summary>
+		/// The video BIOS version string in the format xx.xx.xx.xx.yy where the xx numbers
+		/// are the video BIOS version and the yy numbers are the manufacturer's version.
+		/// </summary>
+		property System::String^ VideoBiosVersion
+		{
+			System::String^ get();
+		}
 	};
 
 	ref class NvidiaGpu : INvidiaGpu
@@ -81,6 +90,7 @@ namespace NVAPIAdapter
 		virtual IPciIdentifier^ GetPciIdentifier();
 		virtual property System::UInt32 PhysicalFrameBufferSizeInKb { System::UInt32 get(); }
 		virtual property System::UInt32 VirtualFrameBufferSizeInKb { System::UInt32 get(); }
+		virtual property System::String^ VideoBiosVersion { System::String^ get(); }
 
 	private:
 		IPhysicalGpuAdapter^ m_physicalGpu;

@@ -148,5 +148,20 @@ namespace NVAPIAdapter.UnitTest
             // Assert
             Assert.AreEqual(expected, actual);
         }
+
+        [TestMethod]
+        public void VideoBiosVersion_GivenVersionString_ReturnsIt()
+        {
+            // Arrange
+            const string expected = "AA.BB.CC.DD.EE";
+            myFakePhysicalGpu.GetVideoBiosVersion().Returns(expected);
+            var gpu = CreateNvidiaGpu();
+
+            // Act
+            var actual = gpu.VideoBiosVersion;
+
+            // Assert
+            Assert.AreEqual(expected, actual);
+        }
     }
 }

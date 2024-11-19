@@ -67,4 +67,9 @@ namespace NVAPIAdapter
 	{
 		return m_physicalGpu->GetVirtualFrameBufferSizeInKb();
 	}
+
+	String^ NvidiaGpu::VideoBiosVersion::get()
+	{
+		return m_physicalGpu->GetVideoBiosVersion();
+	}
 }
