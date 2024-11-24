@@ -128,4 +128,12 @@ namespace NVAPIHooks
 		if (status == NvAPI_Status::NVAPI_OK) return std::string(vbiosVersion);
 		throw ApiError("Failed to determine GPU video BIOS string.", status);
 	}
+
+	unsigned long PhysicalGpu::GetRamBusWidth()
+	{
+		unsigned long busWidth = 0ul;
+		const auto status = ApiTunnel::GetRamBusWidth(m_physicalGpuHandle, &busWidth);
+		if (status == NvAPI_Status::NVAPI_OK) return busWidth;
+		throw ApiError("Failed to determine GPU RAM bus width.", status);
+	}
 }

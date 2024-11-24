@@ -475,6 +475,38 @@ namespace NVAPIHooks
 				Assert::ExpectException<ApiError>(act);
 			}
 
+			TEST_METHOD(GetRamBusWidth_OnSuccess_ReturnsRamBusWidth)
+			{
+				// Arrange
+				const unsigned long expected = 11242024ul;
+				m_mocks.OnCallFunc(ApiTunnel::GetRamBusWidth).With(m_fakeGpuHandle, _)
+					.Do([&](NvPhysicalGpuHandle, unsigned long* busWidth) -> NvAPI_Status
+						{
+							*busWidth = expected;
+							return NvAPI_Status::NVAPI_OK;
+						});
+				auto physicalGpu = std::make_unique<PhysicalGpu>(m_fakeGpuHandle);
+
+				// Act
+				auto actual = physicalGpu->GetRamBusWidth();
+
+				// Assert
+				Assert::AreEqual(expected, actual);
+			}
+
+			TEST_METHOD(GetRamBusWidth_OnFailure_Throws)
+			{
+				// Arrange
+				m_mocks.OnCallFunc(ApiTunnel::GetRamBusWidth).Return(NvAPI_Status::NVAPI_ERROR);
+				auto physicalGpu = std::make_unique<PhysicalGpu>(m_fakeGpuHandle);
+
+				// Act
+				auto act = [&]() -> unsigned long { return physicalGpu->GetRamBusWidth(); };
+
+				// Assert
+				Assert::ExpectException<ApiError>(act);
+			}
+
 		private:
 			NvPhysicalGpuHandle m_fakeGpuHandle{ (NvPhysicalGpuHandle)1 };
 			MockRepository m_mocks;

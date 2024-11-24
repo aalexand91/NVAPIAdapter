@@ -69,5 +69,8 @@ namespace NVAPIHooks
 		/// the video BIOS version and the yy numbers are the manufacturer's version.
 		/// </returns>
 		virtual std::string GetVbiosVersion() = 0;
+
+		/// <returns>Size of the GPU memory bus width.</returns>
+		virtual unsigned long GetRamBusWidth() = 0;
 	};
 }
