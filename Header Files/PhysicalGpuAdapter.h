@@ -38,6 +38,7 @@ namespace NVAPIAdapter
 		unsigned long GetPhysicalFrameBufferSizeInKb();
 		unsigned long GetVirtualFrameBufferSizeInKb();
 		System::String^ GetVideoBiosVersion();
+		unsigned long GetRamBusWidth();
 	};
 
 	ref class PhysicalGpuAdapter : IPhysicalGpuAdapter
@@ -56,6 +57,7 @@ namespace NVAPIAdapter
 		virtual unsigned long GetPhysicalFrameBufferSizeInKb() { return m_physicalGpu->GetPhysicalFrameBufferSize(); }
 		virtual unsigned long GetVirtualFrameBufferSizeInKb() { return m_physicalGpu->GetVirtualFrameBufferSize(); }
 		virtual System::String^ GetVideoBiosVersion() { return gcnew System::String(m_physicalGpu->GetVbiosVersion().c_str()); }
+		virtual unsigned long GetRamBusWidth() { return m_physicalGpu->GetRamBusWidth(); }
 
 	private:
 		NVAPIHooks::IPhysicalGpu* m_physicalGpu = nullptr;
