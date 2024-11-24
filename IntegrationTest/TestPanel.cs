@@ -61,6 +61,7 @@ namespace NVAPIAdapter.IntegrationTest
             PhysicalFrameBufferSizeButton.Enabled = true;
             VirtualFrameBufferSizeButton.Enabled = true;
             VbiosButton.Enabled = true;
+            BusWidthButton.Enabled = true;
         }
 
         [NotNull] INvidiaGpu SelectedGpu => mySelectedGpu ?? throw new NullReferenceException("GPU was not selected.");
@@ -105,6 +106,11 @@ Subsystem ID: {pciIdentifier.SubsystemId}";
         private void VbiosButton_Click(object sender, EventArgs e)
         {
             MessageBox.Show(SelectedGpu.VideoBiosVersion, caption: "VBIOS Version", MessageBoxButtons.OK);
+        }
+
+        private void BusWidthButton_Click(object sender, EventArgs e)
+        {
+            MessageBox.Show(SelectedGpu.RamBusWidth.ToString() + "-bit", caption: "GPU RAM Bus Width", MessageBoxButtons.OK);
         }
     }
 }

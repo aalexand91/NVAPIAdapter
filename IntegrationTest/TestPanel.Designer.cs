@@ -59,6 +59,7 @@ namespace NVAPIAdapter.IntegrationTest
             PhysicalFrameBufferSizeButton = new Button();
             VirtualFrameBufferSizeButton = new Button();
             VbiosButton = new Button();
+            BusWidthButton = new Button();
             SuspendLayout();
             // 
             // InstructionLabel
@@ -158,11 +159,23 @@ namespace NVAPIAdapter.IntegrationTest
             VbiosButton.UseVisualStyleBackColor = true;
             VbiosButton.Click += VbiosButton_Click;
             // 
+            // BusWidthButton
+            // 
+            BusWidthButton.Enabled = false;
+            BusWidthButton.Location = new Point(338, 169);
+            BusWidthButton.Name = "BusWidthButton";
+            BusWidthButton.Size = new Size(157, 71);
+            BusWidthButton.TabIndex = 9;
+            BusWidthButton.Text = "RAM Bus Width";
+            BusWidthButton.UseVisualStyleBackColor = true;
+            BusWidthButton.Click += BusWidthButton_Click;
+            // 
             // TestPanel
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(839, 450);
+            Controls.Add(BusWidthButton);
             Controls.Add(VbiosButton);
             Controls.Add(VirtualFrameBufferSizeButton);
             Controls.Add(PhysicalFrameBufferSizeButton);
@@ -189,5 +202,6 @@ namespace NVAPIAdapter.IntegrationTest
         private Button PhysicalFrameBufferSizeButton;
         private Button VirtualFrameBufferSizeButton;
         private Button VbiosButton;
+        private Button BusWidthButton;
     }
 }
