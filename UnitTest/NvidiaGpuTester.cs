@@ -178,5 +178,20 @@ namespace NVAPIAdapter.UnitTest
             // Assert
             Assert.AreEqual(expected, actual);
         }
+
+        [TestMethod]
+        public void GetCurrentPerformanceState_GivenState_ReturnsIt()
+        {
+            // Arrange
+            const string expected = "FakeState";
+            myFakePhysicalGpu.GetCurrentPerformanceState().Returns(expected);
+            var gpu = CreateNvidiaGpu();
+
+            // Act
+            var actual = gpu.GetCurrentPerformanceState();
+
+            // Assert
+            Assert.AreEqual(expected, actual);
+        }
     }
 }
