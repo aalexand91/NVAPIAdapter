@@ -119,5 +119,11 @@ namespace NVAPIHooks
 		/// <param name="vbiosVersion">Caches the VBIOS version.</param>
 		/// <returns>NVAPI status code for determining the GPU video BIOS version string.</returns>
 		HOOKS_API NvAPI_Status GetVbiosVersion(NvPhysicalGpuHandle gpuHandle, char* vbiosVersion);
+
+		/// <summary>Determines the size of the GPU memory bus width such as 64-bit.</summary>
+		/// <param name="gpuHandle">Single physical GPU handle.</param>
+		/// <param name="busWidth">Caches the bus width size.</param>
+		/// <returns>NVAPI status code for determining the GPU memory bus width.</returns>
+		HOOKS_API NvAPI_Status GetRamBusWidth(NvPhysicalGpuHandle gpuHandle, unsigned long* busWidth);
 	}
 }

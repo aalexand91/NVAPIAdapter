@@ -85,5 +85,10 @@ namespace NVAPIHooks
 		{
 			return NvAPI_GPU_GetVbiosVersionString(gpuHandle, vbiosVersion);
 		}
+
+		NvAPI_Status GetRamBusWidth(NvPhysicalGpuHandle gpuHandle, unsigned long* busWidth)
+		{
+			return NvAPI_GPU_GetRamBusWidth(gpuHandle, busWidth);
+		}
 	}
 }
