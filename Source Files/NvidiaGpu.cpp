@@ -72,4 +72,9 @@ namespace NVAPIAdapter
 	{
 		return m_physicalGpu->GetVideoBiosVersion();
 	}
+
+	UInt32 NvidiaGpu::RamBusWidth::get()
+	{
+		return m_physicalGpu->GetRamBusWidth();
+	}
 }

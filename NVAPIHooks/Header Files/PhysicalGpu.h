@@ -55,6 +55,7 @@ namespace NVAPIHooks
 		HOOKS_API unsigned long GetPhysicalFrameBufferSize() override;
 		HOOKS_API unsigned long GetVirtualFrameBufferSize() override;
 		HOOKS_API std::string GetVbiosVersion() override;
+		HOOKS_API unsigned long GetRamBusWidth() override;
 
 	private:
 		NvPhysicalGpuHandle m_physicalGpuHandle{ NVAPI_DEFAULT_HANDLE };

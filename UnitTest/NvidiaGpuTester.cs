@@ -163,5 +163,20 @@ namespace NVAPIAdapter.UnitTest
             // Assert
             Assert.AreEqual(expected, actual);
         }
+
+        [TestMethod]
+        public void RamBusWidth_GivenBusWidthSize_ReturnsIt()
+        {
+            // Arrange
+            const uint expected = 256u;
+            myFakePhysicalGpu.GetRamBusWidth().Returns(expected);
+            var gpu = CreateNvidiaGpu();
+
+            // Act
+            var actual = gpu.RamBusWidth;
+
+            // Assert
+            Assert.AreEqual(expected, actual);
+        }
     }
 }

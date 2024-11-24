@@ -75,6 +75,14 @@ namespace NVAPIAdapter
 		{
 			System::String^ get();
 		}
+
+		/// <summary>
+		/// The GPU memory bus width such as 64-bit, 128-bit, or 256-bit.
+		/// </summary>
+		property System::UInt32 RamBusWidth
+		{
+			System::UInt32 get();
+		}
 	};
 
 	ref class NvidiaGpu : INvidiaGpu
@@ -91,6 +99,7 @@ namespace NVAPIAdapter
 		virtual property System::UInt32 PhysicalFrameBufferSizeInKb { System::UInt32 get(); }
 		virtual property System::UInt32 VirtualFrameBufferSizeInKb { System::UInt32 get(); }
 		virtual property System::String^ VideoBiosVersion { System::String^ get(); }
+		virtual property System::UInt32 RamBusWidth{ System::UInt32 get(); }
 
 	private:
 		IPhysicalGpuAdapter^ m_physicalGpu;
