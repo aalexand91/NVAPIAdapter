@@ -60,6 +60,7 @@ namespace NVAPIAdapter.IntegrationTest
             VirtualFrameBufferSizeButton = new Button();
             VbiosButton = new Button();
             BusWidthButton = new Button();
+            PerformanceStateButton = new Button();
             SuspendLayout();
             // 
             // InstructionLabel
@@ -170,11 +171,23 @@ namespace NVAPIAdapter.IntegrationTest
             BusWidthButton.UseVisualStyleBackColor = true;
             BusWidthButton.Click += BusWidthButton_Click;
             // 
+            // PerformanceStateButton
+            // 
+            PerformanceStateButton.Enabled = false;
+            PerformanceStateButton.Location = new Point(501, 169);
+            PerformanceStateButton.Name = "PerformanceStateButton";
+            PerformanceStateButton.Size = new Size(157, 71);
+            PerformanceStateButton.TabIndex = 10;
+            PerformanceStateButton.Text = "Current Performance State";
+            PerformanceStateButton.UseVisualStyleBackColor = true;
+            PerformanceStateButton.Click += PerformanceStateButton_Click;
+            // 
             // TestPanel
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(839, 450);
+            Controls.Add(PerformanceStateButton);
             Controls.Add(BusWidthButton);
             Controls.Add(VbiosButton);
             Controls.Add(VirtualFrameBufferSizeButton);
@@ -203,5 +216,6 @@ namespace NVAPIAdapter.IntegrationTest
         private Button VirtualFrameBufferSizeButton;
         private Button VbiosButton;
         private Button BusWidthButton;
+        private Button PerformanceStateButton;
     }
 }

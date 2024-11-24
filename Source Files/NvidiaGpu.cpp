@@ -77,4 +77,9 @@ namespace NVAPIAdapter
 	{
 		return m_physicalGpu->GetRamBusWidth();
 	}
+
+	String^ NvidiaGpu::GetCurrentPerformanceState()
+	{
+		return m_physicalGpu->GetCurrentPerformanceState();
+	}
 }

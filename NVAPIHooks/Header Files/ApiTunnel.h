@@ -125,5 +125,11 @@ namespace NVAPIHooks
 		/// <param name="busWidth">Caches the bus width size.</param>
 		/// <returns>NVAPI status code for determining the GPU memory bus width.</returns>
 		HOOKS_API NvAPI_Status GetRamBusWidth(NvPhysicalGpuHandle gpuHandle, unsigned long* busWidth);
+
+		/// <summary>Determines the current GPU performance state ID.</summary>
+		/// <param name="gpuHandle">Single physical GPU handle.</param>
+		/// <param name="pStateId">Caches the performance state ID.</param>
+		/// <returns>NVAPI status code for determining the GPU performance state ID.</returns>
+		HOOKS_API NvAPI_Status GetPerformanceStateId(NvPhysicalGpuHandle gpuHandle, NV_GPU_PERF_PSTATE_ID* pStateId);
 	}
 }

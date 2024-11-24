@@ -46,6 +46,7 @@ int main()
     std::cout << "Virtual frame buffer size (KB): " << physicalGpu->GetVirtualFrameBufferSize() << std::endl;
     std::cout << "Video BIOS version: " << physicalGpu->GetVbiosVersion() << std::endl;
     std::cout << "RAM bus width: " << physicalGpu->GetRamBusWidth() << std::endl;
+    std::cout << "Current performance state: " << physicalGpu->GetPerformanceState() << std::endl;
     std::cout << "\n";
     std::cout << "Unloading API...\n";
     GeneralApi::Unload();
