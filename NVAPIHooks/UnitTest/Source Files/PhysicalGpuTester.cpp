@@ -507,6 +507,229 @@ namespace NVAPIHooks
 				Assert::ExpectException<ApiError>(act);
 			}
 
+			TEST_METHOD(GetPerformanceState_GivenStateIdOfZeroOrOne_ReturnsMax3D)
+			{
+				// Arrange
+				const std::string expected = "Maximum 3D performance";
+				const std::vector<NV_GPU_PERF_PSTATE_ID> stateIds =
+				{
+					NV_GPU_PERF_PSTATE_ID::NVAPI_GPU_PERF_PSTATE_P0,
+					NV_GPU_PERF_PSTATE_ID::NVAPI_GPU_PERF_PSTATE_P1,
+				};
+
+				for (const auto stateId : stateIds)
+				{
+					m_mocks.OnCallFunc(ApiTunnel::GetPerformanceStateId).With(m_fakeGpuHandle, _)
+						.Do([&](NvPhysicalGpuHandle, NV_GPU_PERF_PSTATE_ID* pStateId) -> NvAPI_Status
+							{
+								*pStateId = stateId;
+								return NvAPI_Status::NVAPI_OK;
+							});
+					auto physicalGpu = std::make_unique<PhysicalGpu>(m_fakeGpuHandle);
+
+					// Act
+					auto actual = physicalGpu->GetPerformanceState();
+
+					// Assert
+					Assert::AreEqual(expected, actual);
+				}
+			}
+
+			TEST_METHOD(GetPerformanceState_GivenStateIdOfTwoOrThree_ReturnsBalanced3D)
+			{
+				// Arrange
+				const std::string expected = "Balanced 3D performance-power";
+				const std::vector<NV_GPU_PERF_PSTATE_ID> stateIds =
+				{
+					NV_GPU_PERF_PSTATE_ID::NVAPI_GPU_PERF_PSTATE_P2,
+					NV_GPU_PERF_PSTATE_ID::NVAPI_GPU_PERF_PSTATE_P3,
+				};
+
+				for (const auto stateId : stateIds)
+				{
+					m_mocks.OnCallFunc(ApiTunnel::GetPerformanceStateId).With(m_fakeGpuHandle, _)
+						.Do([&](NvPhysicalGpuHandle, NV_GPU_PERF_PSTATE_ID* pStateId) -> NvAPI_Status
+							{
+								*pStateId = stateId;
+								return NvAPI_Status::NVAPI_OK;
+							});
+					auto physicalGpu = std::make_unique<PhysicalGpu>(m_fakeGpuHandle);
+
+					// Act
+					auto actual = physicalGpu->GetPerformanceState();
+
+					// Assert
+					Assert::AreEqual(expected, actual);
+				}
+			}
+
+			TEST_METHOD(GetPerformanceState_GivenStateIdOfFourThroughSeven_ReturnsUnknown)
+			{
+				// Arrange
+				const std::string expected = "Unknown";
+				const std::vector<NV_GPU_PERF_PSTATE_ID> stateIds =
+				{
+					NV_GPU_PERF_PSTATE_ID::NVAPI_GPU_PERF_PSTATE_P4,
+					NV_GPU_PERF_PSTATE_ID::NVAPI_GPU_PERF_PSTATE_P5,
+					NV_GPU_PERF_PSTATE_ID::NVAPI_GPU_PERF_PSTATE_P6,
+					NV_GPU_PERF_PSTATE_ID::NVAPI_GPU_PERF_PSTATE_P7,
+				};
+
+				for (const auto stateId : stateIds)
+				{
+					m_mocks.OnCallFunc(ApiTunnel::GetPerformanceStateId).With(m_fakeGpuHandle, _)
+						.Do([&](NvPhysicalGpuHandle, NV_GPU_PERF_PSTATE_ID* pStateId) -> NvAPI_Status
+							{
+								*pStateId = stateId;
+								return NvAPI_Status::NVAPI_OK;
+							});
+					auto physicalGpu = std::make_unique<PhysicalGpu>(m_fakeGpuHandle);
+					
+					// Act
+					auto actual = physicalGpu->GetPerformanceState();
+
+					// Assert
+					Assert::AreEqual(expected, actual);
+				}
+			}
+
+			TEST_METHOD(GetPerformanceState_GivenStateIdOfEight_ReturnsBasicHD)
+			{
+				// Arrange
+				const std::string expected = "Basic HD video playback";
+				m_mocks.OnCallFunc(ApiTunnel::GetPerformanceStateId).With(m_fakeGpuHandle, _)
+					.Do([&](NvPhysicalGpuHandle, NV_GPU_PERF_PSTATE_ID* pStateId) -> NvAPI_Status
+						{
+							*pStateId = NV_GPU_PERF_PSTATE_ID::NVAPI_GPU_PERF_PSTATE_P8;
+							return NvAPI_Status::NVAPI_OK;
+						});
+				auto physicalGpu = std::make_unique<PhysicalGpu>(m_fakeGpuHandle);
+
+				// Act
+				auto actual = physicalGpu->GetPerformanceState();
+
+				// Assert
+				Assert::AreEqual(expected, actual);
+			}
+
+			TEST_METHOD(GetPerformanceState_GivenStateIdOfNine_ReturnsUnknown)
+			{
+				// Arrange
+				const std::string expected = "Unknown";
+				m_mocks.OnCallFunc(ApiTunnel::GetPerformanceStateId).With(m_fakeGpuHandle, _)
+					.Do([&](NvPhysicalGpuHandle, NV_GPU_PERF_PSTATE_ID* pStateId) -> NvAPI_Status
+						{
+							*pStateId = NV_GPU_PERF_PSTATE_ID::NVAPI_GPU_PERF_PSTATE_P9;
+							return NvAPI_Status::NVAPI_OK;
+						});
+				auto physicalGpu = std::make_unique<PhysicalGpu>(m_fakeGpuHandle);
+
+				// Act
+				auto actual = physicalGpu->GetPerformanceState();
+
+				// Assert
+				Assert::AreEqual(expected, actual);
+			}
+
+			TEST_METHOD(GetPerformanceState_GivenStateIdOfTen_ReturnsDvd)
+			{
+				// Arrange
+				const std::string expected = "DVD playback";
+				m_mocks.OnCallFunc(ApiTunnel::GetPerformanceStateId).With(m_fakeGpuHandle, _)
+					.Do([&](NvPhysicalGpuHandle, NV_GPU_PERF_PSTATE_ID* pStateId) -> NvAPI_Status
+						{
+							*pStateId = NV_GPU_PERF_PSTATE_ID::NVAPI_GPU_PERF_PSTATE_P10;
+							return NvAPI_Status::NVAPI_OK;
+						});
+				auto physicalGpu = std::make_unique<PhysicalGpu>(m_fakeGpuHandle);
+
+				// Act
+				auto actual = physicalGpu->GetPerformanceState();
+
+				// Assert
+				Assert::AreEqual(expected, actual);
+			}
+
+			TEST_METHOD(GetPerformanceState_GivenStateIdOfEleven_ReturnsUnknown)
+			{
+				// Arrange
+				const std::string expected = "Unknown";
+				m_mocks.OnCallFunc(ApiTunnel::GetPerformanceStateId).With(m_fakeGpuHandle, _)
+					.Do([&](NvPhysicalGpuHandle, NV_GPU_PERF_PSTATE_ID* pStateId) -> NvAPI_Status
+						{
+							*pStateId = NV_GPU_PERF_PSTATE_ID::NVAPI_GPU_PERF_PSTATE_P11;
+							return NvAPI_Status::NVAPI_OK;
+						});
+				auto physicalGpu = std::make_unique<PhysicalGpu>(m_fakeGpuHandle);
+
+				// Act
+				auto actual = physicalGpu->GetPerformanceState();
+
+				// Assert
+				Assert::AreEqual(expected, actual);
+			}
+
+			TEST_METHOD(GetPerformanceState_GivenStateIdOfTwelve_ReturnsMinimum)
+			{
+				// Arrange
+				const std::string expected = "Minimum idle power consumption";
+				m_mocks.OnCallFunc(ApiTunnel::GetPerformanceStateId).With(m_fakeGpuHandle, _)
+					.Do([&](NvPhysicalGpuHandle, NV_GPU_PERF_PSTATE_ID* pStateId) -> NvAPI_Status
+						{
+							*pStateId = NV_GPU_PERF_PSTATE_ID::NVAPI_GPU_PERF_PSTATE_P12;
+							return NvAPI_Status::NVAPI_OK;
+						});
+				auto physicalGpu = std::make_unique<PhysicalGpu>(m_fakeGpuHandle);
+
+				// Act
+				auto actual = physicalGpu->GetPerformanceState();
+
+				// Assert
+				Assert::AreEqual(expected, actual);
+			}
+
+			TEST_METHOD(GetPerformanceState_GivenStateIdOfThirteenOrHigher_ReturnsUnknown)
+			{
+				// Arrange
+				const std::string expected = "Unknown";
+				const std::vector<NV_GPU_PERF_PSTATE_ID> stateIds =
+				{
+					NV_GPU_PERF_PSTATE_ID::NVAPI_GPU_PERF_PSTATE_P13,
+					NV_GPU_PERF_PSTATE_ID::NVAPI_GPU_PERF_PSTATE_P14,
+					NV_GPU_PERF_PSTATE_ID::NVAPI_GPU_PERF_PSTATE_P15,
+				};
+
+				for (const auto stateId : stateIds)
+				{
+					m_mocks.OnCallFunc(ApiTunnel::GetPerformanceStateId).With(m_fakeGpuHandle, _)
+						.Do([&](NvPhysicalGpuHandle, NV_GPU_PERF_PSTATE_ID* pStateId) -> NvAPI_Status
+							{
+								*pStateId = stateId;
+								return NvAPI_Status::NVAPI_OK;
+							});
+					auto physicalGpu = std::make_unique<PhysicalGpu>(m_fakeGpuHandle);
+
+					// Act
+					auto actual = physicalGpu->GetPerformanceState();
+
+					// Assert
+					Assert::AreEqual(expected, actual);
+				}
+			}
+
+			TEST_METHOD(GetPerformanceState_WhenDeterminingStateIdFails_Throws)
+			{
+				// Arrange
+				m_mocks.OnCallFunc(ApiTunnel::GetPerformanceStateId).Return(NvAPI_Status::NVAPI_ERROR);
+				auto physicalGpu = std::make_unique<PhysicalGpu>(m_fakeGpuHandle);
+
+				// Act
+				auto act = [&]() -> std::string { return physicalGpu->GetPerformanceState(); };
+
+				// Assert
+				Assert::ExpectException<ApiError>(act);
+			}
+
 		private:
 			NvPhysicalGpuHandle m_fakeGpuHandle{ (NvPhysicalGpuHandle)1 };
 			MockRepository m_mocks;

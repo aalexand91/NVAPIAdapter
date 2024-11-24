@@ -72,5 +72,8 @@ namespace NVAPIHooks
 
 		/// <returns>Size of the GPU memory bus width.</returns>
 		virtual unsigned long GetRamBusWidth() = 0;
+
+		/// <returns>The current GPU performance state.</returns>
+		virtual std::string GetPerformanceState() = 0;
 	};
 }

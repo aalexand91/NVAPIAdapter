@@ -136,4 +136,33 @@ namespace NVAPIHooks
 		if (status == NvAPI_Status::NVAPI_OK) return busWidth;
 		throw ApiError("Failed to determine GPU RAM bus width.", status);
 	}
+
+	std::string PhysicalGpu::GetPerformanceState()
+	{
+		NV_GPU_PERF_PSTATE_ID pStateId = NV_GPU_PERF_PSTATE_ID::NVAPI_GPU_PERF_PSTATE_UNDEFINED;
+		const auto status = ApiTunnel::GetPerformanceStateId(m_physicalGpuHandle, &pStateId);
+		if (status == NvAPI_Status::NVAPI_OK) return GetPerformanceStateFromId(pStateId);
+		throw ApiError("Failed to determine GPU performance state ID.", status);
+	}
+
+	std::string PhysicalGpu::GetPerformanceStateFromId(const NV_GPU_PERF_PSTATE_ID pStateId)
+	{
+		switch (pStateId)
+		{
+		case NV_GPU_PERF_PSTATE_ID::NVAPI_GPU_PERF_PSTATE_P0:
+		case NV_GPU_PERF_PSTATE_ID::NVAPI_GPU_PERF_PSTATE_P1:
+			return "Maximum 3D performance";
+		case NV_GPU_PERF_PSTATE_ID::NVAPI_GPU_PERF_PSTATE_P2:
+		case NV_GPU_PERF_PSTATE_ID::NVAPI_GPU_PERF_PSTATE_P3:
+			return "Balanced 3D performance-power";
+		case NV_GPU_PERF_PSTATE_ID::NVAPI_GPU_PERF_PSTATE_P8:
+			return "Basic HD video playback";
+		case NV_GPU_PERF_PSTATE_ID::NVAPI_GPU_PERF_PSTATE_P10:
+			return "DVD playback";
+		case NV_GPU_PERF_PSTATE_ID::NVAPI_GPU_PERF_PSTATE_P12:
+			return "Minimum idle power consumption";
+		default:
+			return "Unknown";
+		}
+	}
 }
