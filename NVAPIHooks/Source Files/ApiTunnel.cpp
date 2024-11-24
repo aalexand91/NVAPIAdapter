@@ -90,5 +90,10 @@ namespace NVAPIHooks
 		{
 			return NvAPI_GPU_GetRamBusWidth(gpuHandle, busWidth);
 		}
+
+		NvAPI_Status GetPerformanceStateId(NvPhysicalGpuHandle gpuHandle, NV_GPU_PERF_PSTATE_ID* pStateId)
+		{
+			return NvAPI_GPU_GetCurrentPstate(gpuHandle, pStateId);
+		}
 	}
 }
