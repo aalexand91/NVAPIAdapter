@@ -95,5 +95,11 @@ namespace NVAPIHooks
 		{
 			return NvAPI_GPU_GetCurrentPstate(gpuHandle, pStateId);
 		}
+
+		NvAPI_Status GetThermalSettings(NvPhysicalGpuHandle gpuHandle, 
+			unsigned long sensorIndex, NV_GPU_THERMAL_SETTINGS* thermalSettings)
+		{
+			return NvAPI_GPU_GetThermalSettings(gpuHandle, sensorIndex, thermalSettings);
+		}
 	}
 }
