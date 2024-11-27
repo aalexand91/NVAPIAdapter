@@ -193,5 +193,20 @@ namespace NVAPIAdapter.UnitTest
             // Assert
             Assert.AreEqual(expected, actual);
         }
+
+        [TestMethod]
+        public void GetGpuCoreTempInCelsius_GivenTemp_ReturnsIt()
+        {
+            // Arrange
+            const int expected = 26;
+            myFakePhysicalGpu.GetGpuCoreTempInCelsius().Returns(expected);
+            var gpu = CreateNvidiaGpu();
+
+            // Act
+            var actual = gpu.GetCoreTempInCelsius();
+
+            // Assert
+            Assert.AreEqual(expected, actual);
+        }
     }
 }
