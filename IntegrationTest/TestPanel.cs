@@ -63,6 +63,7 @@ namespace NVAPIAdapter.IntegrationTest
             VbiosButton.Enabled = true;
             BusWidthButton.Enabled = true;
             PerformanceStateButton.Enabled = true;
+            GpuCoreTempButton.Enabled = true;
         }
 
         [NotNull] INvidiaGpu SelectedGpu => mySelectedGpu ?? throw new NullReferenceException("GPU was not selected.");
@@ -117,6 +118,11 @@ Subsystem ID: {pciIdentifier.SubsystemId}";
         private void PerformanceStateButton_Click(object sender, EventArgs e)
         {
             MessageBox.Show(SelectedGpu.GetCurrentPerformanceState(), caption: "GPU Performance State", MessageBoxButtons.OK);
+        }
+
+        private void GpuCoreTempButton_Click(object sender, EventArgs e)
+        {
+            MessageBox.Show(SelectedGpu.GetCoreTempInCelsius().ToString(), caption: "GPU Core Temp (C)", MessageBoxButtons.OK);
         }
     }
 }
