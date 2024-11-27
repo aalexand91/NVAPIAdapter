@@ -75,5 +75,8 @@ namespace NVAPIHooks
 
 		/// <returns>The current GPU performance state.</returns>
 		virtual std::string GetPerformanceState() = 0;
+
+		/// <returns>The current GPU core temperature in Celsius.</returns>
+		virtual int GetGpuCoreTempInCelsius() = 0;
 	};
 }

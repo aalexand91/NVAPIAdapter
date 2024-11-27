@@ -57,6 +57,7 @@ namespace NVAPIHooks
 		HOOKS_API std::string GetVbiosVersion() override;
 		HOOKS_API unsigned long GetRamBusWidth() override;
 		HOOKS_API std::string GetPerformanceState() override;
+		HOOKS_API int GetGpuCoreTempInCelsius() override;
 
 	private:
 		NvPhysicalGpuHandle m_physicalGpuHandle{ NVAPI_DEFAULT_HANDLE };
@@ -73,5 +74,7 @@ namespace NVAPIHooks
 		[[nodiscard]] HOOKS_API unsigned long GetPciIdentifier(const PciIdentifierType idType);
 
 		[[nodiscard]] HOOKS_API std::string GetPerformanceStateFromId(const NV_GPU_PERF_PSTATE_ID pStateId);
+
+		NV_GPU_THERMAL_SETTINGS GetAllThermalSettings() const;
 	};
 }

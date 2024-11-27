@@ -165,4 +165,30 @@ namespace NVAPIHooks
 			return "Unknown";
 		}
 	}
+
+	int PhysicalGpu::GetGpuCoreTempInCelsius()
+	{
+		const auto allThermalSettings = GetAllThermalSettings();
+		for (unsigned int index = 0; index < allThermalSettings.count; index++)
+		{
+			const auto sensor = allThermalSettings.sensor[index];
+			if (sensor.target == NV_THERMAL_TARGET::NVAPI_THERMAL_TARGET_GPU)
+			{
+				return sensor.currentTemp;
+			}
+		}
+
+		// Thermal target does not exist.
+		return -1;
+	}
+
+	NV_GPU_THERMAL_SETTINGS PhysicalGpu::GetAllThermalSettings() const
+	{
+		NV_GPU_THERMAL_SETTINGS_V2 thermalSettings{};
+		thermalSettings.version = NV_GPU_THERMAL_SETTINGS_VER_2;
+		const auto sensorIndex = static_cast<int>(NV_THERMAL_TARGET::NVAPI_THERMAL_TARGET_ALL);
+		const auto status = ApiTunnel::GetThermalSettings(m_physicalGpuHandle, sensorIndex, &thermalSettings);
+		if (status == NvAPI_Status::NVAPI_OK) return thermalSettings;
+		throw ApiError("Failed to determine all thermal settings.", status);
+	}
 }
