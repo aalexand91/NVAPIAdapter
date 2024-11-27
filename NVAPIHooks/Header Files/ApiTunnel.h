@@ -131,5 +131,15 @@ namespace NVAPIHooks
 		/// <param name="pStateId">Caches the performance state ID.</param>
 		/// <returns>NVAPI status code for determining the GPU performance state ID.</returns>
 		HOOKS_API NvAPI_Status GetPerformanceStateId(NvPhysicalGpuHandle gpuHandle, NV_GPU_PERF_PSTATE_ID* pStateId);
+
+		/// <summary>
+		/// Determines the thermal settings for the thermal sensor at the given sensor index.
+		/// </summary>
+		/// <param name="gpuHandle">Single physical GPU handle.</param>
+		/// <param name="sensorIndex">Index of the sensor to obtain the thermal settings from.</param>
+		/// <param name="thermalSettings">Caches the thermal settings of the sensor.</param>
+		/// <returns>NVAPI status code for determining the thermal settings of the requested sensor.</returns>
+		HOOKS_API NvAPI_Status GetThermalSettings(NvPhysicalGpuHandle gpuHandle,
+			unsigned long sensorIndex, NV_GPU_THERMAL_SETTINGS* thermalSettings);
 	}
 }

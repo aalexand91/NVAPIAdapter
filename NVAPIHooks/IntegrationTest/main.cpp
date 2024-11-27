@@ -29,11 +29,14 @@ using namespace NVAPIHooks;
 /// </summary>
 int main()
 {
-    std::cout << "Initializing API...\n";
+    std::cout << "Initializing API..." << std::endl;
     GeneralApi::Initialize();
-    std::cout << "Obtaining first detected GPU...\n";
+
+    std::cout << "Obtaining first detected GPU..." << std::endl;
     const auto physicalGpu = GeneralApi::GetAllPhysicalGpus().front();
-    std::cout << "Printing various GPU information...\n";
+
+    std::cout << "Printing various GPU information..." << std::endl;
+    std::cout << "\n";
     std::cout << "Name: " << physicalGpu->GetFullName() << std::endl;
     std::cout << "Core count: " << physicalGpu->GetCoreCount() << std::endl;
     std::cout << "Bus type: " << physicalGpu->GetBusType() << std::endl;
@@ -47,6 +50,7 @@ int main()
     std::cout << "Video BIOS version: " << physicalGpu->GetVbiosVersion() << std::endl;
     std::cout << "RAM bus width: " << physicalGpu->GetRamBusWidth() << std::endl;
     std::cout << "Current performance state: " << physicalGpu->GetPerformanceState() << std::endl;
+    std::cout << "GPU Core Temp (C): " << physicalGpu->GetGpuCoreTempInCelsius() << std::endl;
     std::cout << "\n";
     std::cout << "Unloading API...\n";
     GeneralApi::Unload();

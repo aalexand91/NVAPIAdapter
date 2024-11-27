@@ -86,6 +86,9 @@ namespace NVAPIAdapter
 
 		/// <returns>The current GPU performance state.</returns>
 		System::String^ GetCurrentPerformanceState();
+
+		/// <returns>The current GPU core temp in Celsius.</returns>
+		int GetCoreTempInCelsius();
 	};
 
 	ref class NvidiaGpu : INvidiaGpu
@@ -104,6 +107,7 @@ namespace NVAPIAdapter
 		virtual property System::String^ VideoBiosVersion { System::String^ get(); }
 		virtual property System::UInt32 RamBusWidth{ System::UInt32 get(); }
 		virtual System::String^ GetCurrentPerformanceState();
+		virtual int GetCoreTempInCelsius();
 
 	private:
 		IPhysicalGpuAdapter^ m_physicalGpu;

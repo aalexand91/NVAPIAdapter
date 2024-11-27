@@ -730,9 +730,78 @@ namespace NVAPIHooks
 				Assert::ExpectException<ApiError>(act);
 			}
 
+			TEST_METHOD(GetGpuCoreTempInCelsius_WhenSensorExists_ReturnsCoreTemp)
+			{
+				// Arrange
+				m_mocks.OnCallFunc(ApiTunnel::GetThermalSettings).With(m_fakeGpuHandle, m_allThermalSettingsIndex, _)
+					.Do([&](NvPhysicalGpuHandle, int, NV_GPU_THERMAL_SETTINGS* thermalSettings) -> NvAPI_Status
+						{
+							*thermalSettings = CreateFakeThermalSettings();
+							return NvAPI_Status::NVAPI_OK;
+						});
+				const int expected = 32;
+				auto physicalGpu = std::make_unique<PhysicalGpu>(m_fakeGpuHandle);
+
+				// Act
+				auto actual = physicalGpu->GetGpuCoreTempInCelsius();
+
+				// Assert
+				Assert::AreEqual(expected, actual);
+			}
+
+			TEST_METHOD(GetGpuCoreTempInCelsius_WhenSensorDoesNotExist_ReturnsNegativeOne)
+			{
+				// Arrange
+				auto fakeThermalSettings = CreateFakeThermalSettings();
+				fakeThermalSettings.sensor[1].target = NV_THERMAL_TARGET::NVAPI_THERMAL_TARGET_POWER_SUPPLY;
+				m_mocks.OnCallFunc(ApiTunnel::GetThermalSettings).With(m_fakeGpuHandle, m_allThermalSettingsIndex, _)
+					.Do([&](NvPhysicalGpuHandle, int, NV_GPU_THERMAL_SETTINGS* thermalSettings) -> NvAPI_Status
+						{
+							*thermalSettings = fakeThermalSettings;
+							return NvAPI_Status::NVAPI_OK;
+						});
+				const int expected = -1;
+				auto physicalGpu = std::make_unique<PhysicalGpu>(m_fakeGpuHandle);
+
+				// Act
+				auto actual = physicalGpu->GetGpuCoreTempInCelsius();
+
+				// Assert
+				Assert::AreEqual(expected, actual);
+			}
+
+			TEST_METHOD(GetGpuCoreTempInCelsius_WhenDetectingThermalSettingsFails_Throws)
+			{
+				// Arrange
+				m_mocks.OnCallFunc(ApiTunnel::GetThermalSettings).Return(NvAPI_Status::NVAPI_ERROR);
+				auto physicalGpu = std::make_unique<PhysicalGpu>(m_fakeGpuHandle);
+
+				// Act
+				auto act = [&]() -> int { return physicalGpu->GetGpuCoreTempInCelsius(); };
+
+				// Assert
+				Assert::ExpectException<ApiError>(act);
+			}
+
 		private:
 			NvPhysicalGpuHandle m_fakeGpuHandle{ (NvPhysicalGpuHandle)1 };
 			MockRepository m_mocks;
+
+			const int m_allThermalSettingsIndex = static_cast<int>(NV_THERMAL_TARGET::NVAPI_THERMAL_TARGET_ALL);
+
+			NV_GPU_THERMAL_SETTINGS_V2 CreateFakeThermalSettings()
+			{
+				NV_GPU_THERMAL_SETTINGS_V2 thermalSettings{};
+				thermalSettings.version = NV_GPU_THERMAL_SETTINGS_VER_2;
+				thermalSettings.count = NVAPI_MAX_THERMAL_SENSORS_PER_GPU;
+				thermalSettings.sensor[0].target = NV_THERMAL_TARGET::NVAPI_THERMAL_TARGET_BOARD;
+				thermalSettings.sensor[0].currentTemp = 29;
+				thermalSettings.sensor[1].target = NV_THERMAL_TARGET::NVAPI_THERMAL_TARGET_GPU;
+				thermalSettings.sensor[1].currentTemp = 32;
+				thermalSettings.sensor[2].target = NV_THERMAL_TARGET::NVAPI_THERMAL_TARGET_MEMORY;
+				thermalSettings.sensor[2].currentTemp = 56;
+				return thermalSettings;
+			}
 		};
 	}
 }

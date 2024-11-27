@@ -82,4 +82,9 @@ namespace NVAPIAdapter
 	{
 		return m_physicalGpu->GetCurrentPerformanceState();
 	}
+
+	int NvidiaGpu::GetCoreTempInCelsius()
+	{
+		return m_physicalGpu->GetGpuCoreTempInCelsius();
+	}
 }

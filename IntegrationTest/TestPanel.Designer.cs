@@ -61,6 +61,7 @@ namespace NVAPIAdapter.IntegrationTest
             VbiosButton = new Button();
             BusWidthButton = new Button();
             PerformanceStateButton = new Button();
+            GpuCoreTempButton = new Button();
             SuspendLayout();
             // 
             // InstructionLabel
@@ -182,11 +183,23 @@ namespace NVAPIAdapter.IntegrationTest
             PerformanceStateButton.UseVisualStyleBackColor = true;
             PerformanceStateButton.Click += PerformanceStateButton_Click;
             // 
+            // GpuCoreTempButton
+            // 
+            GpuCoreTempButton.Enabled = false;
+            GpuCoreTempButton.Location = new Point(664, 169);
+            GpuCoreTempButton.Name = "GpuCoreTempButton";
+            GpuCoreTempButton.Size = new Size(157, 71);
+            GpuCoreTempButton.TabIndex = 11;
+            GpuCoreTempButton.Text = "GPU Core Temp (C)";
+            GpuCoreTempButton.UseVisualStyleBackColor = true;
+            GpuCoreTempButton.Click += GpuCoreTempButton_Click;
+            // 
             // TestPanel
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(839, 450);
+            Controls.Add(GpuCoreTempButton);
             Controls.Add(PerformanceStateButton);
             Controls.Add(BusWidthButton);
             Controls.Add(VbiosButton);
@@ -217,5 +230,6 @@ namespace NVAPIAdapter.IntegrationTest
         private Button VbiosButton;
         private Button BusWidthButton;
         private Button PerformanceStateButton;
+        private Button GpuCoreTempButton;
     }
 }
