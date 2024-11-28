@@ -141,5 +141,13 @@ namespace NVAPIHooks
 		/// <returns>NVAPI status code for determining the thermal settings of the requested sensor.</returns>
 		HOOKS_API NvAPI_Status GetThermalSettings(NvPhysicalGpuHandle gpuHandle,
 			unsigned long sensorIndex, NV_GPU_THERMAL_SETTINGS* thermalSettings);
+
+		/// <summary>
+		/// Determines all frequencies of each clock domain that is present for the GPU.
+		/// </summary>
+		/// <param name="gpuHandle">Single physical GPU handle.</param>
+		/// <param name="clockFrequencies">Caches frequencies of each clock domain.</param>
+		/// <returns>NVAPI status code for determining the clock frequencies.</returns>
+		HOOKS_API NvAPI_Status GetAllClockFrequencies(NvPhysicalGpuHandle gpuHandle, NV_GPU_CLOCK_FREQUENCIES* clockFrequencies);
 	}
 }
