@@ -189,6 +189,42 @@ namespace NVAPIHooks
 		const auto sensorIndex = static_cast<int>(NV_THERMAL_TARGET::NVAPI_THERMAL_TARGET_ALL);
 		const auto status = ApiTunnel::GetThermalSettings(m_physicalGpuHandle, sensorIndex, &thermalSettings);
 		if (status == NvAPI_Status::NVAPI_OK) return thermalSettings;
-		throw ApiError("Failed to determine all thermal settings.", status);
+		throw ApiError("Failed to determine GPU thermal settings.", status);
+	}
+
+	unsigned long PhysicalGpu::GetGraphicsDomainFrequencyInKHz()
+	{
+		return GetClockFrequency(NV_GPU_PUBLIC_CLOCK_ID::NVAPI_GPU_PUBLIC_CLOCK_GRAPHICS);
+	}
+
+	unsigned long PhysicalGpu::GetMemoryDomainFrequencyInKHz()
+	{
+		return GetClockFrequency(NV_GPU_PUBLIC_CLOCK_ID::NVAPI_GPU_PUBLIC_CLOCK_MEMORY);
+	}
+	
+	unsigned long PhysicalGpu::GetProcessorDomainFrequencyInKHz()
+	{
+		return GetClockFrequency(NV_GPU_PUBLIC_CLOCK_ID::NVAPI_GPU_PUBLIC_CLOCK_PROCESSOR);
+	}
+
+	unsigned long PhysicalGpu::GetVideoDomainFrequencyInKHz()
+	{
+		return GetClockFrequency(NV_GPU_PUBLIC_CLOCK_ID::NVAPI_GPU_PUBLIC_CLOCK_VIDEO);
+	}
+
+	NV_GPU_CLOCK_FREQUENCIES PhysicalGpu::GetAllClockFrequencies() const
+	{
+		NV_GPU_CLOCK_FREQUENCIES_V2 frequencies{};
+		frequencies.version = NV_GPU_CLOCK_FREQUENCIES_VER_2;
+		const auto status = ApiTunnel::GetAllClockFrequencies(m_physicalGpuHandle, &frequencies);
+		if (status == NvAPI_Status::NVAPI_OK) return frequencies;
+		throw ApiError("Failed to determine GPU clock frequencies.", status);
+	}
+
+	unsigned long PhysicalGpu::GetClockFrequency(const NV_GPU_PUBLIC_CLOCK_ID clockId)
+	{
+		auto allfrequencies = GetAllClockFrequencies();
+		const auto domain = allfrequencies.domain[clockId];
+		return domain.bIsPresent ? domain.frequency : 0u;
 	}
 }

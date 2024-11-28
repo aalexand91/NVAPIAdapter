@@ -584,7 +584,7 @@ namespace NVAPIHooks
 								return NvAPI_Status::NVAPI_OK;
 							});
 					auto physicalGpu = std::make_unique<PhysicalGpu>(m_fakeGpuHandle);
-					
+
 					// Act
 					auto actual = physicalGpu->GetPerformanceState();
 
@@ -783,6 +783,210 @@ namespace NVAPIHooks
 				Assert::ExpectException<ApiError>(act);
 			}
 
+			TEST_METHOD(GetGraphicsDomainFrequencyInKHz_WhenClockDomainExists_ReturnsFrequency)
+			{
+				// Arrange
+				m_mocks.OnCallFunc(ApiTunnel::GetAllClockFrequencies).With(m_fakeGpuHandle, _)
+					.Do([&](NvPhysicalGpuHandle, NV_GPU_CLOCK_FREQUENCIES_V2* frequencies) -> NvAPI_Status
+						{
+							*frequencies = CreateFakeClockFrequencies();
+							return NvAPI_Status::NVAPI_OK;
+						});
+				const unsigned long expected = 2000ul;
+				auto physicalGpu = std::make_unique<PhysicalGpu>(m_fakeGpuHandle);
+
+				// Act
+				auto actual = physicalGpu->GetGraphicsDomainFrequencyInKHz();
+
+				// Assert
+				Assert::AreEqual(expected, actual);
+			}
+
+			TEST_METHOD(GetGraphicsDomainFrequencyInKHz_WhenClockDomainDoesNotExist_ReturnsZero)
+			{
+				// Arrange
+				m_mocks.OnCallFunc(ApiTunnel::GetAllClockFrequencies).With(m_fakeGpuHandle, _)
+					.Do([&](NvPhysicalGpuHandle, NV_GPU_CLOCK_FREQUENCIES_V2* frequencies) -> NvAPI_Status
+						{
+							*frequencies = CreateFakeClockFrequencies();
+							frequencies->domain[NV_GPU_PUBLIC_CLOCK_ID::NVAPI_GPU_PUBLIC_CLOCK_GRAPHICS].bIsPresent = 0ul;
+							return NvAPI_Status::NVAPI_OK;
+						});
+				auto physicalGpu = std::make_unique<PhysicalGpu>(m_fakeGpuHandle);
+
+				// Act
+				auto frequency = physicalGpu->GetGraphicsDomainFrequencyInKHz();
+
+				// Assert
+				Assert::AreEqual(0ul, frequency);
+			}
+
+			TEST_METHOD(GetGraphicsDomainFrequencyInKHz_WhenDeterminingClockFrequenciesFails_Throws)
+			{
+				// Arrange
+				m_mocks.OnCallFunc(ApiTunnel::GetAllClockFrequencies).Return(NvAPI_Status::NVAPI_ERROR);
+				auto physicalGpu = std::make_unique<PhysicalGpu>(m_fakeGpuHandle);
+
+				// Act
+				auto act = [&]() -> unsigned long { return physicalGpu->GetGraphicsDomainFrequencyInKHz(); };
+
+				// Assert
+				Assert::ExpectException<ApiError>(act);
+			}
+
+			TEST_METHOD(GetMemoryDomainFrequencyInKHz_WhenClockDomainExists_ReturnsFrequency)
+			{
+				// Arrange
+				m_mocks.OnCallFunc(ApiTunnel::GetAllClockFrequencies).With(m_fakeGpuHandle, _)
+					.Do([&](NvPhysicalGpuHandle, NV_GPU_CLOCK_FREQUENCIES_V2* frequencies) -> NvAPI_Status
+						{
+							*frequencies = CreateFakeClockFrequencies();
+							return NvAPI_Status::NVAPI_OK;
+						});
+				const unsigned long expected = 4000ul;
+				auto physicalGpu = std::make_unique<PhysicalGpu>(m_fakeGpuHandle);
+
+				// Act
+				auto actual = physicalGpu->GetMemoryDomainFrequencyInKHz();
+
+				// Assert
+				Assert::AreEqual(expected, actual);
+			}
+
+			TEST_METHOD(GetMemoryDomainFrequencyInKHz_WhenClockDomainDoesNotExist_ReturnsZero)
+			{
+				// Arrange
+				m_mocks.OnCallFunc(ApiTunnel::GetAllClockFrequencies).With(m_fakeGpuHandle, _)
+					.Do([&](NvPhysicalGpuHandle, NV_GPU_CLOCK_FREQUENCIES_V2* frequencies) -> NvAPI_Status
+						{
+							*frequencies = CreateFakeClockFrequencies();
+							frequencies->domain[NV_GPU_PUBLIC_CLOCK_ID::NVAPI_GPU_PUBLIC_CLOCK_MEMORY].bIsPresent = 0ul;
+							return NvAPI_Status::NVAPI_OK;
+						});
+				auto physicalGpu = std::make_unique<PhysicalGpu>(m_fakeGpuHandle);
+
+				// Act
+				auto frequency = physicalGpu->GetMemoryDomainFrequencyInKHz();
+
+				// Assert
+				Assert::AreEqual(0ul, frequency);
+			}
+
+			TEST_METHOD(GetMemoryDomainFrequencyInKHz_WhenDeterminingClockFrequenciesFails_Throws)
+			{
+				// Arrange
+				m_mocks.OnCallFunc(ApiTunnel::GetAllClockFrequencies).Return(NvAPI_Status::NVAPI_ERROR);
+				auto physicalGpu = std::make_unique<PhysicalGpu>(m_fakeGpuHandle);
+
+				// Act
+				auto act = [&]() -> unsigned long { return physicalGpu->GetMemoryDomainFrequencyInKHz(); };
+
+				// Assert
+				Assert::ExpectException<ApiError>(act);
+			}
+
+			TEST_METHOD(GetProcessorDomainFrequencyInKHz_WhenClockDomainExists_ReturnsFrequency)
+			{
+				// Arrange
+				m_mocks.OnCallFunc(ApiTunnel::GetAllClockFrequencies).With(m_fakeGpuHandle, _)
+					.Do([&](NvPhysicalGpuHandle, NV_GPU_CLOCK_FREQUENCIES_V2* frequencies) -> NvAPI_Status
+						{
+							*frequencies = CreateFakeClockFrequencies();
+							return NvAPI_Status::NVAPI_OK;
+						});
+				const unsigned long expected = 3000ul;
+				auto physicalGpu = std::make_unique<PhysicalGpu>(m_fakeGpuHandle);
+
+				// Act
+				auto actual = physicalGpu->GetProcessorDomainFrequencyInKHz();
+
+				// Assert
+				Assert::AreEqual(expected, actual);
+			}
+
+			TEST_METHOD(GetProcessorDomainFrequencyInKHz_WhenClockDomainDoesNotExist_ReturnsZero)
+			{
+				// Arrange
+				m_mocks.OnCallFunc(ApiTunnel::GetAllClockFrequencies).With(m_fakeGpuHandle, _)
+					.Do([&](NvPhysicalGpuHandle, NV_GPU_CLOCK_FREQUENCIES_V2* frequencies) -> NvAPI_Status
+						{
+							*frequencies = CreateFakeClockFrequencies();
+							frequencies->domain[NV_GPU_PUBLIC_CLOCK_ID::NVAPI_GPU_PUBLIC_CLOCK_PROCESSOR].bIsPresent = 0ul;
+							return NvAPI_Status::NVAPI_OK;
+						});
+				auto physicalGpu = std::make_unique<PhysicalGpu>(m_fakeGpuHandle);
+
+				// Act
+				auto frequency = physicalGpu->GetProcessorDomainFrequencyInKHz();
+
+				// Assert
+				Assert::AreEqual(0ul, frequency);
+			}
+
+			TEST_METHOD(GetProcessorDomainFrequencyInKHz_WhenDeterminingClockFrequenciesFails_Throws)
+			{
+				// Arrange
+				m_mocks.OnCallFunc(ApiTunnel::GetAllClockFrequencies).Return(NvAPI_Status::NVAPI_ERROR);
+				auto physicalGpu = std::make_unique<PhysicalGpu>(m_fakeGpuHandle);
+
+				// Act
+				auto act = [&]() -> unsigned long { return physicalGpu->GetProcessorDomainFrequencyInKHz(); };
+
+				// Assert
+				Assert::ExpectException<ApiError>(act);
+			}
+
+			TEST_METHOD(GetVideoDomainFrequencyInKHz_WhenClockDomainExists_ReturnsFrequency)
+			{
+				// Arrange
+				m_mocks.OnCallFunc(ApiTunnel::GetAllClockFrequencies).With(m_fakeGpuHandle, _)
+					.Do([&](NvPhysicalGpuHandle, NV_GPU_CLOCK_FREQUENCIES_V2* frequencies) -> NvAPI_Status
+						{
+							*frequencies = CreateFakeClockFrequencies();
+							return NvAPI_Status::NVAPI_OK;
+						});
+				const unsigned long expected = 10000ul;
+				auto physicalGpu = std::make_unique<PhysicalGpu>(m_fakeGpuHandle);
+
+				// Act
+				auto actual = physicalGpu->GetVideoDomainFrequencyInKHz();
+
+				// Assert
+				Assert::AreEqual(expected, actual);
+			}
+
+			TEST_METHOD(GetVideoDomainFrequencyInKHz_WhenClockDomainDoesNotExist_ReturnsZero)
+			{
+				// Arrange
+				m_mocks.OnCallFunc(ApiTunnel::GetAllClockFrequencies).With(m_fakeGpuHandle, _)
+					.Do([&](NvPhysicalGpuHandle, NV_GPU_CLOCK_FREQUENCIES_V2* frequencies) -> NvAPI_Status
+						{
+							*frequencies = CreateFakeClockFrequencies();
+							frequencies->domain[NV_GPU_PUBLIC_CLOCK_ID::NVAPI_GPU_PUBLIC_CLOCK_VIDEO].bIsPresent = 0ul;
+							return NvAPI_Status::NVAPI_OK;
+						});
+				auto physicalGpu = std::make_unique<PhysicalGpu>(m_fakeGpuHandle);
+
+				// Act
+				auto frequency = physicalGpu->GetVideoDomainFrequencyInKHz();
+
+				// Assert
+				Assert::AreEqual(0ul, frequency);
+			}
+
+			TEST_METHOD(GetVideoDomainFrequencyInKHz_WhenDeterminingClockFrequenciesFails_Throws)
+			{
+				// Arrange
+				m_mocks.OnCallFunc(ApiTunnel::GetAllClockFrequencies).Return(NvAPI_Status::NVAPI_ERROR);
+				auto physicalGpu = std::make_unique<PhysicalGpu>(m_fakeGpuHandle);
+
+				// Act
+				auto act = [&]() -> unsigned long { return physicalGpu->GetVideoDomainFrequencyInKHz(); };
+
+				// Assert
+				Assert::ExpectException<ApiError>(act);
+			}
+
 		private:
 			NvPhysicalGpuHandle m_fakeGpuHandle{ (NvPhysicalGpuHandle)1 };
 			MockRepository m_mocks;
@@ -801,6 +1005,21 @@ namespace NVAPIHooks
 				thermalSettings.sensor[2].target = NV_THERMAL_TARGET::NVAPI_THERMAL_TARGET_MEMORY;
 				thermalSettings.sensor[2].currentTemp = 56;
 				return thermalSettings;
+			}
+
+			NV_GPU_CLOCK_FREQUENCIES_V2 CreateFakeClockFrequencies()
+			{
+				NV_GPU_CLOCK_FREQUENCIES_V2 frequencies{};
+				frequencies.version = NV_GPU_CLOCK_FREQUENCIES_VER_2;
+				frequencies.domain[NV_GPU_PUBLIC_CLOCK_ID::NVAPI_GPU_PUBLIC_CLOCK_GRAPHICS].bIsPresent = 1ul;
+				frequencies.domain[NV_GPU_PUBLIC_CLOCK_ID::NVAPI_GPU_PUBLIC_CLOCK_GRAPHICS].frequency = 2000ul;
+				frequencies.domain[NV_GPU_PUBLIC_CLOCK_ID::NVAPI_GPU_PUBLIC_CLOCK_MEMORY].bIsPresent = 1ul;
+				frequencies.domain[NV_GPU_PUBLIC_CLOCK_ID::NVAPI_GPU_PUBLIC_CLOCK_MEMORY].frequency = 4000ul;
+				frequencies.domain[NV_GPU_PUBLIC_CLOCK_ID::NVAPI_GPU_PUBLIC_CLOCK_PROCESSOR].bIsPresent = 1ul;
+				frequencies.domain[NV_GPU_PUBLIC_CLOCK_ID::NVAPI_GPU_PUBLIC_CLOCK_PROCESSOR].frequency = 3000ul;
+				frequencies.domain[NV_GPU_PUBLIC_CLOCK_ID::NVAPI_GPU_PUBLIC_CLOCK_VIDEO].bIsPresent = 1ul;
+				frequencies.domain[NV_GPU_PUBLIC_CLOCK_ID::NVAPI_GPU_PUBLIC_CLOCK_VIDEO].frequency = 10000ul;
+				return frequencies;
 			}
 		};
 	}

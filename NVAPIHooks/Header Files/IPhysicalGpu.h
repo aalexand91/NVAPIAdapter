@@ -78,5 +78,17 @@ namespace NVAPIHooks
 
 		/// <returns>The current GPU core temperature in Celsius.</returns>
 		virtual int GetGpuCoreTempInCelsius() = 0;
+
+		/// <returns>The frequency in kHz for the graphics domain clock if it exists or zero if it does not.</returns>
+		virtual unsigned long GetGraphicsDomainFrequencyInKHz() = 0;
+
+		/// <returns>The frequency in kHz for the memory domain clock if it exists or zero if it does not.</returns>
+		virtual unsigned long GetMemoryDomainFrequencyInKHz() = 0;
+
+		/// <returns>The frequency in kHz for the processor domain clock if it exists or zero if it does not.</returns>
+		virtual unsigned long GetProcessorDomainFrequencyInKHz() = 0;
+
+		/// <returns>The frequency in kHz for the video domain clock if it exists or zero if it does not.</returns>
+		virtual unsigned long GetVideoDomainFrequencyInKHz() = 0;
 	};
 }
