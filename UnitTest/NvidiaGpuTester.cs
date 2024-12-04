@@ -20,8 +20,6 @@
 
 using JetBrains.Annotations;
 using NSubstitute;
-using System;
-using System.Numerics;
 
 namespace NVAPIAdapter.UnitTest
 {
