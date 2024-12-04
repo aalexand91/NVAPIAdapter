@@ -21,6 +21,7 @@
 using JetBrains.Annotations;
 using NSubstitute;
 using System;
+using System.Numerics;
 
 namespace NVAPIAdapter.UnitTest
 {
@@ -207,6 +208,80 @@ namespace NVAPIAdapter.UnitTest
 
             // Assert
             Assert.AreEqual(expected, actual);
+        }
+
+        [TestMethod]
+        public void GetClockFrequencyInKHz_GivenGraphicsDomain_ReturnsGraphicsClockFrequency()
+        {
+            // Arrange
+            const uint expected = 919;
+            myFakePhysicalGpu.GetGraphicsClockDomainFrequencyInKHz().Returns(expected);
+            var gpu = CreateNvidiaGpu();
+
+            // Act
+            var actual = gpu.GetClockFrequencyInKHz(ClockDomain.Graphics);
+
+            // Assert
+            Assert.AreEqual(expected, actual);
+        }
+
+        [TestMethod]
+        public void GetClockFrequencyInKHz_GivenMemoryDomain_ReturnsMemoryClockFrequency()
+        {
+            // Arrange
+            const uint expected = 921;
+            myFakePhysicalGpu.GetMemoryClockDomainFrequencyInKHz().Returns(expected);
+            var gpu = CreateNvidiaGpu();
+
+            // Act
+            var actual = gpu.GetClockFrequencyInKHz(ClockDomain.Memory);
+
+            // Assert
+            Assert.AreEqual(expected, actual);
+        }
+
+        [TestMethod]
+        public void GetClockFrequencyInKHz_GivenProcessorDomain_ReturnsProcessorClockFrequency()
+        {
+            // Arrange
+            const uint expected = 925;
+            myFakePhysicalGpu.GetProcessorClockDomainFrequencyInKHz().Returns(expected);
+            var gpu = CreateNvidiaGpu();
+
+            // Act
+            var actual = gpu.GetClockFrequencyInKHz(ClockDomain.Processor);
+
+            // Assert
+            Assert.AreEqual(expected, actual);
+        }
+
+        [TestMethod]
+        public void GetClockFrequencyInKHz_GivenVideoDomain_ReturnsVideoClockFrequency()
+        {
+            // Arrange
+            const uint expected = 1232024;
+            myFakePhysicalGpu.GetVideoClockDomainFrequencyInKHz().Returns(expected);
+            var gpu = CreateNvidiaGpu();
+
+            // Act
+            var actual = gpu.GetClockFrequencyInKHz(ClockDomain.Video);
+
+            // Assert
+            Assert.AreEqual(expected, actual);
+        }
+
+        [TestMethod]
+        public void GetClockFrequencyInKHz_GivenUnknownDomain_Throws()
+        {
+            // Arrange
+            var gpu = CreateNvidiaGpu();
+
+            // Act
+            void Act() => gpu.GetClockFrequencyInKHz(ClockDomain.Unknown);
+            var exception = Assert.ThrowsException<ArgumentException>(Act);
+
+            // Assert
+            StringAssert.Contains(exception.Message, "clock domain is unknown");
         }
     }
 }

@@ -16,6 +16,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Header Files\ClockDomain.h" />
     <ClInclude Include="Header Files\NVAPI.h" />
     <ClInclude Include="Header Files\NvidiaGpu.h" />
     <ClInclude Include="Header Files\PciIdentifier.h" />

@@ -20,6 +20,7 @@
 
 #pragma once
 
+#include <ClockDomain.h>
 #include <PciIdentifier.h>
 #include <PhysicalGpuAdapter.h>
 
@@ -89,6 +90,11 @@ namespace NVAPIAdapter
 
 		/// <returns>The current GPU core temp in Celsius.</returns>
 		int GetCoreTempInCelsius();
+
+		/// <returns>
+		/// The clock frequency in kHz from the provided clock domain or 0 if the domain is not present.
+		/// </returns>
+		System::UInt32 GetClockFrequencyInKHz(const ClockDomain clockDomain);
 	};
 
 	ref class NvidiaGpu : INvidiaGpu
@@ -108,6 +114,7 @@ namespace NVAPIAdapter
 		virtual property System::UInt32 RamBusWidth{ System::UInt32 get(); }
 		virtual System::String^ GetCurrentPerformanceState();
 		virtual int GetCoreTempInCelsius();
+		virtual System::UInt32 GetClockFrequencyInKHz(const ClockDomain clockDomain);
 
 	private:
 		IPhysicalGpuAdapter^ m_physicalGpu;
