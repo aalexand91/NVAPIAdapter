@@ -22,6 +22,7 @@
 
 namespace NVAPIAdapter
 {
+	/// <summary>Type-safe way to request a specific clock domain.</summary>
 	public enum class ClockDomain
 	{
 		Graphics,
