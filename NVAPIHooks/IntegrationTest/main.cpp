@@ -51,6 +51,10 @@ int main()
     std::cout << "RAM bus width: " << physicalGpu->GetRamBusWidth() << std::endl;
     std::cout << "Current performance state: " << physicalGpu->GetPerformanceState() << std::endl;
     std::cout << "GPU Core Temp (C): " << physicalGpu->GetGpuCoreTempInCelsius() << std::endl;
+    std::cout << "GPU Graphics Clock Frequency (kHz): " << physicalGpu->GetGraphicsDomainFrequencyInKHz() << std::endl;
+    std::cout << "GPU Memory Clock Frequency (kHz): " << physicalGpu->GetMemoryDomainFrequencyInKHz() << std::endl;
+    std::cout << "GPU Processor Clock Frequency (kHz): " << physicalGpu->GetProcessorDomainFrequencyInKHz() << std::endl;
+    std::cout << "GPU Video Clock Frequency (kHz): " << physicalGpu->GetVideoDomainFrequencyInKHz() << std::endl;
     std::cout << "\n";
     std::cout << "Unloading API...\n";
     GeneralApi::Unload();

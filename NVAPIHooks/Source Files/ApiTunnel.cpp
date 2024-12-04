@@ -101,5 +101,10 @@ namespace NVAPIHooks
 		{
 			return NvAPI_GPU_GetThermalSettings(gpuHandle, sensorIndex, thermalSettings);
 		}
+
+		NvAPI_Status GetAllClockFrequencies(NvPhysicalGpuHandle gpuHandle, NV_GPU_CLOCK_FREQUENCIES* clockFrequencies)
+		{
+			return NvAPI_GPU_GetAllClockFrequencies(gpuHandle, clockFrequencies);
+		}
 	}
 }

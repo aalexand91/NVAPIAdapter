@@ -58,6 +58,10 @@ namespace NVAPIHooks
 		HOOKS_API unsigned long GetRamBusWidth() override;
 		HOOKS_API std::string GetPerformanceState() override;
 		HOOKS_API int GetGpuCoreTempInCelsius() override;
+		HOOKS_API unsigned long GetGraphicsDomainFrequencyInKHz() override;
+		HOOKS_API unsigned long GetMemoryDomainFrequencyInKHz() override;
+		HOOKS_API unsigned long GetProcessorDomainFrequencyInKHz() override;
+		HOOKS_API unsigned long GetVideoDomainFrequencyInKHz() override;
 
 	private:
 		NvPhysicalGpuHandle m_physicalGpuHandle{ NVAPI_DEFAULT_HANDLE };
@@ -72,9 +76,9 @@ namespace NVAPIHooks
 		};
 
 		[[nodiscard]] HOOKS_API unsigned long GetPciIdentifier(const PciIdentifierType idType);
-
 		[[nodiscard]] HOOKS_API std::string GetPerformanceStateFromId(const NV_GPU_PERF_PSTATE_ID pStateId);
-
 		NV_GPU_THERMAL_SETTINGS GetAllThermalSettings() const;
+		NV_GPU_CLOCK_FREQUENCIES GetAllClockFrequencies() const;
+		[[nodiscard]] unsigned long GetClockFrequency(const NV_GPU_PUBLIC_CLOCK_ID clockId);
 	};
 }

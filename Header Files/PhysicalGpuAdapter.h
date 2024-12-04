@@ -41,6 +41,10 @@ namespace NVAPIAdapter
 		unsigned long GetRamBusWidth();
 		System::String^ GetCurrentPerformanceState();
 		int GetGpuCoreTempInCelsius();
+		unsigned long GetGraphicsClockDomainFrequencyInKHz();
+		unsigned long GetMemoryClockDomainFrequencyInKHz();
+		unsigned long GetProcessorClockDomainFrequencyInKHz();
+		unsigned long GetVideoClockDomainFrequencyInKHz();
 	};
 
 	ref class PhysicalGpuAdapter : IPhysicalGpuAdapter
@@ -62,6 +66,10 @@ namespace NVAPIAdapter
 		virtual unsigned long GetRamBusWidth() { return m_physicalGpu->GetRamBusWidth(); }
 		virtual System::String^ GetCurrentPerformanceState() { return gcnew System::String(m_physicalGpu->GetPerformanceState().c_str()); }
 		virtual int GetGpuCoreTempInCelsius() { return m_physicalGpu->GetGpuCoreTempInCelsius(); }
+		virtual unsigned long GetGraphicsClockDomainFrequencyInKHz() { return m_physicalGpu->GetGraphicsDomainFrequencyInKHz(); }
+		virtual unsigned long GetMemoryClockDomainFrequencyInKHz() { return m_physicalGpu->GetMemoryDomainFrequencyInKHz(); }
+		virtual unsigned long GetProcessorClockDomainFrequencyInKHz() { return m_physicalGpu->GetProcessorDomainFrequencyInKHz(); }
+		virtual unsigned long GetVideoClockDomainFrequencyInKHz() { return m_physicalGpu->GetVideoDomainFrequencyInKHz(); }
 
 	private:
 		NVAPIHooks::IPhysicalGpu* m_physicalGpu = nullptr;

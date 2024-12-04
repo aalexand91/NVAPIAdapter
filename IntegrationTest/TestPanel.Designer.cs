@@ -62,6 +62,10 @@ namespace NVAPIAdapter.IntegrationTest
             BusWidthButton = new Button();
             PerformanceStateButton = new Button();
             GpuCoreTempButton = new Button();
+            GraphicsClockFrequencyButton = new Button();
+            MemoryClockFrequencyButton = new Button();
+            ProcessorClockFrequencyButton = new Button();
+            VideoClockFrequencyButton = new Button();
             SuspendLayout();
             // 
             // InstructionLabel
@@ -194,11 +198,59 @@ namespace NVAPIAdapter.IntegrationTest
             GpuCoreTempButton.UseVisualStyleBackColor = true;
             GpuCoreTempButton.Click += GpuCoreTempButton_Click;
             // 
+            // GraphicsClockFrequencyButton
+            // 
+            GraphicsClockFrequencyButton.Enabled = false;
+            GraphicsClockFrequencyButton.Location = new Point(12, 246);
+            GraphicsClockFrequencyButton.Name = "GraphicsClockFrequencyButton";
+            GraphicsClockFrequencyButton.Size = new Size(157, 71);
+            GraphicsClockFrequencyButton.TabIndex = 12;
+            GraphicsClockFrequencyButton.Text = "Graphics Clock Frequency (kHz)";
+            GraphicsClockFrequencyButton.UseVisualStyleBackColor = true;
+            GraphicsClockFrequencyButton.Click += GraphicsClockFrequencyButton_Click;
+            // 
+            // MemoryClockFrequencyButton
+            // 
+            MemoryClockFrequencyButton.Enabled = false;
+            MemoryClockFrequencyButton.Location = new Point(175, 246);
+            MemoryClockFrequencyButton.Name = "MemoryClockFrequencyButton";
+            MemoryClockFrequencyButton.Size = new Size(157, 71);
+            MemoryClockFrequencyButton.TabIndex = 13;
+            MemoryClockFrequencyButton.Text = "Memory Clock Frequency (kHz)";
+            MemoryClockFrequencyButton.UseVisualStyleBackColor = true;
+            MemoryClockFrequencyButton.Click += MemoryClockFrequencyButton_Click;
+            // 
+            // ProcessorClockFrequencyButton
+            // 
+            ProcessorClockFrequencyButton.Enabled = false;
+            ProcessorClockFrequencyButton.Location = new Point(338, 246);
+            ProcessorClockFrequencyButton.Name = "ProcessorClockFrequencyButton";
+            ProcessorClockFrequencyButton.Size = new Size(157, 71);
+            ProcessorClockFrequencyButton.TabIndex = 14;
+            ProcessorClockFrequencyButton.Text = "Processor Clock Frequency (kHz)";
+            ProcessorClockFrequencyButton.UseVisualStyleBackColor = true;
+            ProcessorClockFrequencyButton.Click += ProcessorClockFrequencyButton_Click;
+            // 
+            // VideoClockFrequencyButton
+            // 
+            VideoClockFrequencyButton.Enabled = false;
+            VideoClockFrequencyButton.Location = new Point(501, 246);
+            VideoClockFrequencyButton.Name = "VideoClockFrequencyButton";
+            VideoClockFrequencyButton.Size = new Size(157, 71);
+            VideoClockFrequencyButton.TabIndex = 15;
+            VideoClockFrequencyButton.Text = "Video Clock Frequency (kHz)";
+            VideoClockFrequencyButton.UseVisualStyleBackColor = true;
+            VideoClockFrequencyButton.Click += VideoClockFrequencyButton_Click;
+            // 
             // TestPanel
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(839, 450);
+            Controls.Add(VideoClockFrequencyButton);
+            Controls.Add(ProcessorClockFrequencyButton);
+            Controls.Add(MemoryClockFrequencyButton);
+            Controls.Add(GraphicsClockFrequencyButton);
             Controls.Add(GpuCoreTempButton);
             Controls.Add(PerformanceStateButton);
             Controls.Add(BusWidthButton);
@@ -231,5 +283,9 @@ namespace NVAPIAdapter.IntegrationTest
         private Button BusWidthButton;
         private Button PerformanceStateButton;
         private Button GpuCoreTempButton;
+        private Button GraphicsClockFrequencyButton;
+        private Button MemoryClockFrequencyButton;
+        private Button ProcessorClockFrequencyButton;
+        private Button VideoClockFrequencyButton;
     }
 }

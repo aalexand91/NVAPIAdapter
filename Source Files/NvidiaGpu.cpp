@@ -87,4 +87,16 @@ namespace NVAPIAdapter
 	{
 		return m_physicalGpu->GetGpuCoreTempInCelsius();
 	}
+
+	System::UInt32 NvidiaGpu::GetClockFrequencyInKHz(const ClockDomain clockDomain)
+	{
+		switch (clockDomain)
+		{
+		case ClockDomain::Graphics: return m_physicalGpu->GetGraphicsClockDomainFrequencyInKHz();
+		case ClockDomain::Memory: return m_physicalGpu->GetMemoryClockDomainFrequencyInKHz();
+		case ClockDomain::Processor: return m_physicalGpu->GetProcessorClockDomainFrequencyInKHz();
+		case ClockDomain::Video: return m_physicalGpu->GetVideoClockDomainFrequencyInKHz();
+		default: throw gcnew System::ArgumentException("Provided clock domain is unknown.");
+		}
+	}
 }

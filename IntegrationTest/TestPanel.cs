@@ -64,6 +64,10 @@ namespace NVAPIAdapter.IntegrationTest
             BusWidthButton.Enabled = true;
             PerformanceStateButton.Enabled = true;
             GpuCoreTempButton.Enabled = true;
+            GraphicsClockFrequencyButton.Enabled = true;
+            MemoryClockFrequencyButton.Enabled = true;
+            ProcessorClockFrequencyButton.Enabled = true;
+            VideoClockFrequencyButton.Enabled = true;
         }
 
         [NotNull] INvidiaGpu SelectedGpu => mySelectedGpu ?? throw new NullReferenceException("GPU was not selected.");
@@ -123,6 +127,37 @@ Subsystem ID: {pciIdentifier.SubsystemId}";
         private void GpuCoreTempButton_Click(object sender, EventArgs e)
         {
             MessageBox.Show(SelectedGpu.GetCoreTempInCelsius().ToString(), caption: "GPU Core Temp (C)", MessageBoxButtons.OK);
+        }
+
+        [NotNull]
+        private string GetClockFrequencyString(ClockDomain clockDomain)
+        {
+            var frequency = SelectedGpu.GetClockFrequencyInKHz(clockDomain);
+            return frequency > 0 ? frequency.ToString() : "Clock domain does not exist.";
+        }
+
+        private void GraphicsClockFrequencyButton_Click(object sender, EventArgs e)
+        {
+            var message = GetClockFrequencyString(ClockDomain.Graphics);
+            MessageBox.Show(message, caption: "GPU Graphics Clock Frequency (kHz)", MessageBoxButtons.OK);
+        }
+
+        private void MemoryClockFrequencyButton_Click(object sender, EventArgs e)
+        {
+            var message = GetClockFrequencyString(ClockDomain.Memory);
+            MessageBox.Show(message, caption: "GPU Memory Clock Frequency (kHz)", MessageBoxButtons.OK);
+        }
+
+        private void ProcessorClockFrequencyButton_Click(object sender, EventArgs e)
+        {
+            var message = GetClockFrequencyString(ClockDomain.Processor);
+            MessageBox.Show(message, caption: "GPU Processor Clock Frequency (kHz)", MessageBoxButtons.OK);
+        }
+
+        private void VideoClockFrequencyButton_Click(object sender, EventArgs e)
+        {
+            var message = GetClockFrequencyString(ClockDomain.Video);
+            MessageBox.Show(message, caption: "GPU Video Clock Frequency (kHz)", MessageBoxButtons.OK);
         }
     }
 }
